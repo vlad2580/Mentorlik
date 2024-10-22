@@ -369,3 +369,27 @@ footer {
 .login-link:hover {
     text-decoration: underline;
 }
+
+/* Стили для переключателя ролей */
+.role-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.role-option {
+    margin: 0 10px;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.role-option input {
+    margin-right: 5px;
+    transform: scale(1.2); /* Увеличиваем размер радиокнопок */
+}
+
+/* Стили для активного состояния */
+.role-option input:checked + label {
+    font-weight: bold;
+    color: #ff6f3d;
+}
