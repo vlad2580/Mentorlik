@@ -301,3 +301,71 @@ footer {
         width: 100%;
     }
 }
+
+/* Login page */
+
+/* Стиль для секции логина */
+.login-section {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 40px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.login-heading {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.login-group {
+    margin-bottom: 20px;
+}
+
+.login-label {
+    display: block;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.login-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.login-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #ff6f3d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #ff5722;
+}
+
+.login-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.login-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
