@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Přihlášení</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="base.html"><h1><span class="mentor">Mentor</span><span class="connect">Connect</span></h1></a>
+        </div>
+    </header>
+
+    <main class="login-section">
+        <h2 class="login-heading">Přihlášení do osobního účtu</h2>
+
+        <div class="role-toggle">
+            <label class="role-option">
+                <input type="radio" name="role" value="student" checked> Student
+            </label>
+            <label class="role-option">
+                <input type="radio" name="role" value="mentor"> Mentor
+            </label>
+        </div>
+
+        <form method="POST" action="/login/">
+            <div class="form-group login-group">
+                <label for="username" class="login-label">Uživatelské jméno</label>
+                <input type="text" id="username" name="username" class="login-input" required>
+            </div>
+            <div class="form-group login-group">
+                <label for="password" class="login-label">Heslo</label>
+                <input type="password" id="password" name="password" class="login-input" required>
+            </div>
+            <div class="form-group login-group">
+                <button type="submit" class="cta-button login-button">Přihlásit se</button>
+            </div>
+        </form>
+        <p class="login-text">Nemáte účet? <a href="/signup/" class="login-link">Zaregistrovat se</a></p>
+    </main>
+
+    <footer>
+        <p>© 2024 MentorConnect. Všechna práva vyhrazena.</p>
+    </footer>
+
+    <script src="../static/js/scripts.js"></script>
+</body>
+</html>
