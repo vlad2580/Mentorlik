@@ -26,4 +26,43 @@ Projekt je postaven na frameworku **Django** s využitím **PostgreSQL** jako da
 ### 3. **Složka `/mentorconnect`**
    - Obsahuje všechny důležité soubory aplikace Django, jako jsou:
      - `models.py` - definuje databázové modely, včetně modelů pro mentory a uživatele.
-     - `views.py`
+     - `views.py` - obsahuje logiku, která řídí zpracování požadavků a vykreslování stránek.
+     - `urls.py` - definuje URL trasy pro aplikaci.
+     - `forms.py` - definuje formuláře používané na stránkách, například pro registraci mentorů.
+
+### 4. **Složka `/media`**
+   - Obsahuje nahrané soubory, které mohou uživatelé nebo mentoři poskytnout, například profilové fotografie.
+
+### 5. **Databáze**
+   - **PostgreSQL** je použita jako hlavní databáze pro ukládání informací o mentorech, uživatelích a rezervacích konzultací.
+   - Pro připojení k databázi jsou přihlašovací údaje uloženy v souboru `settings.py`.
+
+### 6. **Soubor `settings.py`**
+   - Tento soubor obsahuje základní nastavení Django projektu, včetně konfigurace databáze, statických souborů a médií.
+   - Zde jsou také definována různá nastavení pro vývoj a produkční prostředí.
+
+### 7. **JavaScriptové funkce**
+   - JavaScriptové funkce jsou definovány v souboru `/static/js/scripts.js`, které řídí dynamické prvky na stránce, například filtrování mentorů nebo zpracování vyhledávání.
+
+## Pravidla
+
+1. **Komentáře v kódu**:
+   - Pro lepší spolupráci a srozumitelnost projektu by měly být všechny komentáře v kódu psány výhradně **v anglickém jazyce**.
+   - To umožní, aby všichni členové týmu, včetně případných mezinárodních spolupracovníků, mohli snadno rozumět a pracovat s kódem.
+
+2. **Větve pro různé části projektu**:
+   - Pro usnadnění vývoje a správu verzí by měl být každému směru vývoje (frontend, backend, databáze atd.) přidělen samostatný branch.
+   - Příklad větví:
+     - `frontend` – pro vývoj a změny na uživatelském rozhraní (HTML, CSS, JavaScript).
+     - `backend` – pro změny týkající se serverové logiky, databázových interakcí, nebo API.
+     - `devops` – pro infrastrukturu, nasazování a konfiguraci CI/CD.
+   - Změny by měly být začleněny do hlavní větve prostřednictvím **pull requestů**, po důkladném peer review.
+
+## Spuštění projektu
+
+### Lokální prostředí
+
+1. **Klonování repozitáře:**
+   ```bash
+   git clone https://github.com/uzivatel/mentorconnect.git
+   cd mentorconnect
