@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <!-- Setting viewport for correct responsiveness on mobile devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Description and keywords for SEO -->
+    <meta name="description" content="MentorConnect — otevřená komunita IT mentorů. Najdi svého mentora a získej odbornou pomoc.">
+    <meta name="keywords" content="mentor, školitel, IT, učení, MentorConnect">
+    <title>MentorConnect - Najdi svého mentora</title>
+    <!-- Linking external styles -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+    <!-- Linking scripts at the end of body for load optimization -->
+</head>
+<body>
+    <!-- Main header of the page -->
+    <header>
+        <div class="logo">
+            <h1>
+                <span class="mentor">Mentor</span><span class="connect">Connect</span>
+            </h1>
+        </div>
+        <!-- Main site navigation -->
+        <nav>
+            <ul>
+                <li><a href="#">Náš blog</a></li>
+                <li><a href="#">Staňte se mentorem</a></li>
+                <li><a href="login.html">Osobní účet</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main section with call to action -->
+    <main>
+        <!-- Using main for the primary content section -->
+        <section class="hero">
+            <h2>Najdi svého mentora</h2>
+            <p>
+                MentorConnect je otevřená komunita IT mentorů, připravených sdílet své znalosti a zkušenosti.
+            </p>
+            <p>
+                Správný rozhovor vysvětlí situaci lépe než hodiny hledání na internetu. Pomáháme těm, kdo potřebují radu, najít odborníka a prodiskutovat svůj problém jeden na jednoho.
+            </p>
+            <a href="#" class="cta-button">Najít mentora</a>
+        </section>
+
+        <!-- "How it works" section -->
+        <section class="how-it-works">
+            <h2>Jak to funguje</h2>
+            <div class="steps">
+                <!-- First step -->
+                <div class="step">
+                    <!-- Adding a real icon or image -->
+                    <img src="static/images/choose-mentor.png" alt="Vyberte si mentora" class="step-icon">
+                    <h3>Vyberte si mentora</h3>
+                    <p>Spolupracujeme s více než 2000 specialisty z Avito, Yandexu, Google a dalších firem. Můžete si vybrat odborníka podle specializace, pracovních zkušeností a ceny za setkání.</p>
+                    <p>Všechny mentory ověřujeme sami: žádné podvodné praktiky.</p>
+                </div>
+                <!-- Second step -->
+                <div class="step">
+                    <img src="static/images/contact-mentor.png" alt="Napište mentorovi" class="step-icon">
+                    <h3>Napište mu</h3>
+                    <p>Nechte na webu žádost. Napište, s čím potřebujete pomoct a co byste chtěli získat.</p>
+                    <p>Pamatujte: dobře formulovaný problém je z poloviny vyřešený. Čím podrobněji to popíšete, tím lépe.</p>
+                </div>
+                <!-- Third step -->
+                <div class="step">
+                    <img src="static/images/we-handle-rest.png" alt="My se postaráme o zbytek" class="step-icon">
+                    <h3>My se postaráme o zbytek</h3>
+                    <p>Ověříme mentora a zajistíme vám hovor. Mentor zhodnotí problém a spojí se s vámi, aby prodiskutoval detaily a vybral vhodný čas.</p>
+                    <p>Každý mentor si sám určuje cenu a délku sezení.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mentors section -->
+        <section class="mentors-section">
+            <h2><span>Naši</span> <span>mentoři</span></h2>
+            <!-- Search bar -->
+            <div class="search-bar">
+                <input type="text" id="mentorSearch" placeholder="Profese, nástroj, firma, jméno mentora nebo cokoliv jiného, oddělené čárkou" onkeyup="filterMentors()">
+            </div>
+            <!-- Filters -->
+            <div class="filter-tags">
+                <button class="tag" onclick="filterByTag('development')">Development</button>
+                <button class="tag" onclick="filterByTag('devops')">DevOps</button>
+                <button class="tag" onclick="filterByTag('data science')">Data Science/ML</button>
+                <!-- Additional filters -->
+            </div>
+            <!-- Mentors grid -->
+            <div class="mentors-grid">
+                <!-- Mentor card -->
+                <div class="mentor-card" data-tags="development, senior, postgres">
+                    <img src="static/images/mentor1.jpg" alt="Ivan Evtuchovič">
+                    <h3>Ivan Evtuchovič</h3>
+                    <p>Ředitel oddělení @ Postgres Professional</p>
+                    <p>10+ let zkušeností | 9000 Kč</p>
+                </div>
+                <!-- Mentor card -->
+                <div class="mentor-card" data-tags="embedded, junior, freelance">
+                    <img src="static/images/mentor2.jpg" alt="Zenin Michal">
+                    <h3>Zenin Michal</h3>
+                    <p>Senior embedded vývojář @ Freelance</p>
+                    <p>5-10 let zkušeností | Zdarma</p>
+                </div>
+                <!-- Placeholder cards for future mentors -->
+                <div class="mentor-card placeholder">
+                    <h3>Tvá fotka zde!</h3>
+                    <p>Staňte se mentorem, sdílejte své zkušenosti a pomáhejte ostatním!</p>
+                </div>
+                <div class="mentor-card placeholder">
+                    <h3>Tvá fotka zde!</h3>
+                    <p>Staňte se mentorem, sdílejte své zkušenosti a pomáhejte ostatním!</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Site footer -->
+    <footer>
+        <p>© 2024 MentorConnect. Všechna práva vyhrazena.</p>
+    </footer>
+
+    <!-- Linking scripts before the closing body tag for load optimization -->
+    <script src="../static/js/scripts.js"></script>
+</body>
+</html>
