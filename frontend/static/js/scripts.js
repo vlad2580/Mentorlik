@@ -12,3 +12,10 @@ function filterMentors() {
         }
     }
 }
+
+const sidebar = document.getElementById('sidebar');
+const toggle = document.getElementById('toggle');
+
+toggle.onclick = function () {
+    sidebar.classList.toggle('closed');
+};
