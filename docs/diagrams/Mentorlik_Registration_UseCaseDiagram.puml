@@ -1,0 +1,25 @@
+@startuml
+actor Mentor as M
+actor Student as S
+
+M --> (Start Registration) : Initiates Registration
+(Start Registration) --> (Validate Email and Password) : Validate Email Format & Password Strength
+(Validate Email and Password) --> (Check Existing User) : Check if User Already Exists
+
+(Check Existing User) --> (Login) : If Mentor Already Registered
+(Check Existing User) --> (Save Initial Mentor Data) : If New Mentor (status: unverified)
+(Save Initial Mentor Data) --> (Send Confirmation Email) : Send Confirmation Email
+
+S --> (Start Registration) : Initiates Registration
+(Start Registration) --> (Validate Email and Password) : Validate Email Format & Password Strength
+(Validate Email and Password) --> (Check Existing User) : Check if User Already Exists
+
+(Check Existing User) --> (Login) : If Student Already Registered
+(Check Existing User) --> (Save Initial Student Data) : If New Student (status: unverified)
+(Save Initial Student Data) --> (Send Confirmation Email) : Send Confirmation Email
+
+M --> (Confirm Email) : Mentor clicks on confirmation link
+S --> (Confirm Email) : Student clicks on confirmation link
+(Confirm Email) --> (Update Status to Verified) : Update user status to verified
+(Update Status to Verified) --> (Complete Registration) : Complete Registration
+@enduml
