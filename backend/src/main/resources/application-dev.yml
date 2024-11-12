@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/mentorlik_dev_db
+    username: dev_db_username
+    password: dev_db_password
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework: TRACE
+server:
+  port: 8081

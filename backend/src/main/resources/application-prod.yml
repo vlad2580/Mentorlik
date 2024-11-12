@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://production-host:5432/mentorlik_prod_db
+    username: prod_db_username
+    password: prod_db_password
+
+logging:
+  level:
+    root: WARN
+    org.springframework: ERROR
+server:
+  port: 8080

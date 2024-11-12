@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: mentorlik-backend
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/mentorlik_db
+    username: your_db_username
+    password: your_db_password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  cache:
+    type: redis
+
+  redis:
+    host: localhost
+    port: 6379
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: https://your-auth-server/.well-known/jwks.json
+
+mail:
+  host: smtp.your-email-provider.com
+  port: 587
+  username: your_email_username
+  password: your_email_password
+  properties:
+    mail:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework: DEBUG
+  file:
+    path: ./logs
+    name: mentorlik-backend.log
+server:
+  port: 8080
