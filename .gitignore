@@ -7,21 +7,3 @@ target/
 # Log files
 *.log
 logs/
-# IntelliJ IDEA files
-.idea/
-
-# Maven target directory
-target/
-
-# Log files
-*.log
-logs/
-# IntelliJ IDEA files
-.idea/
-
-# Maven target directory
-target/
-
-# Log files
-*.log
-logs/
