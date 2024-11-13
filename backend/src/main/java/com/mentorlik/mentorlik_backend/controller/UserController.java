@@ -1,6 +1,8 @@
 package com.mentorlik.mentorlik_backend.controller;
 
-import com.mentorlik.mentorlik_backend.dto.UserDto;
+import com.mentorlik.mentorlik_backend.dto.AdminProfileDto;
+import com.mentorlik.mentorlik_backend.dto.MentorProfileDto;
+import com.mentorlik.mentorlik_backend.dto.StudentProfileDto;
 import com.mentorlik.mentorlik_backend.exception.ResourceNotFoundException;
 import com.mentorlik.mentorlik_backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * Controller responsible for handling user-related endpoints.
- * Provides an endpoint for retrieving user profile information.
+ * Provides endpoints for retrieving user profile information for various user types.
  */
 @Slf4j
 @RestController
@@ -29,25 +31,66 @@ public class UserController {
     }
 
     /**
-     * Endpoint to retrieve user information by ID.
-     * Accepts a user ID as a path variable and returns the user data.
+     * Endpoint to retrieve user information by ID, based on user type.
+     * Accepts a user type and ID as path variables and returns the user data.
      *
-     * @param id the unique identifier of the user
-     * @return a {@code ResponseEntity} containing the {@code UserDto} for the requested user
+     * @param userType the type of the user (e.g., "admin", "mentor", "student")
+     * @param id       the unique identifier of the user
+     * @return a {@code ResponseEntity} containing the user profile DTO for the requested user
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<UserDto> getUser(@PathVariable Long id) {
-        log.info("Attempting to retrieve user with ID: {}", id);
+    @GetMapping("/{userType}/{id}")
+    public ResponseEntity<?> getUser(@PathVariable String userType, @PathVariable Long id) {
+        log.info("Attempting to retrieve {} with ID: {}", userType, id);
+
         try {
-            UserDto user = userService.getUserById(id);
-            log.info("User retrieved successfully with ID: {}", id);
-            return ResponseEntity.ok(user);
+            return switch (userType.toLowerCase()) {
+                case "mentor" -> getMentorProfile(id);
+                case "student" -> getStudentProfile(id);
+                case "admin" -> getAdminProfile(id);
+                default -> ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user type: " + userType);
+            };
         } catch (ResourceNotFoundException ex) {
-            log.warn("User not found with ID: {}", id);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            log.warn("{} not found with ID: {}", userType, id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(userType + " not found");
         } catch (Exception ex) {
-            log.error("Unexpected error occurred while retrieving user with ID: {}: {}", id, ex.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            log.error("Unexpected error while retrieving {} with ID: {}: {}", userType, id, ex.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred");
         }
+    }
+
+    /**
+     * Retrieves a mentor profile by ID.
+     *
+     * @param id the ID of the mentor
+     * @return a {@code ResponseEntity} containing the {@code MentorProfileDto}
+     */
+    private ResponseEntity<MentorProfileDto> getMentorProfile(Long id) {
+        MentorProfileDto mentor = userService.getMentorById(id);
+        log.info("Mentor retrieved successfully with ID: {}", id);
+        return ResponseEntity.ok(mentor);
+    }
+
+    /**
+     * Retrieves a student profile by ID.
+     *
+     * @param id the ID of the student
+     * @return a {@code ResponseEntity} containing the {@code StudentProfileDto}
+     */
+    private ResponseEntity<StudentProfileDto> getStudentProfile(Long id) {
+        StudentProfileDto student = userService.getStudentById(id);
+        log.info("Student retrieved successfully with ID: {}", id);
+        return ResponseEntity.ok(student);
+    }
+
+    /**
+     * Retrieves an admin profile by ID.
+     *
+     * @param id the ID of the admin
+     * @return a {@code ResponseEntity} containing the {@code AdminProfileDto}
+     */
+    private ResponseEntity<AdminProfileDto> getAdminProfile(Long id) {
+        AdminProfileDto admin = userService.getAdminById(id);
+        log.info("Admin retrieved successfully with ID: {}", id);
+        return ResponseEntity.ok(admin);
     }
 }

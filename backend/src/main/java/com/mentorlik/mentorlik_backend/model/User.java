@@ -10,16 +10,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 /**
- * Entity class representing a user in the system.
+ * Abstract entity class representing a user in the system.
  * <p>
- * This class maps to a database table and includes fields for user ID, email, and password.
+ * This class serves as a base for different types of users such as Mentor and Student,
+ * mapping common fields like email and password to a database table.
  * </p>
  */
-@Entity
+@MappedSuperclass
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public abstract class User {
 
     /**
      * The unique identifier for each user.
