@@ -1,4 +1,4 @@
-package com.mentorlik.mentorlik_backend.exception;
+package com.mentorlik.mentorlik_backend.exception.auth;
 
 /**
  * Custom exception to be thrown when an unauthorized access attempt is detected.

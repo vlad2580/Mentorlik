@@ -1,6 +1,6 @@
-package com.mentorlik.mentorlik_backend.service;
+package com.mentorlik.mentorlik_backend.service.auth.service;
 
-import com.mentorlik.mentorlik_backend.dto.StudentProfileDto;
+import com.mentorlik.mentorlik_backend.dto.profile.StudentProfileDto;
 import com.mentorlik.mentorlik_backend.model.StudentProfile;
 import com.mentorlik.mentorlik_backend.repository.StudentProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.mentorlik.mentorlik_backend.exception;
+package com.mentorlik.mentorlik_backend.exception.validation;
 
 /**
  * Custom exception to be thrown when validation fails for a particular entity or data field.

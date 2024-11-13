@@ -1,6 +1,6 @@
-package com.mentorlik.mentorlik_backend.service;
+package com.mentorlik.mentorlik_backend.service.auth.service;
 
-import com.mentorlik.mentorlik_backend.dto.AdminProfileDto;
+import com.mentorlik.mentorlik_backend.dto.profile.AdminProfileDto;
 import com.mentorlik.mentorlik_backend.model.AdminProfile;
 import com.mentorlik.mentorlik_backend.repository.AdminProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;

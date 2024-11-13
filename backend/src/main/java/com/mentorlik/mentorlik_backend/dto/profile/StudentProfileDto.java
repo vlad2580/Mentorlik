@@ -1,4 +1,4 @@
-package com.mentorlik.mentorlik_backend.dto;
+package com.mentorlik.mentorlik_backend.dto.profile;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -61,4 +61,14 @@ public class StudentProfileDto extends UserDto {
      */
     @NotNull(message = "Availability status must not be null")
     private Boolean isAvailableForMentorship;
+
+    public StudentProfileDto(Long id, String email, String fieldOfStudy, String educationLevel,
+                             String learningGoals, List<String> skills, Boolean isAvailableForMentorship) {
+        super(id, email, null);
+        this.fieldOfStudy = fieldOfStudy;
+        this.educationLevel = educationLevel;
+        this.learningGoals = learningGoals;
+        this.skills = skills;
+        this.isAvailableForMentorship = isAvailableForMentorship;
+    }
 }

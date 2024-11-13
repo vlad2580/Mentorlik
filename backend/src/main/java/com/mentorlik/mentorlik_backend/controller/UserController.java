@@ -1,8 +1,8 @@
 package com.mentorlik.mentorlik_backend.controller;
 
-import com.mentorlik.mentorlik_backend.dto.AdminProfileDto;
-import com.mentorlik.mentorlik_backend.dto.MentorProfileDto;
-import com.mentorlik.mentorlik_backend.dto.StudentProfileDto;
+import com.mentorlik.mentorlik_backend.dto.profile.AdminProfileDto;
+import com.mentorlik.mentorlik_backend.dto.profile.MentorProfileDto;
+import com.mentorlik.mentorlik_backend.dto.profile.StudentProfileDto;
 import com.mentorlik.mentorlik_backend.exception.ResourceNotFoundException;
 import com.mentorlik.mentorlik_backend.service.UserService;
 import lombok.extern.slf4j.Slf4j;

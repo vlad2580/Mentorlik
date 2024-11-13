@@ -1,13 +1,14 @@
-package com.mentorlik.mentorlik_backend.service;
+package com.mentorlik.mentorlik_backend.service.auth.service;
 
-import com.mentorlik.mentorlik_backend.dto.AuthRequestDto;
-import com.mentorlik.mentorlik_backend.dto.UserDto;
-import com.mentorlik.mentorlik_backend.exception.EmailAlreadyExistsException;
+import com.mentorlik.mentorlik_backend.dto.auth.AuthRequestDto;
+import com.mentorlik.mentorlik_backend.dto.profile.UserDto;
+import com.mentorlik.mentorlik_backend.exception.validation.EmailAlreadyExistsException;
 import com.mentorlik.mentorlik_backend.exception.ResourceNotFoundException;
 import com.mentorlik.mentorlik_backend.model.User;
 import com.mentorlik.mentorlik_backend.repository.AbstractUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -70,6 +71,17 @@ public abstract class BaseAuthService<T extends User, D extends UserDto> {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new EmailAlreadyExistsException("Email is already in use");
         }
+    }
+
+    /**
+     * Processes OAuth2 login using an OAuth token.
+     *
+     * @param oauthToken The OAuth2 token used for authentication.
+     * @return A {@link UserDto} representing the authenticated user.
+     * @throws UnsupportedOperationException if OAuth2 login is not supported by this service.
+     */
+    public D loginWithOAuth(OAuth2AuthenticationToken oauthToken) {
+        throw new UnsupportedOperationException("OAuth2 login is not supported by this service");
     }
 
     /**

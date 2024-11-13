@@ -1,4 +1,4 @@
-package com.mentorlik.mentorlik_backend.dto;
+package com.mentorlik.mentorlik_backend.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

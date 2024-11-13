@@ -1,5 +1,6 @@
 package com.mentorlik.mentorlik_backend.exception;
 
+import com.mentorlik.mentorlik_backend.exception.validation.EmailAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
