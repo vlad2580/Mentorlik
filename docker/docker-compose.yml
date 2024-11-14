@@ -10,6 +10,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
     networks:
       - mentorlik-network
 
@@ -28,18 +29,49 @@ services:
     depends_on:
       - db
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.5.0
+    container_name: mentorlik_elasticsearch
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - ./elasticsearch/data:/usr/share/elasticsearch/data
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    networks:
+      - mentorlik-network
+    ports:
+      - "9200:9200"
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.5.0
+    container_name: mentorlik_logstash
+    environment:
+      - LOGSTASH_JAVA_OPTS=-Xmx256m -Xms256m
+    volumes:
+      - ./logstash/conf:/usr/share/logstash/pipeline
+      - ./logstash/jdbc:/usr/share/logstash/jdbc
+    depends_on:
+      - db
+      - elasticsearch
+    networks:
+      - mentorlik-network
+
   backend:
     build:
       context: ../backend
     environment:
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
+      ELASTICSEARCH_HOST: mentorlik_elasticsearch
+      POSTGRES_HOST: mentorlik_postgres
     ports:
       - "8080:8080"
     networks:
       - mentorlik-network
     depends_on:
       - db
+      - elasticsearch
 
 networks:
   mentorlik-network:

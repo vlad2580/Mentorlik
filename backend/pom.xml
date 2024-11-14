@@ -128,6 +128,21 @@
 			<artifactId>google-http-client-jackson2</artifactId>
 			<version>1.45.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-high-level-client</artifactId>
+			<version>8.0.0-alpha2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch</groupId>
+			<artifactId>elasticsearch</artifactId>
+			<version>8.16.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-client</artifactId>
+			<version>8.16.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

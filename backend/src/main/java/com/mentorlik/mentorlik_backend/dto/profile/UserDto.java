@@ -21,6 +21,10 @@ public abstract class UserDto {
 
     private Long id;
 
+    @NotBlank(message = "Name must not be blank")
+    @Size(max = 100, message = "Name must not exceed 100 characters")
+    private String name;
+
     @NotBlank(message = "Email must not be blank")
     @Email(message = "Invalid email format")
     private String email;

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -12,7 +13,8 @@ import java.util.List;
  * Extends the base user class to inherit common fields.
  * <p>
  * This class includes fields specific to mentors, such as expertise, bio,
- * years of experience, certifications, portfolio URL, and availability status.
+ * years of experience, certifications, location, hourly rate, languages,
+ * rating, and availability status.
  * </p>
  */
 @Entity
@@ -43,7 +45,6 @@ public class MentorProfile extends User {
 
     /**
      * List of certifications or credentials the mentor has earned.
-     * Example values could be "Certified Scrum Master", "AWS Certified Solutions Architect".
      */
     @ElementCollection
     @CollectionTable(name = "mentor_certifications", joinColumns = @JoinColumn(name = "mentor_id"))
@@ -58,8 +59,44 @@ public class MentorProfile extends User {
 
     /**
      * Availability status of the mentor.
-     * Indicates whether the mentor is actively accepting mentees.
      */
     @Column(nullable = false)
     private Boolean isAvailable;
+
+    /**
+     * City where the mentor is located.
+     */
+    @Column(length = 100)
+    private String city;
+
+    /**
+     * Country where the mentor is located.
+     */
+    @Column(length = 100)
+    private String country;
+
+    /**
+     * Hourly rate for mentoring sessions.
+     */
+    @Column(precision = 10, scale = 2)
+    private BigDecimal hourlyRate;
+
+    /**
+     * Languages the mentor can communicate in.
+     */
+    @ElementCollection
+    @CollectionTable(name = "mentor_languages", joinColumns = @JoinColumn(name = "mentor_id"))
+    @Column(name = "language", length = 50)
+    private List<String> languages;
+
+    /**
+     * Average rating of the mentor.
+     */
+    @Column(precision = 3, scale = 2)
+    private BigDecimal rating;
+
+    /**
+     * Total number of reviews the mentor has received.
+     */
+    private Integer reviewCount;
 }

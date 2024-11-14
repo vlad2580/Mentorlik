@@ -48,12 +48,19 @@ public class GoogleAuthService {
                 MentorProfile mentor = findOrCreateMentorProfile(userInfo);
                 yield new MentorProfileDto(
                         mentor.getId(),
+                        mentor.getName(),
                         mentor.getEmail(),
                         mentor.getExpertise(),
                         mentor.getBio(),
                         mentor.getExperienceYears(),
                         mentor.getCertifications(),
-                        mentor.getIsAvailable()
+                        mentor.getIsAvailable(),
+                        mentor.getCity(),
+                        mentor.getCountry(),
+                        mentor.getHourlyRate(),
+                        mentor.getLanguages(),
+                        mentor.getRating(),
+                        mentor.getReviewCount()
                 );
             }
             case "student" -> {

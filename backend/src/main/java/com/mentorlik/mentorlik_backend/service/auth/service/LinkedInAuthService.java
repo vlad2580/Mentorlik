@@ -49,11 +49,18 @@ public class LinkedInAuthService {
                 yield new MentorProfileDto(
                         mentor.getId(),
                         mentor.getEmail(),
+                        mentor.getName(),
                         mentor.getExpertise(),
                         mentor.getBio(),
                         mentor.getExperienceYears(),
                         mentor.getCertifications(),
-                        mentor.getIsAvailable()
+                        mentor.getIsAvailable(),
+                        mentor.getCity(),
+                        mentor.getCountry(),
+                        mentor.getHourlyRate(),
+                        mentor.getLanguages(),
+                        mentor.getRating(),
+                        mentor.getReviewCount()
                 );
             }
             case "student" -> {

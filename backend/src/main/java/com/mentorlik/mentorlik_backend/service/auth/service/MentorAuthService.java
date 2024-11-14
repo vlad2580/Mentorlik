@@ -41,6 +41,12 @@ public class MentorAuthService extends BaseAuthService<MentorProfile, MentorProf
         mentor.setExperienceYears(userDto.getExperienceYears());
         mentor.setCertifications(userDto.getCertifications());
         mentor.setIsAvailable(userDto.getIsAvailable());
+        mentor.setCity(userDto.getCity());
+        mentor.setCountry(userDto.getCountry());
+        mentor.setHourlyRate(userDto.getHourlyRate());
+        mentor.setLanguages(userDto.getLanguages());
+        mentor.setRating(userDto.getRating());
+        mentor.setReviewCount(userDto.getReviewCount());
         return mentor;
     }
 
@@ -60,6 +66,12 @@ public class MentorAuthService extends BaseAuthService<MentorProfile, MentorProf
                 .experienceYears(mentor.getExperienceYears())
                 .certifications(mentor.getCertifications())
                 .isAvailable(mentor.getIsAvailable())
+                .city(mentor.getCity())
+                .country(mentor.getCountry())
+                .hourlyRate(mentor.getHourlyRate())
+                .languages(mentor.getLanguages())
+                .rating(mentor.getRating())
+                .reviewCount(mentor.getReviewCount())
                 .build();
     }
 }
