@@ -3,7 +3,7 @@ spring:
     name: mentorlik-backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/mentorlik_db
+    url: jdbc:postgresql://mentorlik_postgres:5432/mentorlik_db
     driver-class-name: org.postgresql.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
@@ -20,56 +20,35 @@ spring:
     type: redis
 
   redis:
-    host: localhost
+    host: redis
     port: 6379
 
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${GOOGLE_CLIENT_ID}
-            client-secret: ${GOOGLE_CLIENT_SECRET}
-            scope: openid, profile, email
-            redirect-uri: "{baseUrl}/login/oauth2/code/google"
-            authorization-grant-type: authorization_code
-          linkedin:
-            client-id: ${LINKEDIN_CLIENT_ID}
-            client-secret: ${LINKEDIN_CLIENT_SECRET}
-            scope: r_liteprofile, r_emailaddress
-            redirect-uri: "{baseUrl}/login/oauth2/code/linkedin"
-            authorization-grant-type: authorization_code
-        provider:
-          google:
-            authorization-uri: https://accounts.google.com/o/oauth2/auth
-            token-uri: https://oauth2.googleapis.com/token
-            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
-            user-name-attribute: sub
-          linkedin:
-            authorization-uri: https://www.linkedin.com/oauth/v2/authorization
-            token-uri: https://www.linkedin.com/oauth/v2/accessToken
-            user-info-uri: https://api.linkedin.com/v2/me
-            user-name-attribute: id
-      resourceserver:
-        jwt:
-          jwk-set-uri: https://your-auth-server/.well-known/jwks.json
-
-mail:
-  host: smtp.your-email-provider.com
-  port: 587
-  username: ${EMAIL_USERNAME}
-  password: ${EMAIL_PASSWORD}
-  properties:
-    mail:
-      smtp:
-        auth: true
-        starttls:
-          enable: true
-
-logging:
-  file:
-    path: ./logs
-    name: mentorlik-backend.log
-
-server:
-  port: 8080
+security:
+  oauth2:
+    client:
+      registration:
+        google:
+          client-id: ${GOOGLE_CLIENT_ID}
+          client-secret: ${GOOGLE_CLIENT_SECRET}
+          scope: openid, profile, email
+          redirect-uri: "{baseUrl}/login/oauth2/code/google"
+          authorization-grant-type: authorization_code
+          provider: google
+        linkedin:
+          client-id: ${LINKEDIN_CLIENT_ID}
+          client-secret: ${LINKEDIN_CLIENT_SECRET}
+          scope: r_liteprofile, r_emailaddress
+          redirect-uri: "{baseUrl}/login/oauth2/code/linkedin"
+          authorization-grant-type: authorization_code
+          provider: linkedin
+      provider:
+        google:
+          authorization-uri: https://accounts.google.com/o/oauth2/auth
+          token-uri: https://oauth2.googleapis.com/token
+          user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+          user-name-attribute: sub
+        linkedin:
+          authorization-uri: https://www.linkedin.com/oauth/v2/authorization
+          token-uri: https://www.linkedin.com/oauth/v2/accessToken
+          user-info-uri: https://api.linkedin.com/v2/me
+          user-name-attribute: id
