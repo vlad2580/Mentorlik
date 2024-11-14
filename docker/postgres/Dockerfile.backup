@@ -1,0 +1,14 @@
+FROM postgres:latest
+
+COPY cron-backup.sh /usr/local/bin/cron-backup.sh
+RUN chmod +x /usr/local/bin/cron-backup.sh
+
+# Установка Cron
+RUN apt-get update && apt-get install -y cron
+
+# Добавление Cron задачи
+RUN echo "0 2 * * * /usr/local/bin/cron-backup.sh" > /etc/cron.d/backup-cron
+RUN chmod 0644 /etc/cron.d/backup-cron
+
+# Запуск Cron в фоновом режиме
+CMD ["cron", "-f"]

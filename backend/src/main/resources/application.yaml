@@ -5,8 +5,8 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/mentorlik_db
     driver-class-name: org.postgresql.Driver
-    username: your_db_username
-    password: your_db_password
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -28,14 +28,14 @@ spring:
       client:
         registration:
           google:
-            client-id: your-google-client-id
-            client-secret: your-google-client-secret
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
             scope: openid, profile, email
             redirect-uri: "{baseUrl}/login/oauth2/code/google"
             authorization-grant-type: authorization_code
           linkedin:
-            client-id: your-linkedin-client-id
-            client-secret: your-linkedin-client-secret
+            client-id: ${LINKEDIN_CLIENT_ID}
+            client-secret: ${LINKEDIN_CLIENT_SECRET}
             scope: r_liteprofile, r_emailaddress
             redirect-uri: "{baseUrl}/login/oauth2/code/linkedin"
             authorization-grant-type: authorization_code
@@ -57,8 +57,8 @@ spring:
 mail:
   host: smtp.your-email-provider.com
   port: 587
-  username: your_email_username
-  password: your_email_password
+  username: ${EMAIL_USERNAME}
+  password: ${EMAIL_PASSWORD}
   properties:
     mail:
       smtp:
@@ -67,9 +67,6 @@ mail:
           enable: true
 
 logging:
-  level:
-    root: INFO
-    org.springframework: DEBUG
   file:
     path: ./logs
     name: mentorlik-backend.log

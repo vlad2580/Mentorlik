@@ -1,17 +1,21 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:mentorlik_test_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
-
+    url: jdbc:postgresql://localhost:5432/mentorlik_test_db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: create-drop
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+          linkedin:
+            redirect-uri: "{baseUrl}/login/oauth2/code/linkedin"
 
 logging:
   level:
-    root: INFO
+    root: WARN
     org.springframework: INFO
-server:
-  port: 8082

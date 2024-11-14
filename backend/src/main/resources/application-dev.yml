@@ -1,12 +1,17 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/mentorlik_dev_db
-    username: dev_db_username
-    password: dev_db_password
+  jpa:
+    hibernate:
+      ddl-auto: update
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
+          linkedin:
+            redirect-uri: "{baseUrl}/login/oauth2/code/linkedin"
 
 logging:
   level:
     root: DEBUG
-    org.springframework: TRACE
-server:
-  port: 8081
+    org.springframework: DEBUG
