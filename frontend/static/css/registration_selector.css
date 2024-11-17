@@ -24,7 +24,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    width: 1300px;
+    width: 100%;
 }
 
 /* Logo styles */
@@ -133,3 +133,12 @@ nav ul li a:hover {
     cursor: pointer;
   }
   
+  footer {
+    padding: 20px 0;
+    background-color: #fff;
+    font-size: 0.9rem;
+    margin-top: 50px;
+    color: #666;
+    width: 100%;
+    text-align: center;
+}

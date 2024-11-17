@@ -18,29 +18,20 @@
     <main class="login-section">
         <h2 class="login-heading">Přihlášení do osobního účtu</h2>
 
-        <div class="role-toggle">
-            <label class="role-option">
-                <input type="radio" name="role" value="student" checked> Student
-            </label>
-            <label class="role-option">
-                <input type="radio" name="role" value="mentor"> Mentor
-            </label>
-        </div>
-
         <form method="POST" action="/login/">
             <div class="form-group login-group">
-                <label for="username" class="login-label">Uživatelské jméno</label>
+                <label for="username" class="login-label">Uživatelské jméno:</label>
                 <input type="text" id="username" name="username" class="login-input" required>
             </div>
             <div class="form-group login-group">
-                <label for="password" class="login-label">Heslo</label>
+                <label for="password" class="login-label">Heslo:</label>
                 <input type="password" id="password" name="password" class="login-input" required>
             </div>
             <div class="form-group login-group">
                 <a href="cabinet_student.html"> <butto type="submit" class="cta-button login-button">Přihlásit se</butto> </a>
             </div>
         </form>
-        <p class="login-text">Nemáte účet? <a href="/signup/" class="login-link">Zaregistrovat se</a></p>
+        <p class="login-text">Nemáte účet? <a href="registration-selector.html" class="login-link">Zaregistrovat se</a></p>
     </main>
 
     <footer>
