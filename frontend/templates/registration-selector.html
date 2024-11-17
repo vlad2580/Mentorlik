@@ -1,0 +1,58 @@
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Registrace mentorů pro platformu MentorConnect">
+    <meta name="keywords" content="mentorlik, registrace, IT, platforma">
+    <title>Registrace uzivatele</title>
+    <link rel="stylesheet" href="../static/css/registration_selector.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>
+                <span class="mentor">Mentor</span><span class="connect">Connect</span>
+            </h1>
+        </div>
+        <!-- Main site navigation -->
+        <nav>
+            <ul>
+                <li><a href="#">Náš blog</a></li>
+                <li><a href="#">Staňte se mentorem</a></li>
+                <li><a href="login.html">Osobní účet</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <div class="section-header">
+            <h1>Welcome to Mentrolik</h1>
+            <h2>Tell us about yourself</h2>
+            <h3>Do you want to become:</h3>
+        </div>
+        
+        <div class="button-container">
+            <button class="select-button" onclick="selectOption(1)">
+                <span>Student</span>
+                <img src="image1.jpg" alt="Option 1" />
+            </button>
+            <button class="select-button" onclick="selectOption(2)">
+                <span>Mentor</span>
+                <img src="image2.jpg" alt="Option 2" />
+              
+            </button>
+          </div>
+
+          <button id="continue-button" class="continue-button" disabled>Continue</button>
+          
+          <script>
+            function selectOption(option) {
+              document.querySelectorAll('.select-button').forEach(button => button.classList.remove('selected'));
+              document.querySelectorAll('.select-button')[option - 1].classList.add('selected');
+              document.getElementById('continue-button').disabled = false;
+            }
+          </script>
+    </main>
+
+</body>
+</html>
