@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 20vh;
+    background-color: #f9f9f9;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #fff;
+    /* Fix the header on scroll */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 1300px;
+}
+
+/* Logo styles */
+.logo h1 {
+    font-size: 2rem;
+    /* Add some style to the logo */
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+/* Styles for the words "Mentor" and "Connect" in the logo */
+.mentor {
+    color: #333;
+    font-weight: bold;
+}
+
+.connect {
+    color: #ff6f3d;
+    font-weight: bold;
+}
+
+/* Navigation styles */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    /* Add smooth color transition on hover */
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #ff6f3d;
+}
+
+.section-header{
+    padding: 20px;
+}
+
+.section-header h1, h2, h3{
+    text-align: center;
+    margin: 19px;
+}
+
+  .button-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 15px;
+  }
+  
+  .button-container button {
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    padding: 45px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .button-container button img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-bottom: 8px;
+    border-radius: 50%;
+  }
+  
+  .button-container button span {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .button-container button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .button-container button.selected {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .button-container button.selected img {
+    border: 2px solid #fff;
+  }
+  
+  .continue-button {
+    background-color: #ccc;
+    color: #fff;
+    cursor: not-allowed;
+    align-items: center;
+    margin-top: 50px;
+    margin-left: 150px;
+    padding: 9px;
+  }
+  
+  .continue-button:enabled {
+    background-color: #28a745;
+    cursor: pointer;
+  }
+  
