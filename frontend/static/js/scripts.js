@@ -1,5 +1,5 @@
-// Фильтрация менторов по введенному тексту
-const cards = Array.from(document.getElementsByClassName('mentor-card')); // Кэшируем список карточек
+// Filtering mentors based on the entered text
+const cards = Array.from(document.getElementsByClassName('mentor-card')); // Cache the list of mentor cards
 
 function filterMentors() {
     const input = document.getElementById('mentorSearch').value.trim().toLowerCase();
@@ -7,23 +7,23 @@ function filterMentors() {
         const tags = card.getAttribute('data-tags').toLowerCase();
         card.style.display = tags.includes(input) ? 'block' : 'none';
     });
-    console.log(`Фильтрация по: "${input}" выполнена.`);
+    console.log(`Filtering by: "${input}" completed.`);
 }
 
-// Обработка боковой панели (открыть/закрыть)
+// Handling the sidebar (open/close toggle functionality)
 const sidebar = document.getElementById('sidebar');
 const toggle = document.getElementById('toggle');
 
 if (sidebar && toggle) {
     toggle.addEventListener('click', () => {
         sidebar.classList.toggle('closed');
-        console.log('Боковая панель: состояние изменено.');
+        console.log('Sidebar state changed.');
     });
 } else {
-    console.error('Элемент sidebar или toggle не найден.');
+    console.error('Sidebar or toggle element not found.');
 }
 
-// Плавный скроллинг к секции mentors
+// Smooth scrolling to the mentors section
 const scrollToMentorsButton = document.getElementById('scrollToMentors');
 const mentorsSection = document.getElementById('mentors');
 
@@ -31,10 +31,10 @@ if (scrollToMentorsButton && mentorsSection) {
     scrollToMentorsButton.addEventListener('click', function (e) {
         e.preventDefault(); 
         mentorsSection.scrollIntoView({
-            behavior: 'smooth' // Плавный скроллинг
+            behavior: 'smooth' // Smooth scrolling animation
         });
-        console.log('Скроллинг к секции mentors выполнен.');
+        console.log('Scrolling to the mentors section completed.');
     });
 } else {
-    console.error('Элемент scrollToMentorsButton или mentorsSection не найден.');
+    console.error('ScrollToMentorsButton or mentorsSection element not found.');
 }
