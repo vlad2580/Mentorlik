@@ -38,3 +38,25 @@ if (scrollToMentorsButton && mentorsSection) {
 } else {
     console.error('ScrollToMentorsButton or mentorsSection element not found.');
 }
+
+// Handle donation method selection
+const options = document.querySelectorAll('.options input[type="radio"]');
+const donationForm = document.querySelector('.donation-form');
+
+options.forEach(option => {
+    option.addEventListener('change', () => {
+        donationForm.classList.remove('hidden'); // Show the donation form
+    });
+});
+
+document.getElementById('donate-button').addEventListener('click', () => {
+    const selectedMethod = document.querySelector('.options input[type="radio"]:checked').value;
+    const amount = document.getElementById('donation-amount').value;
+
+    if (!amount) {
+        alert('Zadejte částku!');
+        return;
+    }
+
+    alert(`Děkujeme za váš dar přes ${selectedMethod} ve výši ${amount} Kč!`);
+});
