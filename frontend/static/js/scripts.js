@@ -29,7 +29,7 @@ const mentorsSection = document.getElementById('mentors');
 
 if (scrollToMentorsButton && mentorsSection) {
     scrollToMentorsButton.addEventListener('click', function (e) {
-        e.preventDefault(); // Предотвращаем стандартное поведение ссылки
+        e.preventDefault(); 
         mentorsSection.scrollIntoView({
             behavior: 'smooth' // Плавный скроллинг
         });
