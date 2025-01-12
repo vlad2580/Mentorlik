@@ -5,6 +5,11 @@
     box-sizing: border-box;
 }
 
+#sidebar.closed {
+    transform: translateX(-100%); /* Пример для скрытия боковой панели */
+    transition: transform 0.3s ease-in-out; /* Плавное скрытие/отображение */
+}
+
 /* Basic styles for the body */
 body {
     font-family: 'Arial', sans-serif;
@@ -392,4 +397,24 @@ footer {
 .role-option input:checked + label {
     font-weight: bold;
     color: #ff6f3d;
+}
+
+/* Стили для каждого блока статьи */
+.blog-posts article {
+    border: 1px solid #ccc; /* Рамка вокруг */
+    border-radius: 8px; /* Скругленные углы */
+    background-color: #fff; /* Белый фон */
+    padding: 16px; /* Внутренний отступ */
+    margin: 16px 0; /* Отступ между блоками */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Легкая тень */
+}
+
+.blog-posts article a {
+    color: #0077cc;
+    text-decoration: none; /* Убираем подчеркивание */
+    font-weight: bold;
+}
+
+.blog-posts article a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
 }
