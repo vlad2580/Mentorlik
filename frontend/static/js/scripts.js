@@ -10,6 +10,25 @@ function filterMentors() {
     console.log(`Filtering by: "${input}" completed.`);
 }
 
+document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', () => {
+        // Toggle active class on the clicked question
+        question.classList.toggle('active');
+
+        // Toggle visibility of the corresponding answer
+        const answer = question.nextElementSibling;
+        if (answer.style.display === 'block') {
+            answer.style.display = 'none';
+        } else {
+            answer.style.display = 'block';
+        }
+
+        // Update the icon text
+        const icon = question.querySelector('.icon');
+        icon.textContent = icon.textContent === '+' ? '-' : '+';
+    });
+});
+
 // Handling the sidebar (open/close toggle functionality)
 const sidebar = document.getElementById('sidebar');
 const toggle = document.getElementById('toggle');
@@ -60,3 +79,5 @@ document.getElementById('donate-button').addEventListener('click', () => {
 
     alert(`Děkujeme za váš dar přes ${selectedMethod} ve výši ${amount} Kč!`);
 });
+
+

@@ -16,7 +16,8 @@ body {
     background-color: #fdf6e3;
     color: #333;
     text-align: center;
-    padding: 20px;
+    
+    
     /* Improve readability on larger screens */
     line-height: 1.6;
 }
@@ -57,6 +58,7 @@ nav ul {
     list-style: none;
     display: flex;
     gap: 20px;
+    
 }
 
 nav ul li a {
@@ -136,59 +138,66 @@ footer {
     padding: 20px 0;
     background-color: #fff;
     font-size: 0.9rem;
-    margin-top: 50px;
+    margin-top: 0px;
     color: #666;
 }
 
 /* "How it works" section */
 .how-it-works {
-    background-color: #fdf6e3;
-    padding: 60px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px;
     text-align: center;
-}
-
-.how-it-works h2 {
+    
+  }
+  
+ 
+  .title {
     font-size: 2.5rem;
     color: #ff6f3d;
     margin-bottom: 50px;
 }
-
-/* Styles for steps */
-.steps {
+  
+  
+  .steps {
     display: flex;
-    justify-content: space-around;
-    align-items: flex-start;
     flex-wrap: wrap;
-    gap: 40px;
-}
-
-.step {
-    flex: 1;
-    min-width: 250px;
-    max-width: 300px;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .step {
+    flex: 1 1 calc(33% - 20px);
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
     text-align: left;
-    margin: 0 20px;
-}
-
-/* Step icons */
-.step-icon {
-    width: 50px;
-    height: 50px;
-    margin-bottom: 20px;
-    /* Add image styles if necessary */
-}
-
-.step h3 {
+    transition: transform 0.3s ease;
+  }
+  
+  .step:hover {
+    transform: translateY(-5px);
+  }
+  
+  .icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: #FF5722;
+    text-align: center;
+  }
+  
+  .step h3{
     font-size: 1.5rem;
+    margin-bottom: 10px;
     color: #333;
-    margin-bottom: 20px;
-}
-
-.step p {
+  }
+  
+  .step p{
     font-size: 1rem;
+    line-height: 1.6;
     color: #666;
-    margin-bottom: 15px;
-}
+  }
 
 /* Mentor section */
 .mentors-section {
@@ -212,7 +221,7 @@ footer {
 
 /* Search bar styles */
 .search-bar input {
-    width: 100%;
+    width: 80%;
     padding: 15px;
     font-size: 16px;
     margin-bottom: 30px;
@@ -291,21 +300,88 @@ footer {
     text-align: center;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-    }
-
-    .steps {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .mentor-card {
-        width: 100%;
-    }
+/* Sponsors section */
+.sponsors {
+    background-color: #fdf6e3;
+    padding: 60px 0;
+    text-align: center;
 }
+
+.sponsors h2 {
+    font-size: 2.5rem;
+    color: #ff6f3d;
+    margin-bottom: 50px;
+}
+
+.image-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.sponsor-image{
+    width: 300px;
+    height: 100px;
+    margin: 20px;
+}
+/* FAQ section */
+
+.faq-section {
+    background-color: #f9f9f9;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.faq-section h2 {
+    font-size: 2.5rem;
+    color: #ff6f3d;
+    margin-bottom: 50px;
+}
+
+.faq-container {
+            max-width: 80%;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+.faq-item {
+            border-bottom: 1px solid #ddd;
+        }
+.faq-item:last-child {
+            border-bottom: none;
+        }
+.faq-question {
+            cursor: pointer;
+            padding: 15px;
+            background: #f4f4f4;
+            margin: 0;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+.faq-answer {
+            display: none;
+            padding: 15px;
+            background: #fff;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        }
+.faq-question:hover {
+            background: #eaeaea;
+        }
+.faq-question .icon {
+            transition: transform 0.3s;
+        }
+.faq-question.active .icon {
+            transform: rotate(45deg);
+        }
+
 
 /* Login page */
 
@@ -598,3 +674,4 @@ footer {
     display: flex;
     align-items: center;
 }
+
