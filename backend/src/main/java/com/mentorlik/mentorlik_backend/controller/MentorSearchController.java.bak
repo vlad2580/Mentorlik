@@ -42,7 +42,7 @@ public class MentorSearchController {
      * @param minRating the minimum rating of the mentor
      * @return a ResponseEntity containing a list of MentorProfileDto objects matching the search criteria
      */
-    @GetMapping("/search")
+    @GetMapping("/advanced-search")
     public ResponseEntity<List<MentorProfileDto>> searchMentors(
             @RequestParam(required = false) String expertise,
             @RequestParam(required = false) String city,
