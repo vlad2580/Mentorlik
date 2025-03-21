@@ -1,23 +1,23 @@
 package com.mentorlik.mentorlik_backend.controller;
 
+import com.mentorlik.mentorlik_backend.dto.ApiResponse;
 import com.mentorlik.mentorlik_backend.dto.auth.AuthRequestDto;
+import com.mentorlik.mentorlik_backend.dto.auth.JwtResponseDto;
 import com.mentorlik.mentorlik_backend.dto.profile.UserDto;
 import com.mentorlik.mentorlik_backend.service.auth.factory.AuthServiceFactory;
 import com.mentorlik.mentorlik_backend.service.auth.service.BaseAuthService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Optional;
 
 /**
- * Controller for managing authentication and registration endpoints.
+ * Контроллер для управления эндпоинтами аутентификации и регистрации.
  * <p>
- * This controller provides endpoints for logging in and registering users
- * across different user types (e.g., Admin, Mentor, Student), including OAuth2 authentication via Google and LinkedIn.
+ * Предоставляет эндпоинты для входа и регистрации пользователей
+ * разных типов (Admin, Mentor, Student), включая OAuth2-аутентификацию через Google и LinkedIn.
  * </p>
  */
 @Slf4j
@@ -28,98 +28,166 @@ public class AuthController {
     private final AuthServiceFactory authServiceFactory;
 
     /**
-     * Constructs an instance of {@code AuthController} with the specified {@code AuthServiceFactory}.
+     * Создает экземпляр {@code AuthController} с указанным {@code AuthServiceFactory}.
      *
-     * @param authServiceFactory the factory used to obtain the appropriate authentication service
-     *                           based on the user type.
+     * @param authServiceFactory фабрика для получения соответствующего сервиса аутентификации
+     *                           в зависимости от типа пользователя.
      */
     public AuthController(AuthServiceFactory authServiceFactory) {
         this.authServiceFactory = authServiceFactory;
     }
 
     /**
-     * Endpoint for traditional user login based on user type.
+     * Эндпоинт для традиционного входа пользователя по типу пользователя.
      *
-     * @param userType    the type of the user (e.g., "admin", "mentor", "student")
-     * @param authRequest the authentication request DTO containing email and password
-     * @return a {@code ResponseEntity} with the login response, either the user data upon success or an error message
+     * @param userType тип пользователя (например, "admin", "mentor", "student")
+     * @param authRequest DTO запроса аутентификации, содержащий email и пароль
+     * @return {@code ResponseEntity} с ответом на вход, либо данные пользователя при успехе, либо сообщение об ошибке
      */
     @PostMapping("/login/{userType}")
-    public ResponseEntity<?> login(@PathVariable String userType, @Valid @RequestBody AuthRequestDto authRequest) {
-        log.info("Login attempt for {} with email: {}", userType, authRequest.getEmail());
+    public ResponseEntity<ApiResponse<UserDto>> login(
+            @PathVariable String userType, 
+            @Valid @RequestBody AuthRequestDto authRequest) {
+        
+        log.info("Попытка входа для {} с email: {}", userType, authRequest.getEmail());
 
         try {
             UserDto user = authServiceFactory.getAuthService(userType).login(authRequest);
-            log.info("Login successful for {} with email: {}", userType, authRequest.getEmail());
-            return ResponseEntity.ok(user);
+            log.info("Успешный вход для {} с email: {}", userType, authRequest.getEmail());
+            
+            JwtResponseDto jwtResponse = JwtResponseDto.builder()
+                    .token("jwt_token_placeholder") // Здесь должен быть реальный JWT-токен
+                    .tokenType("Bearer")
+                    .build();
+            
+            ApiResponse<UserDto> response = ApiResponse.<UserDto>builder()
+                    .status("success")
+                    .data(user)
+                    .message("Успешная аутентификация")
+                    .build();
+            
+            return ResponseEntity.ok(response);
         } catch (Exception ex) {
-            log.error("Login failed for {} with email {}: {}", userType, authRequest.getEmail(), ex.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+            log.error("Ошибка входа для {} с email {}: {}", userType, authRequest.getEmail(), ex.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("Ошибка аутентификации"));
         }
     }
 
     /**
-     * Endpoint for OAuth2 login with Google.
+     * Эндпоинт для OAuth2-входа через Google.
      *
-     * @param oauthToken the OAuth2 authentication token provided by Google
-     * @return a {@code ResponseEntity} with the login response, either the user data upon success or an error message
+     * @param token токен аутентификации от клиента
+     * @param userType тип пользователя (например, "mentor", "student")
+     * @return {@code ResponseEntity} с ответом на вход, либо данные пользователя при успехе, либо сообщение об ошибке
      */
-    @GetMapping("/oauth2/google")
-    public ResponseEntity<?> loginWithGoogle(OAuth2AuthenticationToken oauthToken) {
-        log.info("OAuth2 login attempt with Google for email: {}", Optional.ofNullable(oauthToken.getPrincipal().getAttribute("email")));
+    @PostMapping("/oauth2/google")
+    public ResponseEntity<ApiResponse<UserDto>> loginWithGoogle(
+            @RequestParam String token,
+            @RequestParam String userType) {
+        
+        log.info("Попытка OAuth2-входа через Google для типа: {}", userType);
 
         try {
-            UserDto user = authServiceFactory.getAuthService("google").loginWithOAuth(oauthToken);
-            log.info("OAuth2 login successful with Google for email: {}", Optional.ofNullable(oauthToken.getPrincipal().getAttribute("email")));
-            return ResponseEntity.ok(user);
+            UserDto user = authServiceFactory.getAuthService("google").loginWithToken(token, userType);
+            log.info("Успешный OAuth2-вход через Google");
+            
+            JwtResponseDto jwtResponse = JwtResponseDto.builder()
+                    .token("jwt_token_placeholder") // Здесь должен быть реальный JWT-токен
+                    .tokenType("Bearer")
+                    .build();
+            
+            ApiResponse<UserDto> response = ApiResponse.<UserDto>builder()
+                    .status("success")
+                    .data(user)
+                    .message("Успешная аутентификация через Google")
+                    .build();
+            
+            return ResponseEntity.ok(response);
         } catch (Exception ex) {
-            log.error("OAuth2 login failed with Google: {}", ex.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("OAuth2 Authentication failed");
+            log.error("Ошибка OAuth2-входа через Google: {}", ex.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("Ошибка аутентификации через Google"));
         }
     }
 
     /**
-     * Endpoint for OAuth2 login with LinkedIn.
+     * Эндпоинт для OAuth2-входа через LinkedIn.
      *
-     * @param oauthToken the OAuth2 authentication token provided by LinkedIn
-     * @return a {@code ResponseEntity} with the login response, either the user data upon success or an error message
+     * @param token токен аутентификации от клиента
+     * @param userType тип пользователя (например, "mentor", "student")
+     * @return {@code ResponseEntity} с ответом на вход, либо данные пользователя при успехе, либо сообщение об ошибке
      */
-    @GetMapping("/oauth2/linkedin")
-    public ResponseEntity<?> loginWithLinkedIn(OAuth2AuthenticationToken oauthToken) {
-        log.info("OAuth2 login attempt with LinkedIn for email: {}", Optional.ofNullable(oauthToken.getPrincipal().getAttribute("email")));
+    @PostMapping("/oauth2/linkedin")
+    public ResponseEntity<ApiResponse<UserDto>> loginWithLinkedIn(
+            @RequestParam String token,
+            @RequestParam String userType) {
+        
+        log.info("Попытка OAuth2-входа через LinkedIn для типа: {}", userType);
 
         try {
-            UserDto user = authServiceFactory.getAuthService("linkedin").loginWithOAuth(oauthToken);
-            log.info("OAuth2 login successful with LinkedIn for email: {}", Optional.ofNullable(oauthToken.getPrincipal().getAttribute("email")));
-            return ResponseEntity.ok(user);
+            UserDto user = authServiceFactory.getAuthService("linkedin").loginWithToken(token, userType);
+            log.info("Успешный OAuth2-вход через LinkedIn");
+            
+            JwtResponseDto jwtResponse = JwtResponseDto.builder()
+                    .token("jwt_token_placeholder") // Здесь должен быть реальный JWT-токен
+                    .tokenType("Bearer")
+                    .build();
+            
+            ApiResponse<UserDto> response = ApiResponse.<UserDto>builder()
+                    .status("success")
+                    .data(user)
+                    .message("Успешная аутентификация через LinkedIn")
+                    .build();
+            
+            return ResponseEntity.ok(response);
         } catch (Exception ex) {
-            log.error("OAuth2 login failed with LinkedIn: {}", ex.getMessage());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("OAuth2 Authentication failed");
+            log.error("Ошибка OAuth2-входа через LinkedIn: {}", ex.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("Ошибка аутентификации через LinkedIn"));
         }
     }
 
     /**
-     * Endpoint for user registration based on user type.
+     * Эндпоинт для регистрации пользователя по типу пользователя.
      *
-     * @param userType the type of the user (e.g., "admin", "mentor", "student")
-     * @param userDto  the user data transfer object containing registration details such as email and password
-     * @return a {@code ResponseEntity} with the registration response, either the created user data upon success or an error message
+     * @param userType тип пользователя (например, "admin", "mentor", "student")
+     * @param userDto DTO данных пользователя, содержащий данные регистрации, такие как email и пароль
+     * @return {@code ResponseEntity} с ответом на регистрацию, либо данные созданного пользователя при успехе, либо сообщение об ошибке
      */
     @PostMapping("/register/{userType}")
-    public ResponseEntity<?> register(@PathVariable String userType, @Valid @RequestBody UserDto userDto) {
-        log.info("Registration attempt for {} with email: {}", userType, userDto.getEmail());
+    public ResponseEntity<ApiResponse<UserDto>> register(
+            @PathVariable String userType, 
+            @Valid @RequestBody UserDto userDto) {
+        
+        log.info("Попытка регистрации для {} с email: {}", userType, userDto.getEmail());
 
         try {
             BaseAuthService<?, ? extends UserDto> authService = authServiceFactory.getAuthService(userType);
             UserDto registeredUser = authService.register(userDto);
-            log.info("Registration successful for {} with email: {}", userType, userDto.getEmail());
-            return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
+            log.info("Успешная регистрация для {} с email: {}", userType, userDto.getEmail());
+            
+            ApiResponse<UserDto> response = ApiResponse.<UserDto>builder()
+                    .status("success")
+                    .data(registeredUser)
+                    .message("Регистрация прошла успешно")
+                    .build();
+            
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } catch (IllegalArgumentException ex) {
-            log.warn("Registration failed for {} with email {}: {}", userType, userDto.getEmail(), ex.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid registration data: " + ex.getMessage());
+            log.warn("Ошибка регистрации для {} с email {}: {}", userType, userDto.getEmail(), ex.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error("Неверные данные регистрации: " + ex.getMessage()));
         } catch (Exception ex) {
-            log.error("Unexpected error during registration for {} with email {}: {}", userType, userDto.getEmail(), ex.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred during registration");
+            log.error("Непредвиденная ошибка при регистрации для {} с email {}: {}", 
+                    userType, userDto.getEmail(), ex.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("Произошла непредвиденная ошибка при регистрации"));
         }
     }
 }
