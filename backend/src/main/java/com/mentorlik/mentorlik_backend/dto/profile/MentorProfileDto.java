@@ -84,12 +84,17 @@ public class MentorProfileDto extends UserDto {
     /**
      * Average rating of the mentor.
      */
-    private BigDecimal rating;
+    private Double rating;
 
     /**
      * Total number of reviews the mentor has received.
      */
     private Integer reviewCount;
+
+    private Double rate;
+    private String about;
+    private String photoUrl;
+    private String availability;
 
     /**
      * Constructs a new MentorProfileDto instance with specified mentor details.
@@ -129,7 +134,7 @@ public class MentorProfileDto extends UserDto {
             String country,
             BigDecimal hourlyRate,
             List<String> languages,
-            BigDecimal rating,
+            Double rating,
             Integer reviewCount
     ) {
         super(id, name, email, null);

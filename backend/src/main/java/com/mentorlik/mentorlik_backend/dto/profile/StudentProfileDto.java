@@ -42,7 +42,7 @@ public class StudentProfileDto extends UserDto {
     private String educationLevel;
 
     /**
-     * Short description of the student’s learning goals or objectives.
+     * Short description of the student's learning goals or objectives.
      * This provides mentors with insight into the student's focus.
      */
     @NotBlank(message = "Learning goals must not be blank")
@@ -62,13 +62,14 @@ public class StudentProfileDto extends UserDto {
     @NotNull(message = "Availability status must not be null")
     private Boolean isAvailableForMentorship;
 
-    public StudentProfileDto(Long id, String email, String fieldOfStudy, String educationLevel,
-                             String learningGoals, List<String> skills, Boolean isAvailableForMentorship) {
-        super(id, email, null);
+    // Constructor with name parameter
+    public StudentProfileDto(Long id, String name, String email, String password, String fieldOfStudy, String educationLevel,
+                           String learningGoals, List<String> skills, Boolean isAvailableForMentorship) {
+        super(id, name, email, password);
         this.fieldOfStudy = fieldOfStudy;
         this.educationLevel = educationLevel;
         this.learningGoals = learningGoals;
         this.skills = skills;
         this.isAvailableForMentorship = isAvailableForMentorship;
     }
-}
+} 

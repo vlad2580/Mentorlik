@@ -2,101 +2,44 @@ package com.mentorlik.mentorlik_backend.service.auth.service;
 
 import com.mentorlik.mentorlik_backend.dto.auth.AuthRequestDto;
 import com.mentorlik.mentorlik_backend.dto.profile.UserDto;
-import com.mentorlik.mentorlik_backend.exception.validation.EmailAlreadyExistsException;
-import com.mentorlik.mentorlik_backend.exception.ResourceNotFoundException;
 import com.mentorlik.mentorlik_backend.model.User;
-import com.mentorlik.mentorlik_backend.repository.AbstractUserRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Abstract service providing common authentication and registration functionality.
+ * Базовый интерфейс для сервисов аутентификации.
+ * <p>
+ * Определяет общие методы, которые должны реализовать все сервисы аутентификации,
+ * включая традиционный вход по паролю и OAuth2-аутентификацию.
+ * </p>
  *
- * @param <T> The type of User entity.
- * @param <D> The type of User DTO.
+ * @param <T> тип пользовательской модели (например, AdminProfile, MentorProfile, StudentProfile)
+ * @param <U> тип пользовательского DTO (например, AdminProfileDto, MentorProfileDto, StudentProfileDto)
  */
-@Slf4j
-public abstract class BaseAuthService<T extends User, D extends UserDto> {
-
-    protected final AbstractUserRepository<T> userRepository;
-    protected final PasswordEncoder passwordEncoder;
-
-    protected BaseAuthService(AbstractUserRepository<T> userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+public interface BaseAuthService<T extends User, U extends UserDto> {
 
     /**
-     * Logs in a user by validating the provided credentials.
+     * Выполняет вход пользователя с использованием email и пароля.
      *
-     * @param authRequest The authentication request containing email and password.
-     * @return A {@link UserDto} containing user information if login is successful.
-     * @throws ResourceNotFoundException if the user is not found or credentials are invalid.
+     * @param authRequest DTO запроса аутентификации, содержащий email и пароль
+     * @return DTO пользователя после успешной аутентификации
+     * @throws IllegalArgumentException если данные аутентификации неверны
      */
-    @Transactional(readOnly = true)
-    public D login(AuthRequestDto authRequest) {
-        log.info("Attempting login for user with email: {}", authRequest.getEmail());
-        T user = userRepository.findByEmail(authRequest.getEmail())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + authRequest.getEmail()));
-
-        if (!passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
-            throw new ResourceNotFoundException("Invalid credentials provided");
-        }
-
-        return convertToDto(user);
-    }
+    U login(AuthRequestDto authRequest);
 
     /**
-     * Registers a new user by saving the user information in the database.
+     * Выполняет вход с использованием токена OAuth2.
      *
-     * @param userDto The DTO containing user registration data.
-     * @return A {@link UserDto} representing the registered user.
-     * @throws EmailAlreadyExistsException if a user with the same email already exists.
+     * @param token токен для OAuth2-аутентификации 
+     * @param userType тип пользователя (например, "mentor", "student")
+     * @return DTO пользователя после успешной аутентификации
      */
-    @SuppressWarnings("unchecked")
-    @Transactional
-    public D register(UserDto userDto) {
-        log.info("Registering new user with email: {}", userDto.getEmail());
-        validateUserUniqueness(userDto.getEmail());
-
-        T user = createUserEntity((D) userDto);
-        userRepository.save(user);
-
-        return convertToDto(user);
-    }
-
-    private void validateUserUniqueness(String email) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new EmailAlreadyExistsException("Email is already in use");
-        }
-    }
+    U loginWithToken(String token, String userType);
 
     /**
-     * Processes OAuth2 login using an OAuth token.
+     * Регистрирует нового пользователя в системе.
      *
-     * @param oauthToken The OAuth2 token used for authentication.
-     * @return A {@link UserDto} representing the authenticated user.
-     * @throws UnsupportedOperationException if OAuth2 login is not supported by this service.
+     * @param userDto DTO пользователя, содержащий данные регистрации
+     * @return DTO зарегистрированного пользователя
+     * @throws IllegalArgumentException если данные регистрации неверны
      */
-    public D loginWithOAuth(OAuth2AuthenticationToken oauthToken) {
-        throw new UnsupportedOperationException("OAuth2 login is not supported by this service");
-    }
-
-    /**
-     * Creates a new User entity from the provided UserDto.
-     *
-     * @param userDto The DTO containing user data.
-     * @return A new User entity.
-     */
-    protected abstract T createUserEntity(D userDto);
-
-    /**
-     * Converts a User entity to a UserDto.
-     *
-     * @param user The User entity to convert.
-     * @return The converted UserDto.
-     */
-    protected abstract D convertToDto(T user);
+    U register(UserDto userDto);
 }

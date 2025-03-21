@@ -1,6 +1,10 @@
 package com.mentorlik.mentorlik_backend.service.auth.service;
 
+import com.mentorlik.mentorlik_backend.dto.auth.AuthRequestDto;
 import com.mentorlik.mentorlik_backend.dto.profile.MentorProfileDto;
+import com.mentorlik.mentorlik_backend.dto.profile.UserDto;
+import com.mentorlik.mentorlik_backend.exception.ResourceNotFoundException;
+import com.mentorlik.mentorlik_backend.exception.validation.EmailAlreadyExistsException;
 import com.mentorlik.mentorlik_backend.model.MentorProfile;
 import com.mentorlik.mentorlik_backend.repository.MentorProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +13,13 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service for handling mentor authentication and profile management.
- * Extends the base {@link BaseAuthService} to provide mentor-specific logic for registration and login.
+ * Implements the base {@link BaseAuthService} to provide mentor-specific logic for registration and login.
  */
 @Service
-public class MentorAuthService extends BaseAuthService<MentorProfile, MentorProfileDto> {
+public class MentorAuthService implements BaseAuthService<MentorProfile, MentorProfileDto> {
+
+    private final MentorProfileRepository mentorRepository;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Constructs an instance of {@code MentorAuthService} with the required dependencies.
@@ -22,7 +29,60 @@ public class MentorAuthService extends BaseAuthService<MentorProfile, MentorProf
      */
     @Autowired
     public MentorAuthService(MentorProfileRepository mentorRepository, PasswordEncoder passwordEncoder) {
-        super(mentorRepository, passwordEncoder);
+        this.mentorRepository = mentorRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    /**
+     * Performs mentor login using email and password.
+     *
+     * @param authRequest Authentication request DTO containing email and password
+     * @return Mentor DTO after successful authentication
+     * @throws ResourceNotFoundException if mentor is not found or credentials are invalid
+     */
+    @Override
+    public MentorProfileDto login(AuthRequestDto authRequest) {
+        MentorProfile mentor = mentorRepository.findByEmail(authRequest.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("Mentor not found with email: " + authRequest.getEmail()));
+
+        if (!passwordEncoder.matches(authRequest.getPassword(), mentor.getPassword())) {
+            throw new ResourceNotFoundException("Invalid credentials provided");
+        }
+
+        return convertToDto(mentor);
+    }
+
+    /**
+     * Performs login using OAuth2 token.
+     *
+     * @param token OAuth2 token
+     * @param userType type of user
+     * @return Mentor DTO after successful authentication
+     */
+    @Override
+    public MentorProfileDto loginWithToken(String token, String userType) {
+        // Implementation of OAuth2 for mentors should be here
+        throw new UnsupportedOperationException("OAuth2 login for mentors not implemented yet");
+    }
+
+    /**
+     * Registers a new mentor.
+     *
+     * @param userDto DTO with mentor data
+     * @return DTO of the registered mentor
+     * @throws EmailAlreadyExistsException if email is already in use
+     */
+    @Override
+    public MentorProfileDto register(UserDto userDto) {
+        if (mentorRepository.findByEmail(userDto.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistsException("Email is already in use");
+        }
+
+        MentorProfileDto mentorDto = (MentorProfileDto) userDto;
+        MentorProfile mentor = createUserEntity(mentorDto);
+        mentorRepository.save(mentor);
+
+        return convertToDto(mentor);
     }
 
     /**
@@ -31,7 +91,6 @@ public class MentorAuthService extends BaseAuthService<MentorProfile, MentorProf
      * @param userDto The DTO containing mentor profile data.
      * @return A new {@link MentorProfile} entity with the data from the DTO.
      */
-    @Override
     protected MentorProfile createUserEntity(MentorProfileDto userDto) {
         MentorProfile mentor = new MentorProfile();
         mentor.setEmail(userDto.getEmail());
@@ -56,7 +115,6 @@ public class MentorAuthService extends BaseAuthService<MentorProfile, MentorProf
      * @param mentor The mentor entity to convert.
      * @return A {@link MentorProfileDto} containing the data from the entity.
      */
-    @Override
     protected MentorProfileDto convertToDto(MentorProfile mentor) {
         return MentorProfileDto.builder()
                 .id(mentor.getId())

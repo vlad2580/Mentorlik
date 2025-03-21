@@ -67,7 +67,9 @@ public class GoogleAuthService {
                 StudentProfile student = findOrCreateStudentProfile(userInfo);
                 yield new StudentProfileDto(
                         student.getId(),
+                        student.getName(),
                         student.getEmail(),
+                        null, // password null for OAuth
                         student.getFieldOfStudy(),
                         student.getEducationLevel(),
                         student.getLearningGoals(),

@@ -1,21 +1,20 @@
 package com.mentorlik.mentorlik_backend.service;
 
 import com.mentorlik.mentorlik_backend.dto.profile.MentorProfileDto;
-import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
-import org.elasticsearch.search.sort.SortOrder;
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.elasticsearch.core.SearchRequest;
+import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.elasticsearch.core.search.Hit;
+import co.elastic.clients.json.JsonData;
+import co.elastic.clients.elasticsearch._types.FieldValue;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Service for handling mentor search functionality in Mentorlik application.
@@ -25,14 +24,14 @@ import java.util.List;
 @Service
 public class MentorSearchService {
 
-    private final RestHighLevelClient client;
+    private final ElasticsearchClient client;
 
     /**
      * Constructs the MentorSearchService with a provided Elasticsearch client.
      *
-     * @param client the Elasticsearch high-level REST client
+     * @param client the Elasticsearch client
      */
-    public MentorSearchService(RestHighLevelClient client) {
+    public MentorSearchService(ElasticsearchClient client) {
         this.client = client;
     }
 
@@ -51,52 +50,125 @@ public class MentorSearchService {
         List<MentorProfileDto> mentors = new ArrayList<>();
 
         try {
-            SearchRequest searchRequest = new SearchRequest("mentor_profiles");
-            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-
-            // Building a boolean query with multiple conditions
-            BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-            if (expertise != null && !expertise.isEmpty()) {
-                queryBuilder.must(QueryBuilders.matchQuery("expertise", expertise));
+            // Creating search query
+            SearchRequest request = SearchRequest.of(b -> b
+                .index("mentor_profiles")
+                .query(q -> q
+                    .bool(bool -> {
+                        if (expertise != null && !expertise.isEmpty()) {
+                            bool.must(m -> m.term(t -> t.field("expertise.keyword").value(expertise)));
+                        }
+                        if (city != null && !city.isEmpty()) {
+                            bool.must(m -> m.term(t -> t.field("city.keyword").value(city)));
+                        }
+                        if (country != null && !country.isEmpty()) {
+                            bool.must(m -> m.term(t -> t.field("country.keyword").value(country)));
+                        }
+                        if (minRate != null) {
+                            bool.must(m -> m.range(r -> r.field("rate").gte(JsonData.of(minRate))));
+                        }
+                        if (maxRate != null) {
+                            bool.must(m -> m.range(r -> r.field("rate").lte(JsonData.of(maxRate))));
+                        }
+                        if (minRating != null) {
+                            bool.must(m -> m.range(r -> r.field("rating").gte(JsonData.of(minRating))));
+                        }
+                        return bool;
+                    })
+                )
+                .sort(s -> s
+                    .field(f -> f
+                        .field("rating")
+                        .order(co.elastic.clients.elasticsearch._types.SortOrder.Desc)
+                    )
+                )
+            );
+            
+            // Executing query and processing results
+            @SuppressWarnings("unchecked")
+            SearchResponse<Map<String, Object>> response = client.search(request, (Class<Map<String, Object>>) (Class<?>) Map.class);
+            
+            for (Hit<Map<String, Object>> hit : response.hits().hits()) {
+                Map<String, Object> source = hit.source();
+                if (source != null) {
+                    MentorProfileDto mentorProfile = new MentorProfileDto();
+                    mentorProfile.setName((String) source.get("name"));
+                    mentorProfile.setExpertise((String) source.get("expertise"));
+                    mentorProfile.setCity((String) source.get("city"));
+                    mentorProfile.setCountry((String) source.get("country"));
+                    mentorProfile.setRating((Double) source.get("rating"));
+                    mentors.add(mentorProfile);
+                }
             }
-            if (city != null && !city.isEmpty()) {
-                queryBuilder.must(QueryBuilders.matchQuery("city", city));
-            }
-            if (country != null && !country.isEmpty()) {
-                queryBuilder.must(QueryBuilders.matchQuery("country", country));
-            }
-            if (minRate != null) {
-                queryBuilder.must(QueryBuilders.rangeQuery("rate").gte(minRate));
-            }
-            if (maxRate != null) {
-                queryBuilder.must(QueryBuilders.rangeQuery("rate").lte(maxRate));
-            }
-            if (minRating != null) {
-                queryBuilder.must(QueryBuilders.rangeQuery("rating").gte(minRating));
-            }
-
-            sourceBuilder.query(queryBuilder);
-            sourceBuilder.sort("rating", SortOrder.DESC);
-            searchRequest.source(sourceBuilder);
-
-            SearchResponse response = client.search(searchRequest, RequestOptions.DEFAULT);
-            SearchHits hits = response.getHits();
-
-            hits.forEach(hit -> {
-                MentorProfileDto mentorProfile = new MentorProfileDto();
-                mentorProfile.setName((String) hit.getSourceAsMap().get("name"));
-                mentorProfile.setExpertise((String) hit.getSourceAsMap().get("expertise"));
-                mentorProfile.setCity((String) hit.getSourceAsMap().get("city"));
-                mentorProfile.setCountry((String) hit.getSourceAsMap().get("country"));
-                mentorProfile.setRating(BigDecimal.valueOf((Double) hit.getSourceAsMap().get("rating")));
-                mentors.add(mentorProfile);
-            });
 
         } catch (IOException e) {
             // Log and handle the exception appropriately
             System.err.println("Error executing search: " + e.getMessage());
         }
 
+        return mentors;
+    }
+    
+    /**
+     * Поиск менторов по тегам или категориям.
+     * 
+     * @param tags список тегов для поиска
+     * @return список профилей менторов, соответствующих указанным тегам
+     */
+    public List<MentorProfileDto> searchMentorsByTags(List<String> tags) {
+        if (tags == null || tags.isEmpty()) {
+            return Collections.emptyList();
+        }
+        
+        List<MentorProfileDto> mentors = new ArrayList<>();
+        
+        try {
+            // Преобразуем строковые теги в объекты FieldValue
+            List<FieldValue> fieldValues = tags.stream()
+                    .map(FieldValue::of)
+                    .collect(Collectors.toList());
+            
+            // Создаем поисковый запрос для Elasticsearch по тегам
+            SearchRequest request = SearchRequest.of(b -> b
+                .index("mentor_profiles")
+                .query(q -> q
+                    .terms(t -> t
+                        .field("tags.keyword")
+                        .terms(terms -> terms
+                            .value(fieldValues)
+                        )
+                    )
+                )
+                .sort(s -> s
+                    .field(f -> f
+                        .field("rating")
+                        .order(co.elastic.clients.elasticsearch._types.SortOrder.Desc)
+                    )
+                )
+            );
+            
+            // Выполняем запрос и обрабатываем результаты
+            @SuppressWarnings("unchecked")
+            SearchResponse<Map<String, Object>> response = client.search(request, (Class<Map<String, Object>>) (Class<?>) Map.class);
+            
+            for (Hit<Map<String, Object>> hit : response.hits().hits()) {
+                Map<String, Object> source = hit.source();
+                if (source != null) {
+                    MentorProfileDto mentorProfile = new MentorProfileDto();
+                    mentorProfile.setName((String) source.get("name"));
+                    mentorProfile.setExpertise((String) source.get("expertise"));
+                    mentorProfile.setCity((String) source.get("city"));
+                    mentorProfile.setCountry((String) source.get("country"));
+                    mentorProfile.setRating((Double) source.get("rating"));
+                    mentors.add(mentorProfile);
+                }
+            }
+            
+        } catch (IOException e) {
+            // Log and handle the exception appropriately
+            System.err.println("Error executing tag search: " + e.getMessage());
+        }
+        
         return mentors;
     }
 }

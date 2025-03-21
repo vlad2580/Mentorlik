@@ -1,77 +1,58 @@
 version: '3.8'
 
 services:
+  # PostgreSQL database
   db:
-    image: postgres:latest
+    image: postgres:14-alpine
     container_name: mentorlik_postgres
     environment:
       POSTGRES_DB: mentorlik_db
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME:-mentorlik_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-mentorlik_password}
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
       - ./postgres/init:/docker-entrypoint-initdb.d
-    networks:
-      - mentorlik-network
-
-  db_backup:
-    build:
-      context: ./postgres
-      dockerfile: Dockerfile.backup
-    environment:
-      POSTGRES_DB: mentorlik_db
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - ./postgres/backup:/backups
-    networks:
-      - mentorlik-network
-    depends_on:
-      - db
-
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.5.0
-    container_name: mentorlik_elasticsearch
-    environment:
-      - discovery.type=single-node
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    volumes:
-      - ./elasticsearch/data:/usr/share/elasticsearch/data
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-    networks:
-      - mentorlik-network
     ports:
-      - "9200:9200"
-
-  logstash:
-    image: docker.elastic.co/logstash/logstash:8.5.0
-    container_name: mentorlik_logstash
-    environment:
-      - LOGSTASH_JAVA_OPTS=-Xmx256m -Xms256m
-    volumes:
-      - ./logstash/conf:/usr/share/logstash/pipeline
-      - ./logstash/jdbc:/usr/share/logstash/jdbc
-    depends_on:
-      - db
-      - elasticsearch
+      - "5434:5432"
     networks:
       - mentorlik-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-mentorlik_user} -d mentorlik_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+  # Spring Boot backend
   backend:
     build:
       context: ../backend
+    container_name: mentorlik_backend
     environment:
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-      ELASTICSEARCH_HOST: mentorlik_elasticsearch
-      POSTGRES_HOST: mentorlik_postgres
+      SPRING_PROFILES_ACTIVE: dev
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mentorlik_db
+      SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-mentorlik_user}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-mentorlik_password}
+      # Disable Elasticsearch autoconfiguration
+      SPRING_AUTOCONFIGURE_EXCLUDE: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration,org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchRestClientAutoConfiguration
+      # Disable OAuth for testing
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID: disabled
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET: disabled
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_LINKEDIN_CLIENT_ID: disabled
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_LINKEDIN_CLIENT_SECRET: disabled
+      # Дополнительные параметры для отладки
+      LOGGING_LEVEL_ROOT: INFO
+      LOGGING_LEVEL_COM_MENTORLIK: DEBUG
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
+      LOGGING_LEVEL_ORG_HIBERNATE_SQL: DEBUG
     ports:
       - "8080:8080"
     networks:
       - mentorlik-network
     depends_on:
-      - db
-      - elasticsearch
+      db:
+        condition: service_healthy
+    restart: unless-stopped
 
 networks:
   mentorlik-network:

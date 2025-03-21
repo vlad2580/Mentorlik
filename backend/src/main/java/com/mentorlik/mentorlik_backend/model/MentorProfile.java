@@ -92,11 +92,34 @@ public class MentorProfile extends User {
     /**
      * Average rating of the mentor.
      */
-    @Column(precision = 3, scale = 2)
-    private BigDecimal rating;
+    @Column
+    private Double rating;
 
     /**
      * Total number of reviews the mentor has received.
      */
     private Integer reviewCount;
+    
+    /**
+     * Hourly rate (simpler representation)
+     */
+    private Double rate;
+    
+    /**
+     * Detailed about information of the mentor
+     */
+    @Column(length = 1000)
+    private String about;
+    
+    /**
+     * URL to mentor's profile photo
+     */
+    @Column(length = 255)
+    private String photoUrl;
+    
+    /**
+     * Mentor's availability schedule
+     */
+    @Column(length = 500)
+    private String availability;
 }

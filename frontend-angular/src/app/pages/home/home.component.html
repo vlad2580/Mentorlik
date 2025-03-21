@@ -1,0 +1,86 @@
+<app-header></app-header>
+
+<main>
+    <!-- Main section with call to action -->
+    <section class="hero">
+        <h2>Najdi svého mentora</h2>
+        <p>
+            Mentorlik je otevřená komunita IT mentorů, připravených sdílet své znalosti a zkušenosti.
+        </p>
+        <p>
+            Správný rozhovor vysvětlí situaci lépe než hodiny hledání na internetu. Pomáháme těm, kdo potřebují radu,
+            najít odborníka a prodiskutovat svůj problém jeden na jednoho.
+        </p>
+        <a href="#" class="cta-button" (click)="scrollToMentors(); $event.preventDefault()">Najít mentora</a>
+    </section>
+
+    <!-- "How it works" section -->
+    <section class="how-it-works">
+        <h2 class="title">Jak to funguje?</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="icon">🧑‍🏫</div>
+                <h3>Vyberte si mentora</h3>
+                <p>Spolupracuje s námi více než 2000 profesionálů ze společností Avito, Yandex, Google a dalších. Můžete
+                    si vybrat vhodného člověka podle specializace, pracovních zkušeností a ceny schůzky.</p>
+                <p>Všechny mentory si sami prověřujeme: žádné šarlatánství.</p>
+            </div>
+            <div class="step">
+                <div class="icon">✍️</div>
+                <h3>Napište mu</h3>
+                <p>Zanechte žádost na webových stránkách. Napište, s čím potřebujete pomoci a co byste chtěli získat.
+                </p>
+                <p>Pamatujte: dobře definovaný problém je napůl vyřešený problém. Čím více podrobností uvedete, tím
+                    lépe.</p>
+            </div>
+            <div class="step">
+                <div class="icon">💬</div>
+                <h3>Je to na vás</h3>
+                <p>Vaši přihlášku předáme mentorovi. Mentor úkol posoudí a kontaktuje vás, aby s vámi probral
+                    podrobnosti a vybral čas. Každý mentor si určí cenu a délku sezení.</p>
+                <p>My do toho nezasahujeme, je to jen na vás.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mentors section -->
+    <section class="mentors-section" id="mentors">
+        <h2><span>Naši</span> <span>mentoři</span></h2>
+        <!-- Search bar -->
+        <div class="search-bar">
+            <input type="text" id="mentorSearch"
+                placeholder="Profese, nástroj, firma, jméno mentora nebo cokoliv jiného, oddělené čárkou"
+                (keyup)="filterMentors($event)">
+        </div>
+        <!-- Filters -->
+        <div class="filter-tags">
+            <button class="tag" (click)="filterByTag('development')">Development</button>
+            <button class="tag" (click)="filterByTag('devops')">DevOps</button>
+            <button class="tag" (click)="filterByTag('data science')">Data Science/ML</button>
+            <!-- Additional filters -->
+        </div>
+        <!-- Mentors grid -->
+        <div class="mentors-grid">
+            <app-mentor-card *ngFor="let mentor of mentors" [mentor]="mentor"></app-mentor-card>
+        </div>
+    </section>
+
+    <section class="sponsors" id="sponsors">
+        <h2>Nas podporuji:</h2>
+        <div class="image-container">
+            <a>
+                <img src="assets/images/apple_pay.png" alt="Sponsor 1" class="sponsor-image">
+            </a>
+            <a>
+                <img src="assets/images/apple_pay.png" alt="Sponsor 2" class="sponsor-image">
+            </a>
+            <a>
+                <img src="assets/images/apple_pay.png" alt="Sponsor 3" class="sponsor-image">
+            </a>
+        </div>
+    </section>
+
+    <app-faq-section></app-faq-section>
+</main>
+
+<app-footer></app-footer>

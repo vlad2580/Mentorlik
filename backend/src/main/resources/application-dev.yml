@@ -1,17 +1,55 @@
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            redirect-uri: "{baseUrl}/login/oauth2/code/google"
-          linkedin:
-            redirect-uri: "{baseUrl}/login/oauth2/code/linkedin"
+    datasource:
+        url: jdbc:postgresql://localhost:5434/mentorlik_db
+        username: mentorlik_user
+        password: mentorlik_password
+    jpa:
+        hibernate:
+            ddl-auto: update
+        show-sql: true
+        properties:
+            hibernate:
+                format_sql: true
+    security:
+        oauth2:
+            client:
+                registration:
+                    # Фейковые данные для отладки, без реального подключения к OAuth-провайдерам
+                    google:
+                        client-id: disabled
+                        client-secret: disabled
+                        redirect-uri: '{baseUrl}/login/oauth2/code/google'
+                        authorization-grant-type: authorization_code
+                    linkedin:
+                        client-id: disabled
+                        client-secret: disabled
+                        redirect-uri: '{baseUrl}/login/oauth2/code/linkedin'
+                        authorization-grant-type: authorization_code
+                        provider: linkedin
+                provider:
+                    linkedin:
+                        authorization-uri: https://www.linkedin.com/oauth/v2/authorization
+                        token-uri: https://www.linkedin.com/oauth/v2/accessToken
+                        user-info-uri: https://api.linkedin.com/v2/me
+                        user-name-attribute: id
+
+# Отключаем автоконфигурацию Elasticsearch для тестирования базовых эндпоинтов
+spring.autoconfigure.exclude: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration,org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchRestClientAutoConfiguration
+
+# Загружаем дополнительную конфигурацию Spring для разрешения конфликта контроллеров
+context:
+    config:
+        location: classpath:spring/exclude-controller.xml
+
+# Настройки для Elasticsearch - закомментированы для отладки основных функций
+# elasticsearch:
+#    host: localhost
+#    port: 9200
 
 logging:
-  level:
-    root: DEBUG
-    org.springframework: DEBUG
+    level:
+        root: INFO
+        org.springframework: INFO
+        org.springframework.security: DEBUG
+        com.mentorlik: DEBUG
+        org.hibernate.SQL: DEBUG

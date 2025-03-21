@@ -34,10 +34,16 @@ public class StudentProfile extends User {
     private String educationLevel;
 
     /**
-     * Short description of the student’s learning goals or objectives.
+     * Short description of the student's learning goals or objectives.
      */
     @Column(nullable = false, length = 500)
     private String learningGoals;
+
+    /**
+     * Brief description about the student, including background and interests.
+     */
+    @Column(length = 1000)
+    private String about;
 
     /**
      * List of skills or subjects the student is proficient in or currently studying.

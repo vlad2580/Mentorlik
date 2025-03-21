@@ -67,7 +67,9 @@ public class LinkedInAuthService {
                 StudentProfile student = findOrCreateStudentProfile(userInfo);
                 yield new StudentProfileDto(
                         student.getId(),
+                        student.getName(),
                         student.getEmail(),
+                        null,
                         student.getFieldOfStudy(),
                         student.getEducationLevel(),
                         student.getLearningGoals(),
