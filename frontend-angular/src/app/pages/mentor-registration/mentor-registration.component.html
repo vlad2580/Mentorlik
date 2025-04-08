@@ -1,119 +1,104 @@
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Registrace mentorů pro platformu MentorConnect">
-    <meta name="keywords" content="mentor, registrace, IT, platforma">
-    <title>Registrace mentora</title>
-    <link rel="stylesheet" href="../static/css/registration.css">
-</head>
-<body>
+<header>
+    <div class="logo">
+        <a routerLink="/"> 
+            <h1><span class="mentor">Mentor</span><span class="connect">lik</span></h1>
+        </a>
+    </div>
+</header>
 
-    <header>
-        <div class="logo">
-            <a href="../index.html"> 
-                <h1><span class="mentor">Mentor</span><span class="connect">lik</span></h1>
-            </a>
+<main class="registration-container">
+    <section class="intro-section">
+        <h2>Staňte se součástí našeho týmu</h2>
+        <p>Pomáhejte ostatním, vydělávejte a získejte cenné zkušenosti. Děkujeme za váš zájem o tuto příležitost. Vyplňte níže uvedený formulář a my vaši žádost co nejdříve zvážíme.</p>
+    </section>
+
+    <form class="mentor-registration-form" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="fullname">Vaše jméno a příjmení *</label>
+            <input type="text" id="fullname" name="fullname" required>
+            <small>Takto budete viditelní na webu</small>
         </div>
-    </header>
 
-    <main class="registration-container">
-        <section class="intro-section">
-            <h2>Staňte se součástí našeho týmu</h2>
-            <p>Pomáhejte ostatním, vydělávejte a získejte cenné zkušenosti. Děkujeme za váš zájem o tuto příležitost. Vyplňte níže uvedený formulář a my vaši žádost co nejdříve zvážíme.</p>
-        </section>
+        <div class="form-group">
+            <label for="email">E-mailová adresa *</label>
+            <input type="email" id="email" name="email" required>
+            <small>Na tuto adresu vám pošleme pozvánku do osobního účtu</small>
+        </div>
 
-        <form class="mentor-registration-form" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="fullname">Vaše jméno a příjmení *</label>
-                <input type="text" id="fullname" name="fullname" required>
-                <small>Takto budete viditelní na webu</small>
-            </div>
+        <div class="form-group">
+            <label for="telegram">Váš LinkedIn profil</label>
+            <input type="text" id="telegram" name="telegram" required>
+            <small>Náš bot vás propojí s přijatými žádostmi</small>
+        </div>
 
-            <div class="form-group">
-                <label for="email">E-mailová adresa *</label>
-                <input type="email" id="email" name="email" required>
-                <small>Na tuto adresu vám pošleme pozvánku do osobního účtu</small>
-            </div>
+        <div class="form-group">
+            <label for="photo">Vaše profilová fotografie *</label>
+            <input type="file" id="photo" name="photo" accept="image/*" required>
+            <small>Pomůže vám lépe se představit (prosím, ne více než 2 MB). Nejlépe tam, kde jste uprostřed.</small>
+            <div class="file-drop-area">Přiložit soubor nebo sem přetáhněte soubory</div>
+        </div>
 
-            <div class="form-group">
-                <label for="telegram">Váš LinkedIn profil</label>
-                <input type="text" id="telegram" name="telegram" required>
-                <small>Náš bot vás propojí s přijatými žádostmi</small>
-            </div>
+        <div class="form-group">
+            <label for="position">Pozice *</label>
+            <input type="text" id="position" name="position" required>
+        </div>
 
-            <div class="form-group">
-                <label for="photo">Vaše profilová fotografie *</label>
-                <input type="file" id="photo" name="photo" accept="image/*" required>
-                <small>Pomůže vám lépe se představit (prosím, ne více než 2 MB). Nejlépe tam, kde jste uprostřed.</small>
-                <div class="file-drop-area">Přiložit soubor nebo sem přetáhněte soubory</div>
-            </div>
+        <div class="form-group">
+            <label for="company">Společnost *</label>
+            <input type="text" id="company" name="company" required>
+            <small>Pokud pracujete na více místech, uveďte hlavní společnost. Ostatní zmíněte v popisu "O sobě".</small>
+        </div>
 
-            <div class="form-group">
-                <label for="position">Pozice *</label>
-                <input type="text" id="position" name="position" required>
-            </div>
+        <div class="form-group">
+            <label for="bio">Povězte nám o sobě *</label>
+            <textarea id="bio" name="bio" required></textarea>
+            <small>Ideálně dva až tři odstavce o tom, kde jste pracovali a co vás zajímá v profesním poli.</small>
+        </div>
 
-            <div class="form-group">
-                <label for="company">Společnost *</label>
-                <input type="text" id="company" name="company" required>
-                <small>Pokud pracujete na více místech, uveďte hlavní společnost. Ostatní zmíněte v popisu "O sobě".</small>
-            </div>
+        <div class="form-group">
+            <label for="help">S čím můžete pomoci? *</label>
+            <textarea id="help" name="help" required></textarea>
+            <small>Text rozdělte na body. Uveďte, na jakou úroveň mentee se zaměřujete.</small>
+        </div>
 
-            <div class="form-group">
-                <label for="bio">Povězte nám o sobě *</label>
-                <textarea id="bio" name="bio" required></textarea>
-                <small>Ideálně dva až tři odstavce o tom, kde jste pracovali a co vás zajímá v profesním poli.</small>
-            </div>
+        <div class="form-group">
+            <label for="experience">Zkušenosti *</label>
+            <input type="number" id="experience" name="experience" min="0" required>
+            <small>Kolik let působíte v oboru?</small>
+        </div>
 
-            <div class="form-group">
-                <label for="help">S čím můžete pomoci? *</label>
-                <textarea id="help" name="help" required></textarea>
-                <small>Text rozdělte na body. Uveďte, na jakou úroveň mentee se zaměřujete.</small>
-            </div>
+        <div class="form-group">
+            <label for="specialization">Vaše specializace *</label>
+            <input type="text" id="specialization" name="specialization" required>
+            <small>Až 5 tagů. Podle nich vás budou hledat.</small>
+        </div>
 
-            <div class="form-group">
-                <label for="experience">Zkušenosti *</label>
-                <input type="number" id="experience" name="experience" min="0" required>
-                <small>Kolik let působíte v oboru?</small>
-            </div>
+        <div class="form-group">
+            <label for="skills">Dovednosti a technologie *</label>
+            <input type="text" id="skills" name="skills" required>
+            <small>Seznamte své dovednosti, které nabízíte ke konzultaci, oddělené čárkami.</small>
+        </div>
 
-            <div class="form-group">
-                <label for="specialization">Vaše specializace *</label>
-                <input type="text" id="specialization" name="specialization" required>
-                <small>Až 5 tagů. Podle nich vás budou hledat.</small>
-            </div>
+        <div class="form-group">
+            <label for="rate">Cena konzultace *</label>
+            <select id="rate" name="rate" required>
+                <option value="agreement">Po dohodě</option>
+                <option value="fixed">Fixní sazba</option>
+            </select>
+        </div>
 
-            <div class="form-group">
-                <label for="skills">Dovednosti a technologie *</label>
-                <input type="text" id="skills" name="skills" required>
-                <small>Seznamte své dovednosti, které nabízíte ke konzultaci, oddělené čárkami.</small>
-            </div>
+        <div class="form-group">
+            <label for="calendar">Odkaz na kalendář</label>
+            <input type="url" id="calendar" name="calendar">
+            <small>Pokud používáte kalendářní systémy (např. Calendly.com), přidejte odkaz na svůj kalendář.</small>
+        </div>
 
-            <div class="form-group">
-                <label for="rate">Cena konzultace *</label>
-                <select id="rate" name="rate" required>
-                    <option value="agreement">Po dohodě</option>
-                    <option value="fixed">Fixní sazba</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <button type="submit" class="cta-button">Odeslat žádost</button>
+        </div>
+    </form>
+</main>
 
-            <div class="form-group">
-                <label for="calendar">Odkaz na kalendář</label>
-                <input type="url" id="calendar" name="calendar">
-                <small>Pokud používáte kalendářní systémy (např. Calendly.com), přidejte odkaz na svůj kalendář.</small>
-            </div>
-
-            <div class="form-group">
-                <button type="submit" class="cta-button">Odeslat žádost</button>
-            </div>
-        </form>
-    </main>
-
-    <footer>
-        <p>© 2024 MentorConnect. Všechna práva vyhrazena.</p>
-    </footer>
-
-</body>
-</html>
+<footer>
+    <p>© 2024 MentorConnect. Všechna práva vyhrazena.</p>
+</footer>

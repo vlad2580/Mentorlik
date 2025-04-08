@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-mentor-card',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './mentor-card.component.html',
   styleUrl: './mentor-card.component.css'
 })

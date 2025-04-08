@@ -56,7 +56,7 @@ export class HomeComponent {
     }
   ];
 
-  // Метод для прокрутки к разделу менторов
+  // Method to scroll to the mentors section
   scrollToMentors() {
     const element = document.getElementById('mentors');
     if (element) {
@@ -64,16 +64,16 @@ export class HomeComponent {
     }
   }
 
-  // Метод для фильтрации менторов по тегам
+  // Method to filter mentors by tags
   filterByTag(tag: string) {
-    // Здесь будет реализация фильтрации
+    // Filter implementation will be here
     console.log(`Filtering by tag: ${tag}`);
   }
 
-  // Метод для поиска менторов
+  // Method to search mentors
   filterMentors(event: Event) {
     const input = (event.target as HTMLInputElement).value.trim().toLowerCase();
-    // Здесь будет реализация поиска
+    // Search implementation will be here
     console.log(`Searching for: ${input}`);
   }
 }

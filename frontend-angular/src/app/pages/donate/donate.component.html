@@ -1,104 +1,91 @@
-<!DOCTYPE html>
-<html lang="cs">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Podpořte nás | Mentorlik</title>
-    <link rel="stylesheet" href="../static/css/style.css">
-</head>
-<body>
-    <!-- Header -->
-    <header>
-        <div class="logo">
-            <a href="../index.html">
-                <h1><span class="mentor">Mentor</span><span class="connect">lik</span></h1>
-            </a>
+<!-- Header -->
+<header>
+    <div class="logo">
+        <a routerLink="/">
+            <h1><span class="mentor">Mentor</span><span class="connect">lik</span></h1>
+        </a>
+    </div>
+    <nav>
+        <ul>
+            <li><a routerLink="/blog">Náš Blog</a></li>
+            <li><a routerLink="/mentor-registration">Staňte se mentorem</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Main Content -->
+<main>
+    <!-- Intro Section -->
+    <section class="donate-intro">
+        <h1>
+            <span>🍩</span> Podpořte nás
+        </h1>
+        <p>
+            Chceme, aby mentoring byl přístupný pro všechny. Proto je náš projekt neziskový. Nevybíráme peníze od mentorů ani od žáků.
+        </p>
+        <p>
+            Pokud vás oslovuje, co děláme, podpořte nás darem. Pomůže nám to pokrýt náklady na servery, hosting a vývoj webu 🍩
+        </p>
+    </section>
+
+    <!-- Donate Methods -->
+    <section class="donate-options">
+        <h2>Jak nás můžete podpořit</h2>
+        <div class="options">
+            <label>
+                <input type="radio" name="donation-method" value="Boosty">
+                <img src="assets/images/boosty-placeholder.png" alt="Boosty">
+            </label>
+            <label>
+                <input type="radio" name="donation-method" value="Apple Pay">
+                <img src="assets/images/apple-pay-placeholder.png" alt="Apple Pay">
+            </label>
+            <label>
+                <input type="radio" name="donation-method" value="Credit Card">
+                <img src="assets/images/credit-card-placeholder.png" alt="Credit Card">
+            </label>
         </div>
-        <nav>
-            <ul>
-                <li><a href="blog.html">Náš Blog</a></li>
-                <li><a href="mentor_registation.html">Staňte se mentorem</a></li>
-            </ul>
-        </nav>
-    </header>
+        <div class="donation-form hidden">
+            <input type="number" placeholder="Zadejte částku" id="donation-amount">
+            <button id="donate-button">Pomoci</button>
+        </div>
+        <p>
+            Pokud vám žádná z možností nevyhovuje, <a href="mailto:hello@getmentor.dev">napište nám</a>. Něco společně vymyslíme.
+        </p>
+    </section>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Intro Section -->
-        <section class="donate-intro">
-            <h1>
-                <span>🍩</span> Podpořte nás
-            </h1>
-            <p>
-                Chceme, aby mentoring byl přístupný pro všechny. Proto je náš projekt neziskový. Nevybíráme peníze od mentorů ani od žáků.
-            </p>
-            <p>
-                Pokud vás oslovuje, co děláme, podpořte nás darem. Pomůže nám to pokrýt náklady na servery, hosting a vývoj webu 🍩
-            </p>
-        </section>
 
-        <!-- Donate Methods -->
-        <section class="donate-options">
-            <h2>Jak nás můžete podpořit</h2>
-            <div class="options">
-                <label>
-                    <input type="radio" name="donation-method" value="Boosty">
-                    <img src="../static/images/boosty.png" alt="Boosty">
-                </label>
-                <label>
-                    <input type="radio" name="donation-method" value="Apple Pay">
-                    <img src="../static/images/apple_pay.png" alt="Apple Pay">
-                </label>
-                <label>
-                    <input type="radio" name="donation-method" value="Credit Card">
-                    <img src="../static/images/credit_card.png" alt="Credit Card">
-                </label>
+    <!-- Supporters Section -->
+    <section class="supporters">
+        <h2>Naši podporovatelé</h2>
+        <p class="subtitle">Tito lidé nás podporují přes Patreon. Děkujeme jim!</p>
+        <div class="supporter-list">
+            <div class="supporter-card">
+                <p>
+                    <strong>Alexandr Těrechin</strong><br>
+                    <span>Úroveň: Streamer</span>
+                </p>
+                <div class="emoji">❤️🤟</div>
             </div>
-            <div class="donation-form hidden">
-                <input type="number" placeholder="Zadejte částku" id="donation-amount">
-                <button id="donate-button">Pomoci</button>
+            <div class="supporter-card">
+                <p>
+                    <strong>Kirill Krasnoščekov</strong><br>
+                    <span>Úroveň: Streamer</span>
+                </p>
+                <div class="emoji">❤️🤟</div>
             </div>
-            <p>
-                Pokud vám žádná z možností nevyhovuje, <a href="mailto:hello@getmentor.dev">napište nám</a>. Něco společně vymyslíme.
-            </p>
-        </section>
-
-
-        <!-- Supporters Section -->
-        <section class="supporters">
-            <h2>Naši podporovatelé</h2>
-            <p class="subtitle">Tito lidé nás podporují přes Patreon. Děkujeme jim!</p>
-            <div class="supporter-list">
-                <div class="supporter-card">
-                    <p>
-                        <strong>Alexandr Těrechin</strong><br>
-                        <span>Úroveň: Streamer</span>
-                    </p>
-                    <div class="emoji">❤️🤟</div>
-                </div>
-                <div class="supporter-card">
-                    <p>
-                        <strong>Kirill Krasnoščekov</strong><br>
-                        <span>Úroveň: Streamer</span>
-                    </p>
-                    <div class="emoji">❤️🤟</div>
-                </div>
-                <div class="supporter-card">
-                    <p>
-                        <strong>usukololgubu</strong><br>
-                        <span>Úroveň: Streamer</span>
-                    </p>
-                    <div class="emoji">❤️🤟</div>
-                </div>
+            <div class="supporter-card">
+                <p>
+                    <strong>usukololgubu</strong><br>
+                    <span>Úroveň: Streamer</span>
+                </p>
+                <div class="emoji">❤️🤟</div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
 
-    <!-- Footer -->
-    <footer>
-        <p>© 2025 Mentorlik. Všechna práva vyhrazena.</p>
-    </footer>
-
-    <script src="../static/js/scripts.js"></script>
-</body>
-</html>
+<!-- Footer -->
+<footer>
+    <p>© 2025 Mentorlik. Všechna práva vyhrazena.</p>
+</footer>
