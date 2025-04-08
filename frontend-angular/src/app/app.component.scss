@@ -1,0 +1,7 @@
+@import '../styles/abstracts/variables';
+@import '../styles/abstracts/mixins';
+
+.main-content {
+  min-height: calc(100vh - 200px);
+  padding: $spacing-md 0;
+} 

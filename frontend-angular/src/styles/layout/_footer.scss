@@ -1,0 +1,80 @@
+/* Footer styles */
+.footer {
+  background-color: $footer-bg;
+  color: $footer-text;
+  padding: $spacing-xl 0 $spacing-lg;
+  margin-top: $spacing-xl * 2;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+}
+
+.footer-logo {
+  flex: 0 0 100%;
+  max-width: 100%;
+  margin-bottom: $spacing-lg;
+  
+  @include desktop {
+    flex: 0 0 30%;
+    max-width: 30%;
+    margin-bottom: 0;
+  }
+  
+  h3 {
+    font-size: $font-size-xl;
+    margin: 0 0 $spacing-sm;
+  }
+  
+  p {
+    margin: 0;
+    color: $footer-text-light;
+  }
+}
+
+.footer-links {
+  flex: 1 0 auto;
+  margin-bottom: $spacing-lg;
+  min-width: 170px;
+  
+  h4 {
+    font-size: $font-size-lg;
+    margin: 0 0 $spacing-md;
+    color: $secondary-color;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    margin-bottom: $spacing-sm;
+  }
+  
+  a {
+    color: $footer-text;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: $primary-light;
+    }
+  }
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: $spacing-md;
+  border-top: 1px solid darken($footer-bg, 5%);
+  
+  p {
+    margin: 0;
+    font-size: $font-size-sm;
+    color: $footer-text-light;
+  }
+} 

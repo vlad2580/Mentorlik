@@ -1,0 +1,59 @@
+/* Grid system */
+.container {
+  @include container;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col {
+  position: relative;
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  flex-basis: 0;
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+@for $i from 1 through 12 {
+  .col-#{$i} {
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    flex: 0 0 percentage($i / 12);
+    max-width: percentage($i / 12);
+  }
+}
+
+@include mobile {
+  @for $i from 1 through 12 {
+    .col-sm-#{$i} {
+      flex: 0 0 percentage($i / 12);
+      max-width: percentage($i / 12);
+    }
+  }
+}
+
+@include tablet {
+  @for $i from 1 through 12 {
+    .col-md-#{$i} {
+      flex: 0 0 percentage($i / 12);
+      max-width: percentage($i / 12);
+    }
+  }
+}
+
+@include desktop {
+  @for $i from 1 through 12 {
+    .col-lg-#{$i} {
+      flex: 0 0 percentage($i / 12);
+      max-width: percentage($i / 12);
+    }
+  }
+} 

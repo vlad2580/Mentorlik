@@ -1,0 +1,113 @@
+// Media query mixins
+@mixin mobile {
+  @media screen and (max-width: #{$breakpoint-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (min-width: #{$breakpoint-sm}) and (max-width: #{$breakpoint-lg - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (min-width: #{$breakpoint-lg}) {
+    @content;
+  }
+}
+
+// Flexbox helper mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+// Typography mixins
+@mixin heading-1 {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  line-height: 1.2;
+  margin-bottom: $spacing-lg;
+  
+  @include mobile {
+    font-size: $font-size-2xl;
+  }
+}
+
+@mixin heading-2 {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  line-height: 1.2;
+  margin-bottom: $spacing-md;
+  
+  @include mobile {
+    font-size: $font-size-xl;
+  }
+}
+
+@mixin heading-3 {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-medium;
+  line-height: 1.3;
+  margin-bottom: $spacing-sm;
+  
+  @include mobile {
+    font-size: $font-size-lg;
+  }
+}
+
+// Container mixin
+@mixin container {
+  max-width: $container-width;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+}
+
+// Button mixins
+@mixin button-base {
+  display: inline-block;
+  padding: $spacing-sm $spacing-lg;
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  text-align: center;
+  text-decoration: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+@mixin primary-button {
+  @include button-base;
+  background-color: $primary-color;
+  color: white;
+  border: 1px solid $primary-color;
+  
+  &:hover, &:focus {
+    background-color: $primary-dark;
+    border-color: $primary-dark;
+  }
+}
+
+@mixin secondary-button {
+  @include button-base;
+  background-color: transparent;
+  color: $primary-color;
+  border: 1px solid $primary-color;
+  
+  &:hover, &:focus {
+    background-color: rgba($primary-color, 0.1);
+  }
+} 

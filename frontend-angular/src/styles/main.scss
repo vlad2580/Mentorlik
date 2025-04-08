@@ -1,0 +1,27 @@
+/**
+ * Main stylesheet using 7-1 SASS architecture
+ */
+
+// Abstracts (variables, mixins, functions)
+@import 'abstracts/variables';
+@import 'abstracts/mixins';
+
+// Base styles
+@import 'base/reset';
+
+// Layout styles
+@import 'layout/grid';
+@import 'layout/footer';
+
+// Components
+@import 'components/buttons';
+
+// Pages (specific styles for individual pages)
+// @import 'pages/home';
+// @import 'pages/login';
+
+// Themes (if using different themes)
+// @import 'themes/default';
+
+// Vendor styles (third-party libraries)
+// @import 'vendors/normalize'; 

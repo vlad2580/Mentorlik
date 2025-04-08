@@ -14,11 +14,7 @@ import { HeaderComponent } from './components/header/header.component';
     </main>
     <app-footer></app-footer>
   `,
-  styles: [`
-    .main-content {
-      min-height: calc(100vh - 200px);
-    }
-  `]
+  styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'Mentorlik';
