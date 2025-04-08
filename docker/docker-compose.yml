@@ -54,6 +54,19 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  # Angular frontend
+  frontend:
+    build:
+      context: ../frontend-angular
+    container_name: mentorlik_frontend
+    ports:
+      - "80:80"
+    networks:
+      - mentorlik-network
+    depends_on:
+      - backend
+    restart: unless-stopped
+
 networks:
   mentorlik-network:
     driver: bridge
