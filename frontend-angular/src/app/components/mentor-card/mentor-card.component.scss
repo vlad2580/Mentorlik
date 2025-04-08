@@ -1,0 +1,50 @@
+@import '../../../styles/abstracts/variables';
+
+.mentor-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+  }
+  
+  h3 {
+    margin: 10px 0;
+    color: $text-dark;
+  }
+  
+  p {
+    color: $text-light;
+    margin: 5px 0;
+  }
+  
+  &.placeholder {
+    border: 2px dashed $background-dark;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $background-color;
+    
+    h3 {
+      color: $primary-color;
+    }
+    
+    p {
+      color: $text-light;
+      padding: 0 15px;
+    }
+  }
+} 

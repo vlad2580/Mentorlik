@@ -1,7 +1,7 @@
 <div class="mentor-card" [class.placeholder]="mentor.isPlaceholder" [attr.data-tags]="mentor.tags">
     <img *ngIf="!mentor.isPlaceholder" [src]="mentor.imgSrc" [alt]="mentor.name">
     <h3>{{ mentor.name }}</h3>
-    <p *ngIf="!mentor.isPlaceholder">{{ mentor.position }}</p>
-    <p *ngIf="!mentor.isPlaceholder">{{ mentor.experience }} | {{ mentor.price }}</p>
+    <p *ngIf="!mentor.isPlaceholder && mentor.position">{{ mentor.position }}</p>
+    <p *ngIf="!mentor.isPlaceholder && mentor.experience && mentor.price">{{ mentor.experience }} | {{ mentor.price }}</p>
     <p *ngIf="mentor.isPlaceholder">Staňte se mentorem, sdílejte své zkušenosti a pomáhejte ostatním!</p>
 </div>

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-interface FaqItem {
+interface Faq {
   question: string;
   answer: string;
-  isOpen: boolean;
+  isOpen?: boolean;
 }
 
 @Component({
@@ -12,28 +12,29 @@ interface FaqItem {
   standalone: true,
   imports: [CommonModule],
   templateUrl: './faq-section.component.html',
-  styleUrl: './faq-section.component.css'
+  styleUrl: './faq-section.component.scss'
 })
 export class FaqSectionComponent {
-  faqItems: FaqItem[] = [
+  faqs: Faq[] = [
     {
-      question: 'What is your return policy?',
-      answer: 'Our return policy allows returns within 30 days of purchase. Please ensure the item is in its original condition.',
-      isOpen: false
+      question: 'Kolik stojí pomoc mentora?',
+      answer: 'Cenu si určuje každý mentor sám. Může se pohybovat od 0 Kč až po několik tisíc za hodinu, podle zkušeností mentora a jeho preference. Cenu vidíte u každého mentora přímo na jeho kartě.'
     },
     {
-      question: 'Do you offer international shipping?',
-      answer: 'Yes, we ship to many countries worldwide. Shipping fees and times vary based on location.',
-      isOpen: false
+      question: 'Jak probíhá setkání s mentorem?',
+      answer: 'Po výběru mentora a domluvě termínu se s mentorem spojíte online přes videohovor nebo osobně, podle vzájemné domluvy. Setkání obvykle trvá 1 hodinu, ale záleží na individuální domluvě s mentorem.'
     },
     {
-      question: 'How can I track my order?',
-      answer: 'Once your order is shipped, you will receive a tracking link via email to monitor its delivery status.',
-      isOpen: false
+      question: 'Jak se stanu mentorem?',
+      answer: 'Stačí si vytvořit profil mentora, vyplnit své zkušenosti, oblasti, ve kterých můžete pomoci, a zvolit si cenu za konzultaci. Po schválení bude váš profil viditelný pro potenciální studenty.'
+    },
+    {
+      question: 'Mohu změnit mentora?',
+      answer: 'Ano, můžete si kdykoliv vybrat jiného mentora, který lépe odpovídá vašim aktuálním potřebám nebo se kterým si více rozumíte.'
     }
   ];
 
-  toggleFaq(item: FaqItem): void {
-    item.isOpen = !item.isOpen;
+  toggleFaq(faq: Faq) {
+    faq.isOpen = !faq.isOpen;
   }
 } 

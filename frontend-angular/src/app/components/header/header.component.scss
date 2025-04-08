@@ -1,0 +1,97 @@
+@import '../../../styles/abstracts/variables';
+@import '../../../styles/abstracts/mixins';
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  
+  .logo {
+    a {
+      text-decoration: none;
+      display: block;
+    }
+    
+    h1 {
+      font-size: 1.8rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      
+      .mentor {
+        color: $primary-color;
+        font-weight: bold;
+      }
+      
+      .connect {
+        color: $primary-dark;
+      }
+    }
+  }
+  
+  nav {
+    ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      
+      li {
+        margin-left: 1.5rem;
+        
+        a {
+          text-decoration: none;
+          color: $text-color;
+          font-weight: 500;
+          padding: 0.5rem 0;
+          position: relative;
+          transition: color 0.3s;
+          
+          &:hover {
+            color: $primary-color;
+            
+            &:after {
+              width: 100%;
+            }
+          }
+          
+          &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: $primary-color;
+            transition: width 0.3s;
+          }
+        }
+      }
+    }
+  }
+  
+  @include mobile {
+    flex-direction: column;
+    padding: 1rem;
+    
+    .logo {
+      margin-bottom: 1rem;
+    }
+    
+    nav {
+      width: 100%;
+      
+      ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        
+        li {
+          margin: 0.5rem;
+        }
+      }
+    }
+  }
+} 

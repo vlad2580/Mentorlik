@@ -1,41 +1,42 @@
+@use "sass:math";
+@import '../abstracts/variables';
+@import '../abstracts/mixins';
+
 /* Grid system */
 .container {
-  @include container;
+  width: 100%;
+  max-width: $container-width;
+  margin: 0 auto;
+  padding-left: $spacing-md;
+  padding-right: $spacing-md;
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
+  margin-left: -$spacing-md;
+  margin-right: -$spacing-md;
 }
 
 .col {
   position: relative;
   width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  flex-basis: 0;
-  flex-grow: 1;
-  max-width: 100%;
+  padding-left: $spacing-md;
+  padding-right: $spacing-md;
 }
 
 @for $i from 1 through 12 {
   .col-#{$i} {
-    position: relative;
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    flex: 0 0 percentage($i / 12);
-    max-width: percentage($i / 12);
+    flex: 0 0 percentage(math.div($i, 12));
+    max-width: percentage(math.div($i, 12));
   }
 }
 
 @include mobile {
   @for $i from 1 through 12 {
     .col-sm-#{$i} {
-      flex: 0 0 percentage($i / 12);
-      max-width: percentage($i / 12);
+      flex: 0 0 percentage(math.div($i, 12));
+      max-width: percentage(math.div($i, 12));
     }
   }
 }
@@ -43,8 +44,8 @@
 @include tablet {
   @for $i from 1 through 12 {
     .col-md-#{$i} {
-      flex: 0 0 percentage($i / 12);
-      max-width: percentage($i / 12);
+      flex: 0 0 percentage(math.div($i, 12));
+      max-width: percentage(math.div($i, 12));
     }
   }
 }
@@ -52,8 +53,8 @@
 @include desktop {
   @for $i from 1 through 12 {
     .col-lg-#{$i} {
-      flex: 0 0 percentage($i / 12);
-      max-width: percentage($i / 12);
+      flex: 0 0 percentage(math.div($i, 12));
+      max-width: percentage(math.div($i, 12));
     }
   }
 } 

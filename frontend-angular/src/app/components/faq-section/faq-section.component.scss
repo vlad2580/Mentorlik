@@ -1,0 +1,78 @@
+@import '../../../styles/abstracts/variables';
+@import '../../../styles/abstracts/mixins';
+
+.faq-section {
+  padding: 70px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: $text-dark;
+    font-size: 2rem;
+  }
+  
+  .faq-container {
+    .faq-item {
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      
+      .question {
+        background-color: $background-light;
+        padding: 1.2rem;
+        cursor: pointer;
+        position: relative;
+        font-weight: 500;
+        color: $text-dark;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        &:hover {
+          background-color: darken($background-light, 3%);
+        }
+        
+        .icon {
+          transition: transform 0.3s ease;
+          
+          &.open {
+            transform: rotate(180deg);
+          }
+        }
+      }
+      
+      .answer {
+        background-color: white;
+        padding: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        
+        &.open {
+          padding: 1.2rem;
+          max-height: 300px;
+        }
+        
+        p {
+          margin: 0;
+          color: $text-light;
+          line-height: 1.6;
+        }
+      }
+    }
+  }
+}
+
+@include mobile {
+  .faq-section {
+    padding: 40px 15px;
+    
+    h2 {
+      font-size: 1.6rem;
+      margin-bottom: 30px;
+    }
+  }
+} 

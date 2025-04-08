@@ -1,0 +1,322 @@
+@import '../../../styles/abstracts/variables';
+@import '../../../styles/abstracts/mixins';
+
+.registration-section {
+  background-color: $background-color;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  @include tablet {
+    padding: 3rem 2rem;
+  }
+  
+  @include desktop {
+    padding: 4rem 2rem;
+  }
+}
+
+.registration-container {
+  width: 100%;
+  max-width: 900px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+  
+  @include tablet {
+    padding: 3rem;
+  }
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: $primary-color;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    color: $text-light;
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+.registration-form {
+  .form-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid $background-dark;
+    
+    &:last-of-type {
+      border-bottom: none;
+    }
+    
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: $text-dark;
+    }
+  }
+  
+  .form-group {
+    margin-bottom: 1.25rem;
+    
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: $text-dark;
+    }
+    
+    .input-with-icon {
+      position: relative;
+      
+      svg {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        fill: $text-light;
+        
+        // For textarea, adjust the positioning
+        textarea ~ & {
+          top: 1.5rem;
+        }
+      }
+      
+      input, select, textarea {
+        width: 100%;
+        padding: 0.875rem 1rem 0.875rem 2.75rem;
+        border: 1px solid $background-dark;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+        }
+        
+        &.is-invalid {
+          border-color: $secondary-color;
+        }
+        
+        &::placeholder {
+          color: $text-light;
+        }
+      }
+      
+      textarea {
+        min-height: 120px;
+        padding-top: 1.5rem;
+        resize: vertical;
+      }
+    }
+  }
+  
+  .error-message {
+    margin-top: 0.5rem;
+    color: $secondary-color;
+    font-size: 0.875rem;
+  }
+  
+  .photo-upload {
+    margin-bottom: 2rem;
+    
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: $text-dark;
+    }
+    
+    .file-drop-area {
+      border: 2px dashed $background-dark;
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      
+      &.dragover {
+        background-color: rgba($primary-color, 0.05);
+        border-color: $primary-color;
+      }
+      
+      .file-input {
+        display: none;
+      }
+      
+      .file-message {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        
+        svg {
+          color: $text-light;
+          margin-bottom: 1rem;
+        }
+        
+        span {
+          margin-bottom: 0.5rem;
+          color: $text-dark;
+        }
+        
+        small {
+          color: $text-light;
+        }
+        
+        .browse-link {
+          color: $primary-color;
+          cursor: pointer;
+          font-weight: 500;
+          text-decoration: underline;
+          
+          &:hover {
+            color: $primary-dark;
+          }
+        }
+      }
+      
+      .file-preview {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        .file-info {
+          .file-name {
+            font-weight: 500;
+            color: $text-dark;
+            margin-right: 0.5rem;
+          }
+          
+          .file-size {
+            color: $text-light;
+            font-size: 0.875rem;
+          }
+        }
+        
+        .remove-file {
+          background: none;
+          border: none;
+          color: $secondary-color;
+          cursor: pointer;
+          transition: color 0.2s ease;
+          
+          &:hover {
+            color: $secondary-dark;
+          }
+        }
+      }
+    }
+  }
+  
+  .consent-section {
+    margin-bottom: 2rem;
+    
+    .form-check {
+      display: flex;
+      align-items: flex-start;
+      
+      input[type="checkbox"] {
+        margin-top: 0.25rem;
+        margin-right: 0.5rem;
+      }
+      
+      label {
+        font-size: 0.9rem;
+        color: $text-color;
+        
+        a {
+          color: $primary-color;
+          text-decoration: none;
+          
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+  
+  .form-actions {
+    text-align: center;
+    
+    .btn-primary {
+      padding: 1rem 2rem;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      min-width: 250px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      
+      &:hover {
+        background-color: $primary-dark;
+      }
+      
+      &:disabled {
+        background-color: $background-dark;
+        cursor: not-allowed;
+      }
+      
+      .loader {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        
+        .loader-circle {
+          display: inline-block;
+          width: 1rem;
+          height: 1rem;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-radius: 50%;
+          border-top-color: white;
+          animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      }
+    }
+  }
+}
+
+@include mobile {
+  .registration-container {
+    padding: 1.5rem;
+  }
+  
+  .form-header {
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .form-actions {
+    .btn-primary {
+      width: 100%;
+      min-width: auto;
+    }
+  }
+} 

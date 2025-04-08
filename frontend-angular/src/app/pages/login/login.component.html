@@ -1,73 +1,109 @@
-<main class="login-section">
-  <div class="login-container">
-    <h2>Přihlášení do platformy</h2>
-    
-    <div class="user-type-toggle">
-      <button [class.active]="userType === 'student'" (click)="userType = 'student'">Student</button>
-      <button [class.active]="userType === 'mentor'" (click)="userType = 'mentor'">Mentor</button>
-    </div>
+<div class="login-container">
+  
+  <main class="login-section">
+    <div class="login-box">
+      <h1 class="login-title">Přihlášení</h1>
+      <p class="login-subtitle">Vítejte zpět! Přihlaste se ke svému účtu.</p>
 
-    <div *ngIf="errorMessage" class="error-message">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-        <path d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z"/>
-      </svg>
-      {{ errorMessage }}
-    </div>
-
-    <form (ngSubmit)="login()">
-      <div class="form-group">
-        <label for="email">E-mail</label>
-        <div class="input-with-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z"/>
+      <div class="user-type-toggle">
+        <button 
+          [class.active]="userType === 'student'"
+          (click)="userType = 'student'"
+          type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+            <path d="M12 3L1 9l4 2.18v6L12 21l7-3.82v-6l2-1.09V17h2V9L12 3zm6.82 6L12 12.72 5.18 9 12 5.28 18.82 9zM17 15.99l-5 2.73-5-2.73v-3.72L12 15l5-2.73v3.72z"/>
           </svg>
-          <input type="email" id="email" name="email" [(ngModel)]="authRequest.email" required placeholder="zadejte e-mail">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label for="password">Heslo</label>
-        <div class="input-with-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+          Student
+        </button>
+        <button 
+          [class.active]="userType === 'mentor'"
+          (click)="userType = 'mentor'"
+          type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+            <path d="M20 17a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H9.46c.35.61.54 1.3.54 2h10v11h-9v2h9zM12 6h8v2h-8V6zm0 3h8v2h-8V9zm0 3h5v2h-5v-2zM17 4v3H5V4H3v16h5v-3H5v-2h10.54c-.58-.73-1-1.56-1.22-2.5H5v-2h8.54a7 7 0 0 0 1.38-3H5V6h8.04A7 7 0 0 0 17 4z"/>
           </svg>
-          <input type="password" id="password" name="password" [(ngModel)]="authRequest.password" required placeholder="zadejte heslo">
-        </div>
+          Mentor
+        </button>
       </div>
 
-      <div class="form-options">
-        <div class="remember-me">
-          <input type="checkbox" id="remember" name="remember">
-          <label for="remember">Zapamatovat si mě</label>
-        </div>
-        <a href="#" class="forgot-password">Zapomenuté heslo?</a>
+      <div *ngIf="errorMessage" class="error-message">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+          <path fill="#D32F2F" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <span>{{ errorMessage }}</span>
       </div>
 
-      <button type="submit" [disabled]="isLoading" class="btn-primary">
-        <span *ngIf="!isLoading">Přihlásit se</span>
-        <span *ngIf="isLoading" class="loader">
-          <span class="loader-circle"></span>
-          <span class="loader-text">Přihlašování...</span>
-        </span>
-      </button>
-    </form>
+      <form (ngSubmit)="login()" #loginForm="ngForm">
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <div class="input-with-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              [(ngModel)]="authRequest.email" 
+              placeholder="jan.novak@example.cz" 
+              required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Heslo</label>
+          <div class="input-with-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
+              <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z"/>
+            </svg>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              [(ngModel)]="authRequest.password" 
+              placeholder="Zadejte své heslo" 
+              required>
+          </div>
+          <div class="password-helpers">
+            <a href="/forgot-password" class="forgot-password">Zapomněli jste heslo?</a>
+          </div>
+        </div>
+        
+        <button 
+          type="submit" 
+          class="btn-login" 
+          [disabled]="!loginForm.form.valid || isLoading">
+          <span *ngIf="!isLoading">Přihlásit se</span>
+          <span *ngIf="isLoading" class="spinner">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+            </svg>
+          </span>
+        </button>
+      </form>
 
-    <div class="divider">
-      <span>nebo se přihlaste pomocí</span>
-    </div>
+      <div class="separator">
+        <span>nebo se přihlaste pomocí</span>
+      </div>
 
-    <div class="oauth-buttons">
-      <button (click)="loginWithGoogle()" class="btn btn-google">
-        Přihlásit přes Google
-      </button>
-      <button (click)="loginWithLinkedIn()" class="btn btn-linkedin">
-        Přihlásit přes LinkedIn
-      </button>
-    </div>
+      <div class="oauth-buttons">
+        <button type="button" class="btn-oauth btn-google" (click)="loginWithGoogle()">
+          <img src="/assets/icons/google.svg" alt="Google">
+          <span>Google</span>
+        </button>
+        <button type="button" class="btn-oauth btn-linkedin" (click)="loginWithLinkedin()">
+          <img src="/assets/icons/linkedin.svg" alt="LinkedIn">
+          <span>LinkedIn</span>
+        </button>
+      </div>
 
-    <div class="signup-link">
-      Ještě nemáte účet? <a (click)="goToRegistration()">Zaregistrujte se</a>
+      <div class="signup-link">
+        Nemáte účet? <a (click)="navigateToRegister()">Zaregistrujte se zde</a>
+      </div>
     </div>
-  </div>
-</main>
+  </main>
+
+  <footer class="login-footer">
+  </footer>
+</div>

@@ -1,104 +1,325 @@
-<header>
-    <div class="logo">
-        <a routerLink="/"> 
-            <h1><span class="mentor">Mentor</span><span class="connect">lik</span></h1>
-        </a>
+<main class="registration-section">
+  <div class="registration-container">
+    <div class="form-header">
+      <h2>Staňte se mentorem</h2>
+      <p>Připojte se k našemu týmu expertů a pomáhejte ostatním růst v jejich kariéře. Sdílejte své zkušenosti a znalosti s těmi, kteří to potřebují.</p>
     </div>
-</header>
 
-<main class="registration-container">
-    <section class="intro-section">
-        <h2>Staňte se součástí našeho týmu</h2>
-        <p>Pomáhejte ostatním, vydělávejte a získejte cenné zkušenosti. Děkujeme za váš zájem o tuto příležitost. Vyplňte níže uvedený formulář a my vaši žádost co nejdříve zvážíme.</p>
-    </section>
-
-    <form class="mentor-registration-form" method="POST" enctype="multipart/form-data">
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="registration-form">
+      <div class="form-section">
+        <h3>Osobní informace</h3>
         <div class="form-group">
-            <label for="fullname">Vaše jméno a příjmení *</label>
-            <input type="text" id="fullname" name="fullname" required>
-            <small>Takto budete viditelní na webu</small>
+          <label for="fullname">Celé jméno *</label>
+          <div class="input-with-icon">
+            <input 
+              type="text" 
+              id="fullname" 
+              formControlName="fullname" 
+              placeholder="Zadejte své celé jméno"
+              [ngClass]="{ 'is-invalid': submitted && fullnameControl?.errors }"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c0-.001-.001-.004-.004-.004H3.004a.01.01 0 0 0-.004.004 4.3 4.3 0 0 1 .13-.232C3.862 11.316 5.02 10 8 10c2.98 0 4.138 1.316 4.862 3.764.016.077.023.154.023.232z"/>
+            </svg>
+          </div>
+          <div *ngIf="submitted && fullnameControl?.errors" class="error-message">
+            Zadejte prosím své jméno
+          </div>
         </div>
-
+        
         <div class="form-group">
-            <label for="email">E-mailová adresa *</label>
-            <input type="email" id="email" name="email" required>
-            <small>Na tuto adresu vám pošleme pozvánku do osobního účtu</small>
+          <label for="email">E-mail *</label>
+          <div class="input-with-icon">
+            <input 
+              type="email" 
+              id="email" 
+              formControlName="email" 
+              placeholder="Zadejte svůj e-mail"
+              [ngClass]="{ 'is-invalid': submitted && emailControl?.errors }"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+            </svg>
+          </div>
+          <div *ngIf="submitted && emailControl?.errors" class="error-message">
+            <div *ngIf="emailControl?.errors?.['required']">E-mail je povinný</div>
+            <div *ngIf="emailControl?.errors?.['email']">Zadejte platný e-mail</div>
+          </div>
         </div>
-
+        
         <div class="form-group">
-            <label for="telegram">Váš LinkedIn profil</label>
-            <input type="text" id="telegram" name="telegram" required>
-            <small>Náš bot vás propojí s přijatými žádostmi</small>
+          <label for="linkedin">LinkedIn profil</label>
+          <div class="input-with-icon">
+            <input 
+              type="text" 
+              id="linkedin" 
+              formControlName="linkedin" 
+              placeholder="Zadejte URL svého LinkedIn profilu"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
+            </svg>
+          </div>
         </div>
-
+      </div>
+      
+      <div class="form-section">
+        <h3>Profesní informace</h3>
+        
         <div class="form-group">
-            <label for="photo">Vaše profilová fotografie *</label>
-            <input type="file" id="photo" name="photo" accept="image/*" required>
-            <small>Pomůže vám lépe se představit (prosím, ne více než 2 MB). Nejlépe tam, kde jste uprostřed.</small>
-            <div class="file-drop-area">Přiložit soubor nebo sem přetáhněte soubory</div>
+          <label for="position">Pozice *</label>
+          <div class="input-with-icon">
+            <input 
+              type="text" 
+              id="position" 
+              formControlName="position" 
+              placeholder="Vaše aktuální pozice"
+              [ngClass]="{ 'is-invalid': submitted && positionControl?.errors }"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M6.5 1A1.5 1.5 0 0 0 5 2.5V3H1.5A1.5 1.5 0 0 0 0 4.5v1.384l7.614 2.03a1.5 1.5 0 0 0 .772 0L16 5.884V4.5A1.5 1.5 0 0 0 14.5 3H11v-.5A1.5 1.5 0 0 0 9.5 1h-3zm0 1h3a.5.5 0 0 1 .5.5V3H6v-.5a.5.5 0 0 1 .5-.5z"/>
+              <path d="M0 12.5A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5V6.85L8.129 8.947a.5.5 0 0 1-.258 0L0 6.85v5.65z"/>
+            </svg>
+          </div>
+          <div *ngIf="submitted && positionControl?.errors" class="error-message">
+            Zadejte prosím svou aktuální pozici
+          </div>
         </div>
-
+        
         <div class="form-group">
-            <label for="position">Pozice *</label>
-            <input type="text" id="position" name="position" required>
+          <label for="company">Společnost *</label>
+          <div class="input-with-icon">
+            <input 
+              type="text" 
+              id="company" 
+              formControlName="company" 
+              placeholder="Název vaší společnosti"
+              [ngClass]="{ 'is-invalid': submitted && companyControl?.errors }"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022zM6 8.694 1 10.36V15h5V8.694zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5V15z"/>
+              <path d="M2 11h1v1H2v-1zm2 0h1v1H4v-1zm-2 2h1v1H2v-1zm2 0h1v1H4v-1zm4-4h1v1H8V9zm2 0h1v1h-1V9zm-2 2h1v1H8v-1zm2 0h1v1h-1v-1zm2-2h1v1h-1V9zm0 2h1v1h-1v-1zM8 7h1v1H8V7zm2 0h1v1h-1V7zm2 0h1v1h-1V7zM8 5h1v1H8V5zm2 0h1v1h-1V5zm2 0h1v1h-1V5zm0-2h1v1h-1V3z"/>
+            </svg>
+          </div>
+          <div *ngIf="submitted && companyControl?.errors" class="error-message">
+            Zadejte prosím název vaší společnosti
+          </div>
         </div>
-
+        
         <div class="form-group">
-            <label for="company">Společnost *</label>
-            <input type="text" id="company" name="company" required>
-            <small>Pokud pracujete na více místech, uveďte hlavní společnost. Ostatní zmíněte v popisu "O sobě".</small>
+          <label for="experience">Roky zkušeností *</label>
+          <div class="input-with-icon">
+            <input 
+              type="number" 
+              id="experience" 
+              formControlName="experience" 
+              placeholder="Počet let zkušeností"
+              [ngClass]="{ 'is-invalid': submitted && experienceControl?.errors }"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8.5 5.5a.5.5 0 0 0-1 0v3.362l-1.429 2.38a.5.5 0 1 0 .858.515l1.5-2.5A.5.5 0 0 0 8.5 9V5.5z"/>
+              <path d="M6.5 0a.5.5 0 0 0 0 1H7v1.07a7.001 7.001 0 0 0-3.273 12.474l-.602.602a.5.5 0 0 0 .707.708l.746-.746A6.97 6.97 0 0 0 8 16a6.97 6.97 0 0 0 3.422-.892l.746.746a.5.5 0 0 0 .707-.708l-.601-.602A7.001 7.001 0 0 0 9 2.07V1h.5a.5.5 0 0 0 0-1h-3zm1.038 3.018a6.093 6.093 0 0 1 .924 0 6 6 0 1 1-.924 0zM0 8a8 8 0 1 0 16 0A8 8 0 0 0 0 8z"/>
+            </svg>
+          </div>
+          <div *ngIf="submitted && experienceControl?.errors" class="error-message">
+            Zadejte prosím vaše roky zkušeností
+          </div>
         </div>
-
+      </div>
+      
+      <div class="form-section">
+        <h3>Specializace a dovednosti</h3>
+        
         <div class="form-group">
-            <label for="bio">Povězte nám o sobě *</label>
-            <textarea id="bio" name="bio" required></textarea>
-            <small>Ideálně dva až tři odstavce o tom, kde jste pracovali a co vás zajímá v profesním poli.</small>
-        </div>
-
-        <div class="form-group">
-            <label for="help">S čím můžete pomoci? *</label>
-            <textarea id="help" name="help" required></textarea>
-            <small>Text rozdělte na body. Uveďte, na jakou úroveň mentee se zaměřujete.</small>
-        </div>
-
-        <div class="form-group">
-            <label for="experience">Zkušenosti *</label>
-            <input type="number" id="experience" name="experience" min="0" required>
-            <small>Kolik let působíte v oboru?</small>
-        </div>
-
-        <div class="form-group">
-            <label for="specialization">Vaše specializace *</label>
-            <input type="text" id="specialization" name="specialization" required>
-            <small>Až 5 tagů. Podle nich vás budou hledat.</small>
-        </div>
-
-        <div class="form-group">
-            <label for="skills">Dovednosti a technologie *</label>
-            <input type="text" id="skills" name="skills" required>
-            <small>Seznamte své dovednosti, které nabízíte ke konzultaci, oddělené čárkami.</small>
-        </div>
-
-        <div class="form-group">
-            <label for="rate">Cena konzultace *</label>
-            <select id="rate" name="rate" required>
-                <option value="agreement">Po dohodě</option>
-                <option value="fixed">Fixní sazba</option>
+          <label for="specialization">Oblast specializace *</label>
+          <div class="input-with-icon">
+            <select 
+              id="specialization" 
+              formControlName="specialization"
+              [ngClass]="{ 'is-invalid': submitted && specializationControl?.errors }"
+            >
+              <option value="">Vyberte oblast specializace</option>
+              <option value="frontend">Frontend Development</option>
+              <option value="backend">Backend Development</option>
+              <option value="fullstack">Full Stack Development</option>
+              <option value="mobile">Mobile Development</option>
+              <option value="devops">DevOps</option>
+              <option value="data">Data Science</option>
+              <option value="ux">UX/UI Design</option>
+              <option value="qa">Quality Assurance</option>
+              <option value="project">Project Management</option>
+              <option value="other">Jiné</option>
             </select>
+          </div>
+          <div *ngIf="submitted && specializationControl?.errors" class="error-message">
+            Vyberte prosím vaši oblast specializace
+          </div>
         </div>
-
+        
         <div class="form-group">
-            <label for="calendar">Odkaz na kalendář</label>
-            <input type="url" id="calendar" name="calendar">
-            <small>Pokud používáte kalendářní systémy (např. Calendly.com), přidejte odkaz na svůj kalendář.</small>
+          <label for="skills">Klíčové dovednosti *</label>
+          <div class="input-with-icon">
+            <input 
+              type="text" 
+              id="skills" 
+              formControlName="skills" 
+              placeholder="Oddělte dovednosti čárkou (např. JavaScript, React, Node.js)"
+              [ngClass]="{ 'is-invalid': submitted && skillsControl?.errors }"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/>
+            </svg>
+          </div>
+          <div *ngIf="submitted && skillsControl?.errors" class="error-message">
+            Zadejte prosím vaše klíčové dovednosti
+          </div>
         </div>
-
+        
         <div class="form-group">
-            <button type="submit" class="cta-button">Odeslat žádost</button>
+          <label for="bio">O vás *</label>
+          <div class="input-with-icon">
+            <textarea 
+              id="bio" 
+              formControlName="bio" 
+              placeholder="Popište své profesní zkušenosti a přístup k mentoringu (max 500 znaků)"
+              [ngClass]="{ 'is-invalid': submitted && bioControl?.errors }"
+            ></textarea>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+              <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+          </div>
+          <div *ngIf="submitted && bioControl?.errors" class="error-message">
+            Představte se prosím potenciálním studentům
+          </div>
         </div>
+      </div>
+      
+      <div class="form-section">
+        <h3>Mentorství</h3>
+        
+        <div class="form-group">
+          <label for="help">Jak můžete pomoci *</label>
+          <div class="input-with-icon">
+            <textarea 
+              id="help" 
+              formControlName="help" 
+              placeholder="Popište, jak můžete studentům pomoci v jejich kariéře"
+              [ngClass]="{ 'is-invalid': submitted && helpControl?.errors }"
+            ></textarea>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+              <path d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z"/>
+            </svg>
+          </div>
+          <div *ngIf="submitted && helpControl?.errors" class="error-message">
+            Popište prosím, jak můžete studentům pomoci
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="rate">Hodinová sazba (Kč) *</label>
+          <div class="input-with-icon">
+            <input 
+              type="number" 
+              id="rate" 
+              formControlName="rate" 
+              placeholder="Vaše hodinová sazba v Kč"
+              [ngClass]="{ 'is-invalid': submitted && rateControl?.errors }"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M4 10.781c.148 1.667 1.513 2.85 3.591 3.003V15h1.043v-1.216c2.27-.179 3.678-1.438 3.678-3.3 0-1.59-.947-2.51-2.956-3.028l-.722-.187V3.467c1.122.11 1.879.714 2.07 1.616h1.47c-.166-1.6-1.54-2.748-3.54-2.875V1H7.591v1.233c-1.939.23-3.27 1.472-3.27 3.156 0 1.454.966 2.483 2.661 2.917l.61.162v4.031c-1.149-.17-1.94-.8-2.131-1.718H4zm3.391-3.836c-1.043-.263-1.6-.825-1.6-1.616 0-.944.704-1.641 1.8-1.828v3.495l-.2-.05zm1.591 1.872c1.287.323 1.852.859 1.852 1.769 0 1.097-.826 1.828-2.2 1.939V8.73l.348.086z"/>
+            </svg>
+          </div>
+          <div *ngIf="submitted && rateControl?.errors" class="error-message">
+            Zadejte prosím vaši hodinovou sazbu
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="calendar">Odkaz na kalendář</label>
+          <div class="input-with-icon">
+            <input 
+              type="text" 
+              id="calendar" 
+              formControlName="calendar" 
+              placeholder="Odkaz na váš kalendář (např. Calendly, Google Calendar)"
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="photo-upload">
+        <h3>Profilová fotografie</h3>
+        <div 
+          class="file-drop-area" 
+          (dragover)="onDragOver($event)" 
+          (dragleave)="onDragLeave($event)" 
+          (drop)="onDrop($event)"
+          [class.dragover]="isDragover"
+        >
+          <input 
+            type="file" 
+            class="file-input" 
+            #fileInput
+            accept="image/*" 
+            (change)="onFileSelected($event)"
+          >
+          
+          <div class="file-message" *ngIf="!selectedFile">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+              <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708l3-3z"/>
+            </svg>
+            <span>
+              Přetáhněte svou fotografii sem nebo
+              <a class="browse-link" (click)="triggerFileInput()">procházejte soubory</a>
+            </span>
+            <small>Podporované formáty: JPG, PNG, GIF. Maximální velikost: 5MB</small>
+          </div>
+          
+          <div class="file-preview" *ngIf="selectedFile">
+            <div class="file-info">
+              <span class="file-name">{{ selectedFile.name }}</span>
+              <span class="file-size">{{ formatFileSize(selectedFile.size) }}</span>
+            </div>
+            <button type="button" class="remove-file" (click)="removeFile()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="submitted && !selectedFile" class="error-message">
+          Nahrajte prosím svou profilovou fotografii
+        </div>
+      </div>
+      
+      <div class="consent-section">
+        <div class="form-check">
+          <input type="checkbox" id="termsConsent" formControlName="termsConsent">
+          <label for="termsConsent">
+            Souhlasím s <a href="#" target="_blank">podmínkami služby</a> a <a href="#" target="_blank">zásadami ochrany osobních údajů</a>.
+          </label>
+        </div>
+        <div *ngIf="submitted && termsConsentControl?.errors" class="error-message">
+          Pro pokračování musíte souhlasit s podmínkami
+        </div>
+      </div>
+      
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" [disabled]="isLoading">
+          <span *ngIf="!isLoading">Odeslat žádost o mentorství</span>
+          <span *ngIf="isLoading" class="loader">
+            <span class="loader-circle"></span>
+            <span class="loader-text">Odesílání...</span>
+          </span>
+        </button>
+      </div>
     </form>
+  </div>
 </main>
-
-<footer>
-    <p>© 2024 MentorConnect. Všechna práva vyhrazena.</p>
-</footer>

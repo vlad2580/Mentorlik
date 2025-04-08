@@ -2,7 +2,7 @@
     <h2>FAQ</h2>
 
     <div class="faq-container">
-        <div class="faq-item" *ngFor="let item of faqItems">
+        <div class="faq-item" *ngFor="let item of faqs">
             <div class="faq-question" [class.active]="item.isOpen" (click)="toggleFaq(item)">
                 {{ item.question }}
                 <span class="icon">{{ item.isOpen ? '-' : '+' }}</span>

@@ -1,0 +1,798 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9f9f9;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.75rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #3f51b5;
+    border: 1px solid #3f51b5;
+}
+
+.btn-primary:hover {
+    background-color: #303f9f;
+    border-color: #303f9f;
+}
+
+.btn-secondary {
+    color: #3f51b5;
+    background-color: transparent;
+    border: 1px solid #3f51b5;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(63, 81, 181, 0.1);
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #8f9bda;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(63, 81, 181, 0.25);
+}
+
+/* Utilities */
+.text-center {
+    text-align: center;
+}
+
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mt-4 { margin-top: 1.5rem; }
+.mt-5 { margin-top: 3rem; }
+
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.mb-5 { margin-bottom: 3rem; }
+
+/* Sidebar animation */
+#sidebar.closed {
+    transform: translateX(-100%); /* Example for hiding sidebar */
+    transition: transform 0.3s ease-in-out; /* Smooth transition */
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
+    
+    h3 {
+        font-size: 1.5rem;
+    }
+}
+
+/* Styles for the header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #fff;
+    /* Fix the header on scroll */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Logo styles */
+.logo h1 {
+    font-size: 2rem;
+    /* Add some style to the logo */
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+/* Styles for the words "Mentor" and "Connect" in the logo */
+.mentor {
+    color: #333;
+    font-weight: bold;
+}
+
+.connect {
+    color: #ff6f3d;
+    font-weight: bold;
+}
+
+/* Navigation styles */
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    /* Add smooth color transition on hover */
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #ff6f3d;
+}
+
+/* Hero section with call-to-action */
+.hero {
+    padding: 100px 0;
+    background-color: #fff;
+    color: #333;
+    /* Add background image */
+    background-image: url('assets/images/hero-background.jpg');
+    background-size: cover;
+    background-position: center;
+    /* Overlay a semi-transparent layer for better text readability */
+    position: relative;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+.hero h2 {
+    font-size: 3rem;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 1;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* Call-to-action button */
+.cta-button {
+    padding: 15px 30px;
+    background-color: #ff6f3d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+.cta-button:hover {
+    background-color: #ff5722;
+}
+
+/* Footer styles */
+footer {
+    padding: 20px 0;
+    background-color: #fff;
+    font-size: 0.9rem;
+    margin-top: 0px;
+    color: #666;
+}
+
+/* "How it works" section */
+.how-it-works {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px;
+    text-align: center;
+    
+  }
+  
+ 
+  .title {
+    font-size: 2.5rem;
+    color: #ff6f3d;
+    margin-bottom: 50px;
+}
+  
+  
+  .steps {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .step {
+    flex: 1 1 calc(33% - 20px);
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.3s ease;
+  }
+  
+  .step:hover {
+    transform: translateY(-5px);
+  }
+  
+  .icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+    color: #FF5722;
+    text-align: center;
+  }
+  
+  .step h3{
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .step p{
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #666;
+  }
+
+/* Mentor section */
+.mentors-section {
+    padding: 60px;
+    background-color: #f9f9f9;
+}
+
+.mentors-section h2 {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.mentors-section h2 span:first-child {
+    color: #ff6f3d;
+}
+
+.mentors-section h2 span:last-child {
+    color: #007bff;
+}
+
+/* Search bar styles */
+.search-bar input {
+    width: 80%;
+    padding: 15px;
+    font-size: 16px;
+    margin-bottom: 30px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Filter tags */
+.filter-tags {
+    margin-bottom: 30px;
+}
+
+.tag {
+    padding: 10px 20px;
+    background-color: #eee;
+    border: none;
+    margin-right: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tag:hover {
+    background-color: #ddd;
+}
+
+/* Mentor card grid */
+.mentors-grid {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Mentor cards */
+.mentor-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 220px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mentor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mentor-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Mentor name styles */
+.mentor-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+}
+
+/* Additional mentor info */
+.mentor-card p {
+    font-size: 1rem;
+    color: #666;
+}
+
+/* Placeholder mentor cards */
+.mentor-card.placeholder {
+    background-color: #eee;
+    border: 2px dashed #ccc;
+    padding: 30px;
+    text-align: center;
+}
+
+/* Sponsors section */
+.sponsors {
+    background-color: #fdf6e3;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.sponsors h2 {
+    font-size: 2.5rem;
+    color: #ff6f3d;
+    margin-bottom: 50px;
+}
+
+.image-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.sponsor-image{
+    width: 300px;
+    height: 100px;
+    margin: 20px;
+}
+/* FAQ section */
+
+.faq-section {
+    background-color: #f9f9f9;
+    padding: 60px 0;
+    text-align: center;
+}
+
+.faq-section h2 {
+    font-size: 2.5rem;
+    color: #ff6f3d;
+    margin-bottom: 50px;
+}
+
+.faq-container {
+            max-width: 80%;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+.faq-item {
+            border-bottom: 1px solid #ddd;
+        }
+.faq-item:last-child {
+            border-bottom: none;
+        }
+.faq-question {
+            cursor: pointer;
+            padding: 15px;
+            background: #f4f4f4;
+            margin: 0;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+.faq-answer {
+            display: none;
+            padding: 15px;
+            background: #fff;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #333;
+        }
+.faq-question:hover {
+            background: #eaeaea;
+        }
+.faq-question .icon {
+            transition: transform 0.3s;
+        }
+.faq-question.active .icon {
+            transform: rotate(45deg);
+        }
+
+
+/* Login page */
+
+/* Стиль для секции логина */
+.login-section {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 40px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.login-heading {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.login-group {
+    margin-bottom: 20px;
+}
+
+.login-label {
+    display: block;
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.login-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.login-button {
+    width: 100%;
+    padding: 15px;
+    background-color: #ff6f3d;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #ff5722;
+}
+
+.login-text {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.login-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+/* Стили для переключателя ролей */
+.role-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.role-option {
+    margin: 0 10px;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.role-option input {
+    margin-right: 5px;
+    transform: scale(1.2); /* Увеличиваем размер радиокнопок */
+}
+
+/* Стили для активного состояния */
+.role-option input:checked + label {
+    font-weight: bold;
+    color: #ff6f3d;
+}
+
+/* Стили для каждого блока статьи */
+.blog-posts article {
+    border: 1px solid #ccc; /* Рамка вокруг */
+    border-radius: 8px; /* Скругленные углы */
+    background-color: #fff; /* Белый фон */
+    padding: 16px; /* Внутренний отступ */
+    margin: 16px 0; /* Отступ между блоками */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Легкая тень */
+}
+
+.blog-posts article a {
+    color: #0077cc;
+    text-decoration: none; /* Убираем подчеркивание */
+    font-weight: bold;
+}
+
+.blog-posts article a:hover {
+    text-decoration: underline; /* Подчеркивание при наведении */
+}
+
+
+/* Donate Intro Block */
+.donate-intro {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f7f7f7; /* Более контрастный светло-серый фон */
+    border-radius: 10px; /* Скругленные углы */
+    text-align: center;
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Мягкая тень */
+}
+
+.donate-intro h1 {
+    font-size: 36px;
+    color: #333; /* Темный цвет заголовка */
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; /* Расстояние между эмодзи и текстом */
+}
+
+.donate-intro h1 span {
+    font-size: 1.2em; /* Увеличенный размер эмодзи */
+}
+
+.donate-intro p {
+    font-size: 18px;
+    color: #555; /* Нейтральный цвет текста */
+    line-height: 1.8; /* Удобное межстрочное расстояние */
+    margin-bottom: 15px;
+}
+
+/* Donation Options Section */
+.donate-options {
+    text-align: center;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f7f7f7;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+}
+
+.donate-options h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.donate-options .options {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.donate-options .options label {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.donate-options .options img {
+    width: 100px;
+    height: auto;
+    transition: transform 0.3s ease;
+    border: 2px solid transparent;
+    border-radius: 10px;
+}
+
+.donate-options .options input[type="radio"] {
+    display: none;
+}
+
+.donate-options .options input[type="radio"]:checked + img {
+    transform: scale(1.1);
+    border: 2px solid #0077cc;
+}
+
+.donation-form {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.donation-form.hidden {
+    display: none;
+}
+
+.donation-form input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    max-width: 150px;
+}
+
+.donation-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #0077cc;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.donation-form button:hover {
+    background-color: #005fa3;
+}
+/* Supporters Section */
+.supporters {
+    padding: 60px;
+    background-color: #f4f6f8; /* Light gray background */
+    text-align: center;
+    border-radius: 20px; /* Rounded corners */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow for elevation */
+    max-width: 800px;
+    margin: 40px auto; /* Center the section */
+}
+
+.supporters h2 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.supporters p.subtitle {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.supporters .supporter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.supporters .supporter-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Light shadow for cards */
+    color: #333;
+    font-family: 'Arial', sans-serif;
+}
+
+.supporters .supporter-card p {
+    margin: 0;
+    text-align: left;
+}
+
+.supporters .supporter-card p strong {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.supporters .supporter-card p span {
+    font-size: 0.9rem;
+    color: #777;
+}
+
+.supporters .supporter-card .emoji {
+    font-size: 1.5rem;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+

@@ -1,0 +1,14 @@
+@import '../../../styles/abstracts/variables';
+
+:host {
+  display: block;
+  background-color: $footer-bg;
+  color: $footer-text;
+  text-align: center;
+  padding: 1rem;
+  
+  p {
+    margin: 0;
+    font-size: 0.85rem;
+  }
+} 
