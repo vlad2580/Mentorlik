@@ -44,6 +44,14 @@ public interface StudentProfileRepository extends JpaRepository<StudentProfile, 
     List<StudentProfile> findByEducationLevel(String educationLevel);
     
     /**
+     * Проверяет существует ли студент с указанным email.
+     *
+     * @param email email для проверки
+     * @return true если студент с указанным email существует, иначе false
+     */
+    boolean existsByEmail(String email);
+    
+    /**
      * Ищет студентов по нескольким критериям с помощью JPQL-запроса.
      *
      * @param searchTerm общий поисковый термин

@@ -127,9 +127,23 @@
   }
   
   .error-message {
-    margin-top: 0.5rem;
-    color: $secondary-color;
+    color: $danger-color;
     font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    
+    svg {
+      margin-right: 0.5rem;
+    }
+    
+    &.global-error {
+      margin: 1rem 0;
+      padding: 0.75rem;
+      background-color: rgba($danger-color, 0.08);
+      border-radius: 4px;
+      font-weight: 500;
+    }
   }
   
   .photo-upload {

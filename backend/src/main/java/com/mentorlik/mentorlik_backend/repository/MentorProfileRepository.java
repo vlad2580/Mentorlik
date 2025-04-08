@@ -42,4 +42,12 @@ public interface MentorProfileRepository extends JpaRepository<MentorProfile, Lo
      */
     Optional<MentorProfile> findByEmail(String email);
 
+    /**
+     * Проверяет существует ли ментор с указанным email.
+     *
+     * @param email email для проверки
+     * @return true если ментор с указанным email существует, иначе false
+     */
+    boolean existsByEmail(String email);
+
 }

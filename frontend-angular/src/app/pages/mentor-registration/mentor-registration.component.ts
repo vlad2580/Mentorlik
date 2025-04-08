@@ -1,7 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
+import { MentorService } from '../../services/mentor.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-mentor-registration',
@@ -18,8 +20,13 @@ export class MentorRegistrationComponent implements OnInit {
   isDragover = false;
   isLoading = false;
   submitted = false;
+  errorMessage: string | null = null;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private mentorService: MentorService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.registrationForm = this.formBuilder.group({
@@ -61,15 +68,21 @@ export class MentorRegistrationComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
+    this.errorMessage = null;
 
     // проверяем валидность формы и наличие фото
-    if (this.registrationForm.invalid || !this.selectedFile) {
+    if (this.registrationForm.invalid) {
+      this.errorMessage = 'Prosím, vyplňte všechna povinná pole.';
+      return;
+    }
+
+    if (!this.selectedFile) {
+      this.errorMessage = 'Prosím, nahrajte profilovou fotografii.';
       return;
     }
 
     this.isLoading = true;
 
-    // Здесь будет логика отправки данных на сервер
     // Создаем объект FormData для отправки файла и данных формы
     const formData = new FormData();
     
@@ -83,20 +96,40 @@ export class MentorRegistrationComponent implements OnInit {
       formData.append('photo', this.selectedFile);
     }
 
-    // Имитируем отправку данных
-    setTimeout(() => {
-      console.log('Form data to be sent:', formData);
-      // После успешной отправки
-      this.isLoading = false;
-      alert('Vaše žádost byla úspěšně odeslána! Budeme vás kontaktovat co nejdříve.');
-      this.resetForm();
-    }, 2000);
+    // Отправляем данные на сервер
+    this.mentorService.registerMentor(formData).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        // После успешной отправки перенаправляем на страницу подтверждения
+        this.router.navigate(['/registration-success']);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.isLoading = false;
+        
+        if (error.status === 0) {
+          // Ошибка соединения
+          this.errorMessage = 'Nelze se připojit k serveru. Zkontrolujte své připojení k internetu.';
+        } else if (error.status === 400) {
+          // Ошибка валидации
+          this.errorMessage = error.error?.message || 'Neplatná data. Prosím, zkontrolujte zadané údaje.';
+        } else if (error.status === 409) {
+          // Конфликт (например, email уже существует)
+          this.errorMessage = 'Uživatel s tímto e-mailem již existuje.';
+        } else {
+          // Другие ошибки
+          this.errorMessage = 'Došlo k chybě. Zkuste to prosím znovu později.';
+        }
+        
+        console.error('Registration error:', error);
+      }
+    });
   }
 
   resetForm() {
     this.submitted = false;
     this.registrationForm.reset();
     this.selectedFile = null;
+    this.errorMessage = null;
   }
 
   onFileSelected(event: Event) {

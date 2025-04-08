@@ -99,4 +99,16 @@ public class UserService {
                 .role(admin.getRole())
                 .build();
     }
+
+    /**
+     * Checks if a user exists with the given email address.
+     *
+     * @param email the email address to check
+     * @return true if a user exists with the given email, false otherwise
+     */
+    public boolean existsByEmail(String email) {
+        return adminRepository.existsByEmail(email) ||
+               mentorRepository.existsByEmail(email) ||
+               studentRepository.existsByEmail(email);
+    }
 }
