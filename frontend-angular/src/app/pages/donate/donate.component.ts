@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './donate.component.html',
-  styleUrl: './donate.component.css'
+  styleUrls: ['./donate.component.scss']
 })
 export class DonateComponent {
 
