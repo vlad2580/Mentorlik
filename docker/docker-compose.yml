@@ -66,6 +66,24 @@ services:
     depends_on:
       - backend
     restart: unless-stopped
+    
+  # pgAdmin - PostgreSQL Admin
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: mentorlik_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@mentorlik.com}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      - mentorlik-network
+    depends_on:
+      - db
+    restart: unless-stopped
 
 networks:
   mentorlik-network:

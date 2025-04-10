@@ -13,3 +13,6 @@ logs/
 docker/postgres/data/
 
 docker/elasticsearch/
+
+# pgAdmin data
+docker/pgadmin/
