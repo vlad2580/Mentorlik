@@ -1,0 +1,31 @@
+name: Deploy Angular to EC2 (dev branch)
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Set up SSH access
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H 18.193.12.203 >> ~/.ssh/known_hosts
+
+    - name: Deploy to EC2
+      run: |
+        ssh ubuntu@18.193.12.203 << 'EOF'
+          cd ~/Mentorlik/frontend-angular
+          git pull origin dev
+          npm install
+          npm run build
+          sudo chmod -R o+rX ./dist
+          sudo systemctl restart nginx
+        EOF
