@@ -48,11 +48,6 @@ if (-not $isPostgresReady) {
 }
 
 # Check if ports are available
-if (Test-PortInUse -port 8080) {
-    Write-Host "Port 8080 is already in use. Please free the port and try again."
-    exit 1
-}
-
 if (Test-PortInUse -port 4200) {
     Write-Host "Port 4200 is already in use. Please free the port and try again."
     exit 1
@@ -67,19 +62,18 @@ spring.datasource.password=mentorlik_password
 "@
 $propertiesContent | Out-File -FilePath "backend\src\main\resources\application-local.properties" -Encoding utf8
 
-# Start Spring Boot application in a new window
-Write-Host "Starting Spring Boot application..."
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd backend; .\mvnw clean spring-boot:run '-Dspring-boot.run.profiles=dev,local'"
-
-# Wait for Spring Boot to start
-Start-Sleep -Seconds 10
+Write-Host "⚠️ IMPORTANT: Backend is NOT started automatically!"
+Write-Host "Start the backend through your IDE in debug mode:"
+Write-Host "1. Open MentorlikBackendApplication.java"
+Write-Host "2. Right-click → Debug"
+Write-Host "3. Make sure 'dev,local' profiles are activated"
 
 # Start Angular application in a new window
 Write-Host "Starting Angular application..."
 Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd frontend-angular; npm install; ng serve"
 
 Write-Host "Local development environment is running!"
-Write-Host "Backend is available at: http://localhost:8080"
+Write-Host "After starting the backend through IDE it will be available at: http://localhost:8080"
 Write-Host "Frontend is available at: http://localhost:4200"
 Write-Host "pgAdmin is available at: http://localhost:5050"
 Write-Host "Database is available at: localhost:5434" 

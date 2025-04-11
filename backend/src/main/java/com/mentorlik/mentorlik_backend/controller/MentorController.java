@@ -1,23 +1,22 @@
 package com.mentorlik.mentorlik_backend.controller;
 
 import com.mentorlik.mentorlik_backend.dto.ApiResponse;
-import com.mentorlik.mentorlik_backend.dto.profile.MentorProfileDto;
-import com.mentorlik.mentorlik_backend.service.MentorService;
-import com.mentorlik.mentorlik_backend.service.MentorSearchService;
+import com.mentorlik.mentorlik_backend.dto.MentorCreationRequest;
+import com.mentorlik.mentorlik_backend.model.MentorCreation;
+import com.mentorlik.mentorlik_backend.service.MentorCreationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import java.util.Base64;
 import java.util.List;
 
 /**
- * Контроллер для управления данными менторов.
+ * Controller for handling mentor creation.
  * <p>
- * Предоставляет эндпоинты для получения, создания, обновления и удаления
- * информации о менторах в системе.
+ * Provides an endpoint for creating mentors, including
+ * uploading their profile photos.
  * </p>
  */
 @Slf4j
@@ -25,101 +24,89 @@ import java.util.List;
 @RequestMapping("/api/mentors")
 public class MentorController {
 
-    private final MentorService mentorService;
-    private final MentorSearchService mentorSearchService;
+    private final MentorCreationService mentorCreationService;
 
     /**
-     * Создает экземпляр контроллера менторов.
+     * Creates an instance of the mentor controller.
      *
-     * @param mentorService сервис для работы с данными менторов
-     * @param mentorSearchService сервис для расширенного поиска менторов
+     * @param mentorCreationService service for creating mentors
      */
-    public MentorController(MentorService mentorService, MentorSearchService mentorSearchService) {
-        this.mentorService = mentorService;
-        this.mentorSearchService = mentorSearchService;
+    public MentorController(MentorCreationService mentorCreationService) {
+        this.mentorCreationService = mentorCreationService;
     }
 
     /**
-     * Получает список всех менторов.
+     * Retrieves all mentor creation requests.
      *
-     * @return ответ со списком всех менторов
+     * @return a list of all mentor creation requests
      */
     @GetMapping
-    public ResponseEntity<ApiResponse<List<MentorProfileDto>>> getAllMentors() {
-        log.info("Запрос на получение всех менторов");
-        List<MentorProfileDto> mentors = mentorService.getAllMentors();
+    public ResponseEntity<ApiResponse<List<MentorCreation>>> getAllMentors() {
+        log.info("Retrieving all mentor creation requests");
+        List<MentorCreation> mentors = mentorCreationService.getAllMentorCreations();
         return ResponseEntity.ok(ApiResponse.success(mentors));
     }
 
     /**
-     * Получает ментора по ID.
+     * Retrieves a mentor creation request by ID.
      *
-     * @param id идентификатор ментора
-     * @return ответ с информацией о менторе
+     * @param id the ID of the mentor creation request
+     * @return the mentor creation request with the given ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<MentorProfileDto>> getMentorById(@PathVariable Long id) {
-        log.info("Запрос на получение ментора с ID: {}", id);
-        MentorProfileDto mentor = mentorService.getMentorById(id);
-        return ResponseEntity.ok(ApiResponse.success(mentor));
+    public ResponseEntity<ApiResponse<MentorCreation>> getMentorById(@PathVariable Long id) {
+        log.info("Retrieving mentor creation request with ID: {}", id);
+        try {
+            MentorCreation mentor = mentorCreationService.getMentorCreationById(id);
+            return ResponseEntity.ok(ApiResponse.success(mentor));
+        } catch (Exception e) {
+            log.error("Error retrieving mentor with ID: {}", id, e);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.error("Mentor with ID " + id + " not found"));
+        }
     }
 
     /**
-     * Обновляет данные ментора.
+     * Creates a new mentor in the system.
+     * <p>
+     * Accepts mentor data in JSON format.
+     * </p>
      *
-     * @param id идентификатор ментора
-     * @param mentorDto данные ментора для обновления
-     * @return ответ с обновленной информацией о менторе
+     * @param request mentor data in JSON format
+     * @return response with information about the created mentor
      */
-    @PutMapping("/{id}")
-    @PreAuthorize("hasRole('MENTOR') and @mentorSecurityService.isMentorOwner(authentication, #id)")
-    public ResponseEntity<ApiResponse<MentorProfileDto>> updateMentor(
-            @PathVariable Long id,
-            @Valid @RequestBody MentorProfileDto mentorDto) {
-        log.info("Запрос на обновление ментора с ID: {}", id);
-        MentorProfileDto updatedMentor = mentorService.updateMentor(id, mentorDto);
-        return ResponseEntity.ok(ApiResponse.success(updatedMentor, "Данные ментора успешно обновлены"));
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse<Void>> createMentor(@RequestBody MentorCreationRequest request) {
+        log.info("Received request to create a new mentor (JSON): {}", request.getEmail());
+        
+        try {
+            // Data preparation and service call
+            if (request.getPhoto() == null && request.getPhotoBase64() != null) {
+                // Convert photo from Base64
+                try {
+                    byte[] decodedPhoto = Base64.getDecoder().decode(request.getPhotoBase64());
+                    request.setPhoto(decodedPhoto);
+                    log.info("Photo successfully decoded from Base64, size: {} bytes", decodedPhoto.length);
+                } catch (IllegalArgumentException e) {
+                    log.error("Error decoding Base64 photo: {}", e.getMessage());
+                    return ResponseEntity
+                            .badRequest()
+                            .body(ApiResponse.error("Invalid photo format. Please try again."));
+                }
+            }
+            
+            mentorCreationService.createMentor(request);
+            
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(ApiResponse.success(null, "Mentor was successfully created"));
+            
+        } catch (Exception e) {
+            log.error("Error creating mentor", e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(ApiResponse.error("An unexpected error occurred. Please try again later."));
+        }
     }
-
-    /**
-     * Удаляет ментора из системы.
-     *
-     * @param id идентификатор ментора
-     * @return ответ с подтверждением удаления
-     */
-    @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or (hasRole('MENTOR') and @mentorSecurityService.isMentorOwner(authentication, #id))")
-    public ResponseEntity<ApiResponse<Void>> deleteMentor(@PathVariable Long id) {
-        log.info("Запрос на удаление ментора с ID: {}", id);
-        mentorService.deleteMentor(id);
-        return ResponseEntity.ok(ApiResponse.success(null, "Ментор успешно удален"));
-    }
-
-    /**
-     * Ищет менторов по заданным критериям (базовый поиск).
-     *
-     * @param query строка поиска (имя, навыки и т.д.)
-     * @return ответ со списком найденных менторов
-     */
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<MentorProfileDto>>> searchMentors(@RequestParam String query) {
-        log.info("Запрос на поиск менторов по запросу: {}", query);
-        List<MentorProfileDto> mentors = mentorService.searchMentors(query);
-        return ResponseEntity.ok(ApiResponse.success(mentors));
-    }
-
-    /**
-     * Создает нового ментора.
-     *
-     * @param mentorDto данные нового ментора
-     * @return ответ с информацией о созданном менторе
-     */
-    @PostMapping
-    public ResponseEntity<ApiResponse<MentorProfileDto>> createMentor(@Valid @RequestBody MentorProfileDto mentorDto) {
-        log.info("Запрос на создание нового ментора");
-        MentorProfileDto createdMentor = mentorService.createMentor(mentorDto);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(ApiResponse.success(createdMentor, "Ментор успешно создан"));
-    }
-} 
+}

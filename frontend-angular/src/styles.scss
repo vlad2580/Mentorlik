@@ -1,4 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'ngx-toastr/toastr';
+
+/* Стили для Toast-уведомлений */
+.toast-container .ngx-toastr {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.toast-success {
+  background-color: #4CAF50;
+}
+
+.toast-error {
+  background-color: #F44336;
+}
+
+.toast-info {
+  background-color: #2196F3;
+}
+
+.toast-warning {
+  background-color: #FF9800;
+}
 
 /* Basic styles */
 * {

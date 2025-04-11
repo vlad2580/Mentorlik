@@ -9,19 +9,19 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * Entity class representing a mentor registration request.
+ * Entity class representing a mentor creation request.
  * <p>
- * Stores all information provided during the mentor registration process,
+ * Stores all information provided during the mentor creation process,
  * including personal information, professional details, and profile photo.
  * </p>
  */
 @Entity
-@Table(name = "mentor_registrations")
+@Table(name = "mentor_creations")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MentorRegistration {
+public class MentorCreation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,7 +70,7 @@ public class MentorRegistration {
     @Column(name = "photo_content_type", nullable = false, length = 50)
     private String photoContentType;
 
-    @Column(name = "application_date", nullable = false)
+    @Column(name = "creation_date", nullable = false)
     private LocalDateTime applicationDate;
 
     @Column(nullable = false, length = 20)

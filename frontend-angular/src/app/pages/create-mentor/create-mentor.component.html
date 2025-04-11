@@ -329,5 +329,27 @@
         </button>
       </div>
     </form>
+
+    <!-- Модальное окно успеха -->
+    <div *ngIf="showSuccessModal" class="success-modal">
+      <div class="success-modal-content">
+        <div class="success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64">
+            <circle cx="12" cy="12" r="10" fill="#4CAF50"/>
+            <path fill="#FFFFFF" d="M10 17l-5-5 1.41-1.42L10 14.17l7.59-7.59L19 8z"/>
+          </svg>
+        </div>
+        
+        <h2>Žádost o mentorství byla úspěšně odeslána!</h2>
+        
+        <p>
+          Děkujeme za Váš zájem stát se mentorem v naší komunitě. 
+          Váš požadavek bude přezkoumán naším týmem a budeme Vás kontaktovat 
+          co nejdříve (obvykle do 3 pracovních dnů).
+        </p>
+        
+        <button class="btn-primary" (click)="closeSuccessModal()">Zavřít</button>
+      </div>
+    </div>
   </div>
 </main>

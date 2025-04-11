@@ -1,5 +1,6 @@
 package com.mentorlik.mentorlik_backend.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,24 +13,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * </p>
  */
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class WebConfig {
 
-    /**
-     * Configures Cross-Origin Resource Sharing (CORS) rules for the application.
-     * <p>
-     * This method allows requests from specified sources and configures
-     * allowed methods, headers, and the configuration time-to-live.
-     * </p>
-     *
-     * @param registry CORS configuration registry
-     */
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedOrigins("http://localhost:4200", "https://mentorlik.com") // Angular application
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .allowCredentials(true)
-                .maxAge(3600); // 1 hour
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true)
+                        .maxAge(3600); // 1 час кэширования preflight запросов
+            }
+        };
     }
 } 

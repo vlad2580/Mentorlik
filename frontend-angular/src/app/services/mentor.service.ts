@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class MentorService {
-  private apiUrl = `${environment.apiUrl}/api`;
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {
     console.log('MentorService initialized with API URL:', this.apiUrl);
@@ -30,7 +30,7 @@ export class MentorService {
   }
 
   // Создание нового ментора через JSON API
-  createMentor(mentorData: Mentor): Observable<Mentor> {
+  createMentor(mentorData: any): Observable<Mentor> {
     console.log('Creating new mentor with JSON data:', mentorData);
     return this.http.post<Mentor>(`${this.apiUrl}/mentors`, mentorData)
       .pipe(
