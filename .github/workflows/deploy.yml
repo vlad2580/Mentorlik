@@ -22,8 +22,9 @@ jobs:
     - name: Deploy to EC2
       run: |
         ssh ubuntu@18.193.12.203 << 'EOF'
-          cd ~/Mentorlik/frontend-angular
+          cd ~/Mentorlik
           git pull origin dev
+          cd frontend-angular
           npm install
           npm run build
           sudo chmod -R o+rX ./dist
