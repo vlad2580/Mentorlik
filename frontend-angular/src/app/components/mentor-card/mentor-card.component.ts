@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 interface Mentor {
   id?: number;
@@ -15,7 +16,7 @@ interface Mentor {
 @Component({
   selector: 'app-mentor-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './mentor-card.component.html',
   styleUrl: './mentor-card.component.scss'
 })

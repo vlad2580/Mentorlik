@@ -3,7 +3,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { LoginComponent } from './pages/login/login.component';
 import { DonateComponent } from './pages/donate/donate.component';
-import { MentorRegistrationComponent } from './pages/mentor-registration/mentor-registration.component';
+import { CreateMentorComponent } from './pages/create-mentor/create-mentor.component';
 import { RegistrationSelectorComponent } from './pages/registration-selector/registration-selector.component';
 import { CabinetStudentComponent } from './pages/cabinet-student/cabinet-student.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
@@ -15,7 +15,7 @@ export const routes: Routes = [
   { path: 'blog', component: BlogComponent },
   { path: 'login', component: LoginComponent },
   { path: 'donate', component: DonateComponent },
-  { path: 'mentor-registration', component: MentorRegistrationComponent },
+  { path: 'create-mentor', component: CreateMentorComponent },
   { path: 'registration-selector', component: RegistrationSelectorComponent },
   { path: 'registration-success', component: RegistrationSuccessComponent },
   { 

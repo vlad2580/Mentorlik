@@ -1,8 +1,8 @@
 spring:
     datasource:
         url: jdbc:postgresql://localhost:5434/mentorlik_db
-        username: mentorlik_user
-        password: mentorlik_password
+        username: ${DB_USERNAME:-mentorlik_user}
+        password: ${DB_PASSWORD:-mentorlik_password}
     jpa:
         hibernate:
             ddl-auto: update
@@ -10,6 +10,7 @@ spring:
         properties:
             hibernate:
                 format_sql: true
+                dialect: org.hibernate.dialect.PostgreSQLDialect
     security:
         oauth2:
             client:
@@ -53,3 +54,4 @@ logging:
         org.springframework.security: DEBUG
         com.mentorlik: DEBUG
         org.hibernate.SQL: DEBUG
+        org.hibernate.type.descriptor.sql.BasicBinder: TRACE

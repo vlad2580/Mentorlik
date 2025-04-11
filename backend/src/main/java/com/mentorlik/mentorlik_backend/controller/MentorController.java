@@ -115,7 +115,6 @@ public class MentorController {
      * @return ответ с информацией о созданном менторе
      */
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<MentorProfileDto>> createMentor(@Valid @RequestBody MentorProfileDto mentorDto) {
         log.info("Запрос на создание нового ментора");
         MentorProfileDto createdMentor = mentorService.createMentor(mentorDto);

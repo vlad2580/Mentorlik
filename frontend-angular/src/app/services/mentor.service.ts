@@ -29,22 +29,27 @@ export class MentorService {
     return this.http.get<Mentor[]>(`${this.apiUrl}/mentors/search?query=${query}`);
   }
 
-  // Регистрация нового ментора
-  registerMentor(formData: FormData): Observable<any> {
-    console.log('Sending mentor registration request to:', `${this.apiUrl}/mentor-registration`);
-    // Получаем список ключей FormData
-    const formDataKeys: string[] = [];
-    formData.forEach((value, key) => {
-      formDataKeys.push(key);
-    });
-    console.log('FormData keys:', formDataKeys);
-    
-    return this.http.post<any>(`${this.apiUrl}/mentor-registration`, formData)
+  // Создание нового ментора через JSON API
+  createMentor(mentorData: Mentor): Observable<Mentor> {
+    console.log('Creating new mentor with JSON data:', mentorData);
+    return this.http.post<Mentor>(`${this.apiUrl}/mentors`, mentorData)
       .pipe(
-        tap(
-          response => console.log('Registration successful:', response),
-          error => console.error('Registration error:', error)
-        )
+        tap({
+          next: (response) => console.log('Mentor creation successful:', response),
+          error: (error) => console.error('Mentor creation error:', error)
+        })
+      );
+  }
+
+  // Загрузка фото профиля ментора
+  uploadMentorPhoto(mentorId: number, formData: FormData): Observable<any> {
+    console.log(`Uploading photo for mentor ID: ${mentorId}`);
+    return this.http.post<any>(`${this.apiUrl}/mentors/${mentorId}/photo`, formData)
+      .pipe(
+        tap({
+          next: (response) => console.log('Photo upload successful:', response),
+          error: (error) => console.error('Photo upload error:', error)
+        })
       );
   }
 

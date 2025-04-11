@@ -4,4 +4,5 @@
     <p *ngIf="!mentor.isPlaceholder && mentor.position">{{ mentor.position }}</p>
     <p *ngIf="!mentor.isPlaceholder && mentor.experience && mentor.price">{{ mentor.experience }} | {{ mentor.price }}</p>
     <p *ngIf="mentor.isPlaceholder">Staňte se mentorem, sdílejte své zkušenosti a pomáhejte ostatním!</p>
+    <a *ngIf="mentor.isPlaceholder" routerLink="/create-mentor" class="become-mentor-link">Začít</a>
 </div>
