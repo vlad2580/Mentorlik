@@ -20,10 +20,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Обработчик исключений для всех контроллеров API.
+ * Exception handler for all API controllers.
  * <p>
- * Этот класс перехватывает исключения, возникающие в контроллерах,
- * и преобразует их в унифицированные ответы API в формате {@link ApiResponse}.
+ * This class intercepts exceptions that occur in controllers
+ * and transforms them into unified API responses in the {@link ApiResponse} format.
  * </p>
  */
 @Slf4j
@@ -31,11 +31,11 @@ import java.util.stream.Collectors;
 public class ControllerExceptionHandler {
 
     /**
-     * Обрабатывает исключения типа {@link ResourceNotFoundException}.
+     * Handles exceptions of type {@link ResourceNotFoundException}.
      *
-     * @param ex исключение о ненайденном ресурсе
-     * @param request HTTP-запрос
-     * @return ответ API с ошибкой и статусом 404 NOT_FOUND
+     * @param ex the resource not found exception
+     * @param request the HTTP request
+     * @return an API response with error and status 404 NOT_FOUND
      */
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -47,11 +47,11 @@ public class ControllerExceptionHandler {
     }
 
     /**
-     * Обрабатывает исключения валидации запроса.
+     * Handles request validation exceptions.
      *
-     * @param ex исключение валидации аргументов метода
-     * @param request HTTP-запрос
-     * @return ответ API с ошибками валидации и статусом 400 BAD_REQUEST
+     * @param ex the method argument validation exception
+     * @param request the HTTP request
+     * @return an API response with validation errors and status 400 BAD_REQUEST
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -71,18 +71,18 @@ public class ControllerExceptionHandler {
         log.warn("Validation failed: {}", validationErrors);
         return ApiResponse.<Void>builder()
                 .status("error")
-                .message("Ошибка валидации данных")
+                .message("Data validation error")
                 .path(path)
                 .errors(validationErrors)
                 .build();
     }
 
     /**
-     * Обрабатывает исключения неавторизованного доступа.
+     * Handles unauthorized access exceptions.
      *
-     * @param ex исключение доступа
-     * @param request HTTP-запрос
-     * @return ответ API с ошибкой и статусом 403 FORBIDDEN
+     * @param ex the access exception
+     * @param request the HTTP request
+     * @return an API response with error and status 403 FORBIDDEN
      */
     @ExceptionHandler({AccessDeniedException.class, UnauthorizedAccessException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -90,15 +90,15 @@ public class ControllerExceptionHandler {
             Exception ex, WebRequest request) {
         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
         log.warn("Access denied: {}", ex.getMessage());
-        return ApiResponse.error("Доступ запрещен: необходима авторизация", path);
+        return ApiResponse.error("Access denied: Authorization required", path);
     }
 
     /**
-     * Обрабатывает исключения, связанные с неверным OAuth-токеном.
+     * Handles exceptions related to invalid OAuth tokens.
      *
-     * @param ex исключение OAuth-токена
-     * @param request HTTP-запрос
-     * @return ответ API с ошибкой и статусом 401 UNAUTHORIZED
+     * @param ex the OAuth token exception
+     * @param request the HTTP request
+     * @return an API response with error and status 401 UNAUTHORIZED
      */
     @ExceptionHandler(InvalidOAuthTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -106,15 +106,15 @@ public class ControllerExceptionHandler {
             InvalidOAuthTokenException ex, WebRequest request) {
         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
         log.warn("Invalid OAuth token: {}", ex.getMessage());
-        return ApiResponse.error("Недействительный токен аутентификации", path);
+        return ApiResponse.error("Invalid authentication token", path);
     }
 
     /**
-     * Обрабатывает исключения, связанные с повторяющимся email.
+     * Handles exceptions related to duplicate emails.
      *
-     * @param ex исключение существующего email
-     * @param request HTTP-запрос
-     * @return ответ API с ошибкой и статусом 409 CONFLICT
+     * @param ex the existing email exception
+     * @param request the HTTP request
+     * @return an API response with error and status 409 CONFLICT
      */
     @ExceptionHandler(EmailAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -126,11 +126,11 @@ public class ControllerExceptionHandler {
     }
 
     /**
-     * Обрабатывает исключения пользовательской валидации.
+     * Handles custom validation exceptions.
      *
-     * @param ex исключение валидации
-     * @param request HTTP-запрос
-     * @return ответ API с ошибкой и статусом 400 BAD_REQUEST
+     * @param ex the validation exception
+     * @param request the HTTP request
+     * @return an API response with error and status 400 BAD_REQUEST
      */
     @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -142,11 +142,11 @@ public class ControllerExceptionHandler {
     }
 
     /**
-     * Обрабатывает все остальные непредвиденные исключения.
+     * Handles all other unexpected exceptions.
      *
-     * @param ex исключение
-     * @param request HTTP-запрос
-     * @return ответ API с ошибкой и статусом 500 INTERNAL_SERVER_ERROR
+     * @param ex the exception
+     * @param request the HTTP request
+     * @return an API response with error and status 500 INTERNAL_SERVER_ERROR
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -154,6 +154,6 @@ public class ControllerExceptionHandler {
             Exception ex, WebRequest request) {
         String path = ((ServletWebRequest) request).getRequest().getRequestURI();
         log.error("An unexpected error occurred", ex);
-        return ApiResponse.error("Произошла внутренняя ошибка сервера. Пожалуйста, попробуйте позже.", path);
+        return ApiResponse.error("An internal server error occurred. Please try again later.", path);
     }
 } 

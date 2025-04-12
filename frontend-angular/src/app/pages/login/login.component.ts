@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { AuthRequest } from '../../models/auth-request.model';
 
@@ -87,6 +88,6 @@ export class LoginComponent {
   }
 
   navigateToRegister(): void {
-    this.router.navigate(['/registration-selector']);
+    this.router.navigate(['/create-student']);
   }
 }

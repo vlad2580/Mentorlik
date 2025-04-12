@@ -31,9 +31,8 @@
         <button class="select-button" (click)="selectOption(2)">
             <span>Mentor</span>
             <img src="assets/images/mentor-placeholder.jpg" alt="Mentor Option" />
-          
         </button>
-      </div>
+    </div>
 
-      <button id="continue-button" class="continue-button" [disabled]="!selectedOption">Continue</button>
+    <button id="continue-button" class="continue-button" [disabled]="!selectedOption" (click)="continueRegistration()">Continue</button>
 </main>

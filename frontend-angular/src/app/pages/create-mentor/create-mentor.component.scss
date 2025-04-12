@@ -143,6 +143,24 @@
       background-color: rgba($danger-color, 0.08);
       border-radius: 4px;
       font-weight: 500;
+      
+      &.photo-format-error {
+        border: 2px solid $danger-color;
+        background-color: rgba($danger-color, 0.12);
+        animation: pulse 2s infinite;
+      }
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba($danger-color, 0.4);
+    }
+    70% {
+      box-shadow: 0 0 0 6px rgba($danger-color, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba($danger-color, 0);
     }
   }
   

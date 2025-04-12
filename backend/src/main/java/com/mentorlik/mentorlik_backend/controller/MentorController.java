@@ -92,7 +92,7 @@ public class MentorController {
                     log.error("Error decoding Base64 photo: {}", e.getMessage());
                     return ResponseEntity
                             .badRequest()
-                            .body(ApiResponse.error("Invalid photo format. Please try again."));
+                            .body(ApiResponse.error("Invalid photo format. Please check the image file and try again."));
                 }
             }
             
@@ -102,6 +102,19 @@ public class MentorController {
                     .status(HttpStatus.CREATED)
                     .body(ApiResponse.success(null, "Mentor was successfully created"));
             
+        } catch (IllegalArgumentException e) {
+            // Специфическая обработка ошибок валидации, включая проблемы с форматом фото
+            log.error("Validation error creating mentor: {}", e.getMessage());
+            
+            // Выбираем более дружественное сообщение для пользователя
+            String userMessage = e.getMessage();
+            if (userMessage.contains("Invalid photo format")) {
+                userMessage = "Invalid photo format. Only JPEG and PNG formats are supported.";
+            }
+            
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error(userMessage));
         } catch (Exception e) {
             log.error("Error creating mentor", e);
             return ResponseEntity

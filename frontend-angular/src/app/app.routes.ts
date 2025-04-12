@@ -5,6 +5,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { DonateComponent } from './pages/donate/donate.component';
 import { CreateMentorComponent } from './pages/create-mentor/create-mentor.component';
 import { RegistrationSelectorComponent } from './pages/registration-selector/registration-selector.component';
+import { CreateStudentComponent } from './pages/create-student/create-student.component';
 import { CabinetStudentComponent } from './pages/cabinet-student/cabinet-student.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { RegistrationSuccessComponent } from './pages/registration-success/registration-success.component';
@@ -17,6 +18,7 @@ export const routes: Routes = [
   { path: 'donate', component: DonateComponent },
   { path: 'create-mentor', component: CreateMentorComponent },
   { path: 'registration-selector', component: RegistrationSelectorComponent },
+  { path: 'create-student', component: CreateStudentComponent },
   { path: 'registration-success', component: RegistrationSuccessComponent },
   { 
     path: 'cabinet-student', 

@@ -2,7 +2,7 @@ package com.mentorlik.mentorlik_backend.config;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.json.gson.GsonFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +17,7 @@ public class GoogleConfig {
     public GoogleIdTokenVerifier googleIdTokenVerifier() throws GeneralSecurityException, IOException {
         return new GoogleIdTokenVerifier.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(),
-                JacksonFactory.getDefaultInstance())
+                GsonFactory.getDefaultInstance())
                 .setAudience(Collections.singletonList("YOUR_GOOGLE_CLIENT_ID"))
                 .build();
     }

@@ -31,12 +31,27 @@ export class MentorService {
 
   // Создание нового ментора через JSON API
   createMentor(mentorData: any): Observable<Mentor> {
-    console.log('Creating new mentor with JSON data:', mentorData);
+    console.log('MentorService: Creating new mentor with JSON data');
+    console.log('API URL:', `${this.apiUrl}/mentors`);
+    console.log('Request payload size:', JSON.stringify(mentorData).length);
+    
+    // Проверяем доступность API с простым GET-запросом перед отправкой данных
+    this.http.get(`${this.apiUrl}/mentors`).subscribe({
+      next: () => console.log('API health check successful'),
+      error: (err) => console.error('API health check failed:', err)
+    });
+    
     return this.http.post<Mentor>(`${this.apiUrl}/mentors`, mentorData)
       .pipe(
         tap({
           next: (response) => console.log('Mentor creation successful:', response),
-          error: (error) => console.error('Mentor creation error:', error)
+          error: (error) => {
+            console.error('Mentor creation error details:', error);
+            console.error('Error status:', error.status);
+            console.error('Error headers:', error.headers);
+            console.error('Error message:', error.message);
+            console.error('Full error object:', JSON.stringify(error));
+          }
         })
       );
   }

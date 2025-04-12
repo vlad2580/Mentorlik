@@ -13,10 +13,10 @@ import javax.validation.Valid;
 import java.util.List;
 
 /**
- * Контроллер для управления данными студентов.
+ * Controller for managing student data.
  * <p>
- * Предоставляет эндпоинты для получения, создания, обновления и удаления
- * информации о студентах в системе.
+ * Provides endpoints for retrieving, creating, updating, and deleting
+ * student information in the system.
  * </p>
  */
 @Slf4j
@@ -27,99 +27,99 @@ public class StudentController {
     private final StudentService studentService;
 
     /**
-     * Создает экземпляр контроллера студентов.
+     * Creates an instance of the student controller.
      *
-     * @param studentService сервис для работы с данными студентов
+     * @param studentService service for student data operations
      */
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
     /**
-     * Получает список всех студентов.
+     * Gets a list of all students.
      *
-     * @return ответ со списком всех студентов
+     * @return response with a list of all students
      */
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<List<StudentProfileDto>>> getAllStudents() {
-        log.info("Запрос на получение всех студентов");
+        log.info("Request to get all students");
         List<StudentProfileDto> students = studentService.getAllStudents();
         return ResponseEntity.ok(ApiResponse.success(students));
     }
 
     /**
-     * Получает студента по ID.
+     * Gets a student by ID.
      *
-     * @param id идентификатор студента
-     * @return ответ с информацией о студенте
+     * @param id the student identifier
+     * @return response with student information
      */
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or @studentSecurityService.isStudentOwner(authentication, #id)")
     public ResponseEntity<ApiResponse<StudentProfileDto>> getStudentById(@PathVariable Long id) {
-        log.info("Запрос на получение студента с ID: {}", id);
+        log.info("Request to get student with ID: {}", id);
         StudentProfileDto student = studentService.getStudentById(id);
         return ResponseEntity.ok(ApiResponse.success(student));
     }
 
     /**
-     * Обновляет данные студента.
+     * Updates student data.
      *
-     * @param id идентификатор студента
-     * @param studentDto данные студента для обновления
-     * @return ответ с обновленной информацией о студенте
+     * @param id the student identifier
+     * @param studentDto student data for updating
+     * @return response with updated student information
      */
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('STUDENT') and @studentSecurityService.isStudentOwner(authentication, #id)")
     public ResponseEntity<ApiResponse<StudentProfileDto>> updateStudent(
             @PathVariable Long id,
             @Valid @RequestBody StudentProfileDto studentDto) {
-        log.info("Запрос на обновление студента с ID: {}", id);
+        log.info("Request to update student with ID: {}", id);
         StudentProfileDto updatedStudent = studentService.updateStudent(id, studentDto);
-        return ResponseEntity.ok(ApiResponse.success(updatedStudent, "Данные студента успешно обновлены"));
+        return ResponseEntity.ok(ApiResponse.success(updatedStudent, "Student data successfully updated"));
     }
 
     /**
-     * Удаляет студента из системы.
+     * Deletes a student from the system.
      *
-     * @param id идентификатор студента
-     * @return ответ с подтверждением удаления
+     * @param id the student identifier
+     * @return response with deletion confirmation
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN') or (hasRole('STUDENT') and @studentSecurityService.isStudentOwner(authentication, #id))")
     public ResponseEntity<ApiResponse<Void>> deleteStudent(@PathVariable Long id) {
-        log.info("Запрос на удаление студента с ID: {}", id);
+        log.info("Request to delete student with ID: {}", id);
         studentService.deleteStudent(id);
-        return ResponseEntity.ok(ApiResponse.success(null, "Студент успешно удален"));
+        return ResponseEntity.ok(ApiResponse.success(null, "Student successfully deleted"));
     }
 
     /**
-     * Ищет студентов по заданным критериям.
+     * Searches for students based on specified criteria.
      *
-     * @param query строка поиска (имя, учебное направление и т.д.)
-     * @return ответ со списком найденных студентов
+     * @param query search string (name, study field, etc.)
+     * @return response with a list of found students
      */
     @GetMapping("/search")
     @PreAuthorize("hasRole('ADMIN') or hasRole('MENTOR')")
     public ResponseEntity<ApiResponse<List<StudentProfileDto>>> searchStudents(@RequestParam String query) {
-        log.info("Запрос на поиск студентов по запросу: {}", query);
+        log.info("Request to search students with query: {}", query);
         List<StudentProfileDto> students = studentService.searchStudents(query);
         return ResponseEntity.ok(ApiResponse.success(students));
     }
 
     /**
-     * Создает нового студента.
+     * Creates a new student.
      *
-     * @param studentDto данные нового студента
-     * @return ответ с информацией о созданном студенте
+     * @param studentDto new student data
+     * @return response with information about the created student
      */
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<StudentProfileDto>> createStudent(@Valid @RequestBody StudentProfileDto studentDto) {
-        log.info("Запрос на создание нового студента");
+        log.info("Request to create a new student");
         StudentProfileDto createdStudent = studentService.createStudent(studentDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.success(createdStudent, "Студент успешно создан"));
+                .body(ApiResponse.success(createdStudent, "Student successfully created"));
     }
 } 

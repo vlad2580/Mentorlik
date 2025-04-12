@@ -278,7 +278,7 @@
               Přetáhněte svou fotografii sem nebo
               <a class="browse-link" (click)="triggerFileInput()">procházejte soubory</a>
             </span>
-            <small>Podporované formáty: JPG, PNG, GIF. Maximální velikost: 5MB</small>
+            <small>Podporované formáty: JPG, PNG. Maximální velikost: 5MB</small>
           </div>
           
           <div class="file-preview" *ngIf="selectedFile">
@@ -312,7 +312,7 @@
       </div>
       
       <!-- Global error message -->
-      <div *ngIf="errorMessage" class="error-message global-error">
+      <div *ngIf="errorMessage" class="error-message global-error" [ngClass]="{'photo-format-error': errorMessage.includes('photo format')}">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
           <path fill="#D32F2F" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
         </svg>
@@ -330,7 +330,7 @@
       </div>
     </form>
 
-    <!-- Модальное окно успеха -->
+    <!-- Success modal -->
     <div *ngIf="showSuccessModal" class="success-modal">
       <div class="success-modal-content">
         <div class="success-icon">

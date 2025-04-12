@@ -6,18 +6,15 @@ import com.mentorlik.mentorlik_backend.repository.MentorCreationRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Base64;
 
 /**
- * Сервис для обработки создания менторов.
+ * Service for processing mentor creation.
  * <p>
- * Отвечает за валидацию, сохранение и обработку заявок
- * на создание менторов.
+ * Responsible for validation, saving, and processing
+ * mentor creation requests.
  * </p>
  */
 @Slf4j
@@ -34,10 +31,10 @@ public class MentorCreationService {
     );
 
     /**
-     * Создает экземпляр сервиса создания менторов.
+     * Creates an instance of the mentor creation service.
      *
-     * @param mentorCreationRepository репозиторий для сохранения заявок
-     * @param userService сервис для работы с пользователями
+     * @param mentorCreationRepository repository for saving requests
+     * @param userService service for working with users
      */
     public MentorCreationService(
             MentorCreationRepository mentorCreationRepository,
@@ -47,9 +44,9 @@ public class MentorCreationService {
     }
 
     /**
-     * Возвращает все заявки на создание менторов.
+     * Returns all mentor creation requests.
      *
-     * @return список всех заявок на создание менторов
+     * @return list of all mentor creation requests
      */
     @Transactional(readOnly = true)
     public List<MentorCreation> getAllMentorCreations() {
@@ -58,11 +55,11 @@ public class MentorCreationService {
     }
 
     /**
-     * Возвращает заявку на создание ментора по ID.
+     * Returns a mentor creation request by ID.
      *
-     * @param id идентификатор заявки
-     * @return заявка на создание ментора
-     * @throws RuntimeException если заявка не найдена
+     * @param id request identifier
+     * @return mentor creation request
+     * @throws RuntimeException if the request is not found
      */
     @Transactional(readOnly = true)
     public MentorCreation getMentorCreationById(Long id) {
@@ -72,45 +69,45 @@ public class MentorCreationService {
     }
 
     /**
-     * Обрабатывает и сохраняет заявку на создание ментора.
+     * Processes and saves a mentor creation request.
      * <p>
-     * Проверяет данные заявки, сохраняет их в базу данных и отправляет
-     * уведомление администраторам о новом менторе.
+     * Checks the request data, saves it to the database, and sends
+     * a notification to administrators about the new mentor.
      * </p>
      *
-     * @param request данные заявки
-     * @return сохраненную заявку
-     * @throws IllegalArgumentException если данные заявки некорректны
+     * @param request request data
+     * @return saved request
+     * @throws IllegalArgumentException if the request data is invalid
      */
     @Transactional
     public MentorCreation createMentor(MentorCreationRequest request) {
-        log.info("Обработка новой заявки на создание ментора: {}", request.getEmail());
+        log.info("Processing new mentor creation request: {}", request.getEmail());
 
-        // Проверка на существующего пользователя с таким email
+        // Check for existing user with this email
         if (userService.existsByEmail(request.getEmail())) {
-            log.warn("Пользователь с email {} уже существует", request.getEmail());
+            log.warn("User with email {} already exists", request.getEmail());
             throw new IllegalArgumentException("User with email " + request.getEmail() + " already exists");
         }
 
-        // Проверка типа содержимого фото
+        // Check photo content type
         validatePhotoContentType(request.getPhotoContentType());
 
-        // Создание и сохранение заявки
+        // Create and save request
         MentorCreation creation = createMentorCreation(request);
         MentorCreation savedCreation = mentorCreationRepository.save(creation);
 
-        // Здесь можно добавить логику отправки уведомления администраторам
-        // о новой заявке, например, через EmailService
+        // Here you can add logic to send notifications to administrators
+        // about the new request, for example, through EmailService
 
-        log.info("Заявка на создание ментора успешно сохранена: {}", savedCreation.getId());
+        log.info("Mentor creation request successfully saved: {}", savedCreation.getId());
         return savedCreation;
     }
 
     /**
-     * Создает объект заявки на создание ментора из данных запроса.
+     * Creates a mentor creation request object from request data.
      *
-     * @param request данные запроса
-     * @return объект заявки
+     * @param request request data
+     * @return request object
      */
     private MentorCreation createMentorCreation(MentorCreationRequest request) {
         try {
@@ -139,10 +136,10 @@ public class MentorCreationService {
     }
 
     /**
-     * Проверяет соответствие типа содержимого фото допустимым значениям.
+     * Checks if the photo content type matches allowed values.
      *
-     * @param contentType тип содержимого фото
-     * @throws IllegalArgumentException если тип содержимого недопустим
+     * @param contentType photo content type
+     * @throws IllegalArgumentException if the content type is not allowed
      */
     private void validatePhotoContentType(String contentType) {
         if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType)) {

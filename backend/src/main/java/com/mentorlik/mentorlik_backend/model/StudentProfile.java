@@ -59,4 +59,10 @@ public class StudentProfile extends User {
      */
     @Column(nullable = false)
     private Boolean isAvailableForMentorship;
+    
+    /**
+     * Flag indicating whether the student's email has been verified.
+     */
+    @Column(nullable = false)
+    private Boolean emailVerified = false;
 }

@@ -1,0 +1,154 @@
+<div class="registration-container">
+  <div class="registration-form">
+    <h2>Registrace studenta</h2>
+    
+    <div *ngIf="registrationSuccess" class="success-message">
+      <h3>Registrace byla úspěšná!</h3>
+      <p>Na váš e-mail jsme poslali ověřovací odkaz. Prosím, klikněte na odkaz pro dokončení registrace.</p>
+    </div>
+    
+    <form *ngIf="!registrationSuccess" [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Jméno a příjmení *</label>
+        <input 
+          type="text" 
+          id="name" 
+          formControlName="name" 
+          placeholder="Zadejte své jméno a příjmení"
+          [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+        >
+        <div *ngIf="submitted && f['name'].errors" class="error-message">
+          <div *ngIf="f['name'].errors['required']">Jméno je povinné</div>
+          <div *ngIf="f['name'].errors['maxlength']">Jméno nesmí překročit 100 znaků</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">E-mail *</label>
+        <div class="input-with-icon">
+          <input 
+            type="email" 
+            id="email" 
+            formControlName="email" 
+            placeholder="Zadejte svůj e-mail"
+            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+          </svg>
+        </div>
+        <div *ngIf="submitted && f['email'].errors" class="error-message">
+          <div *ngIf="f['email'].errors['required']">E-mail je povinný</div>
+          <div *ngIf="f['email'].errors['email']">Zadejte platný e-mail</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Heslo *</label>
+        <div class="input-with-icon">
+          <input 
+            type="password" 
+            id="password" 
+            formControlName="password" 
+            placeholder="Zadejte heslo (min. 8 znaků)"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+          </svg>
+        </div>
+        <div *ngIf="submitted && f['password'].errors" class="error-message">
+          <div *ngIf="f['password'].errors['required']">Heslo je povinné</div>
+          <div *ngIf="f['password'].errors['minlength']">Heslo musí mít alespoň 8 znaků</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="fieldOfStudy">Obor studia *</label>
+        <input 
+          type="text" 
+          id="fieldOfStudy" 
+          formControlName="fieldOfStudy" 
+          placeholder="Např. Informatika, Ekonomie, Medicína"
+          [ngClass]="{ 'is-invalid': submitted && f['fieldOfStudy'].errors }"
+        >
+        <div *ngIf="submitted && f['fieldOfStudy'].errors" class="error-message">
+          <div *ngIf="f['fieldOfStudy'].errors['required']">Obor studia je povinný</div>
+          <div *ngIf="f['fieldOfStudy'].errors['maxlength']">Obor studia nesmí překročit 100 znaků</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="educationLevel">Úroveň vzdělání *</label>
+        <select 
+          id="educationLevel" 
+          formControlName="educationLevel"
+          [ngClass]="{ 'is-invalid': submitted && f['educationLevel'].errors }"
+        >
+          <option value="">Vyberte úroveň vzdělání</option>
+          <option value="Střední škola">Střední škola</option>
+          <option value="Bakalářské studium">Bakalářské studium</option>
+          <option value="Magisterské studium">Magisterské studium</option>
+          <option value="Doktorské studium">Doktorské studium</option>
+          <option value="Jiné">Jiné</option>
+        </select>
+        <div *ngIf="submitted && f['educationLevel'].errors" class="error-message">
+          <div *ngIf="f['educationLevel'].errors['required']">Úroveň vzdělání je povinná</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="learningGoals">Vzdělávací cíle *</label>
+        <textarea 
+          id="learningGoals" 
+          formControlName="learningGoals" 
+          placeholder="Popište své vzdělávací cíle a co byste se chtěli naučit od mentora"
+          [ngClass]="{ 'is-invalid': submitted && f['learningGoals'].errors }"
+        ></textarea>
+        <div *ngIf="submitted && f['learningGoals'].errors" class="error-message">
+          <div *ngIf="f['learningGoals'].errors['required']">Vzdělávací cíle jsou povinné</div>
+          <div *ngIf="f['learningGoals'].errors['maxlength']">Vzdělávací cíle nesmí překročit 500 znaků</div>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>Dovednosti</label>
+        <div class="skills-input">
+          <input 
+            type="text" 
+            #skillInput 
+            placeholder="Zadejte dovednost a stiskněte Enter"
+            (keyup.enter)="addSkill(skillInput.value); skillInput.value = ''"
+          >
+        </div>
+        <div class="skills-list">
+          <span class="skill-tag" *ngFor="let skill of registrationForm.get('skills')?.value; let i = index">
+            {{ skill }}
+            <button type="button" class="remove-skill" (click)="removeSkill(i)">×</button>
+          </span>
+        </div>
+      </div>
+      
+      <div class="form-group checkbox-group">
+        <input 
+          type="checkbox" 
+          id="isAvailableForMentorship" 
+          formControlName="isAvailableForMentorship"
+        >
+        <label for="isAvailableForMentorship">Jsem k dispozici pro mentoring</label>
+      </div>
+      
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+      
+      <div class="form-group actions">
+        <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+          <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Registrovat
+        </button>
+        <a routerLink="/login" class="btn btn-link">Zpět na přihlášení</a>
+      </div>
+    </form>
+  </div>
+</div>
