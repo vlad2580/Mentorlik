@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api', // URL API-сервера для разработки
-  authUrl: 'http://localhost:8080/auth' // URL для аутентификации
+  apiUrl: '/api', // URL API-сервера (относительный путь для проксирования через nginx)
+  authUrl: '/auth' // URL для аутентификации (относительный путь для проксирования через nginx)
 }; 

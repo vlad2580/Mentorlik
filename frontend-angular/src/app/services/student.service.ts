@@ -19,7 +19,13 @@ export class StudentService {
       .pipe(
         tap({
           next: (response) => console.log('Student creation successful:', response),
-          error: (error) => console.error('Student creation error:', error)
+          error: (error) => {
+            console.error('Student creation error:', error);
+            console.error('Error status:', error.status);
+            console.error('Error message:', error.message);
+            console.error('Error details:', error.error);
+            console.error('Full error object:', JSON.stringify(error));
+          }
         })
       );
   }
