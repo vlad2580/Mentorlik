@@ -1,5 +1,5 @@
 # Check if Docker is running
-$dockerStatus = docker info 2>&1
+docker info 2>&1 | Out-Null
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Docker is not running. Please start Docker and try again."
     exit 1

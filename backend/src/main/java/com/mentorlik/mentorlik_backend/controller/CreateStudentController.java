@@ -6,7 +6,6 @@ import com.mentorlik.mentorlik_backend.dto.registration.CreateStudentRequest;
 import com.mentorlik.mentorlik_backend.exception.validation.EmailAlreadyExistsException;
 import com.mentorlik.mentorlik_backend.service.StudentService;
 import com.mentorlik.mentorlik_backend.service.VerificationService;
-import com.mentorlik.mentorlik_backend.model.StudentProfile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

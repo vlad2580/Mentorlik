@@ -1,68 +1,150 @@
-# MentorConnect - README
+# MentorLik
 
-## Popis projektu
+## Project Description
 
-**MentorConnect** je webová aplikace určená k propojení uživatelů s mentory v oblasti IT. Uživatelé mohou vyhledávat mentory na základě jejich specializace, zkušeností a cenových preferencí, a mentoři mohou sdílet své znalosti s ostatními.
+**MentorLik** is a web application designed to connect users with IT mentors. Users can search for mentors based on their specialization, experience, and price preferences, while mentors can share their knowledge with others.
 
-## Struktura projektu
+## Technology Stack
 
-Projekt je postaven na frameworku **Django** s využitím **PostgreSQL** jako databáze. Frontend používá HTML, CSS a JavaScript pro zajištění interaktivního a uživatelsky přívětivého rozhraní. Tento soubor slouží jako přehled hlavních částí projektu.
+### Backend
+- **Spring Boot**: Java-based framework
+- **PostgreSQL**: Main database for storing information about mentors, users, and consultation bookings
+- **Spring Security**: For authentication and authorization
+- **JPA/Hibernate**: For database interaction
+- **JWT**: For secure authentication
+- **Elasticsearch**: For advanced search capabilities
 
-### 1. **Složka `/static`**
-   - Obsahuje všechny statické soubory používané na webu, jako jsou styly CSS, obrázky a skripty JavaScriptu.
+### Frontend
+- **Angular**: Modern frontend framework
+- **SCSS/CSS**: For styling
+- **Nginx**: For serving the frontend application
 
-   - **Struktura:**
-     - `/static/css/` - obsahuje soubory stylů CSS.
-     - `/static/js/` - obsahuje JavaScriptové soubory.
-     - `/static/images/` - obsahuje obrázky používané v aplikaci, například profilové obrázky mentorů a ikony.
+### Infrastructure
+- **Docker/Docker Compose**: For containerization and orchestration
+- **Maven**: For backend dependency management
+- **npm**: For frontend dependency management
 
-### 2. **Složka `/templates`**
-   - Obsahuje HTML šablony, které se používají ve spojení s Django backendem pro vykreslení stránek.
+## Project Structure
 
-   - **Hlavní šablony:**
-     - `index.html` - hlavní stránka s výpisem mentorů a sekcemi, jako je vyhledávání, filtrování, a informace o projektu.
-     - `mentor_profile.html` - stránka s podrobnostmi o konkrétním mentorovi.
+### 1. `/backend` Directory
+- Java Spring Boot application
+- Contains all server-side logic, database interactions, and API endpoints
+- Key files:
+  - `pom.xml`: Maven configuration with all dependencies
+  - `src/main/java/`: Contains all Java source code
+  - `src/main/resources/`: Contains configuration files
+  - `Dockerfile`: For containerizing the backend
 
-### 3. **Složka `/mentorconnect`**
-   - Obsahuje všechny důležité soubory aplikace Django, jako jsou:
-     - `models.py` - definuje databázové modely, včetně modelů pro mentory a uživatele.
-     - `views.py` - obsahuje logiku, která řídí zpracování požadavků a vykreslování stránek.
-     - `urls.py` - definuje URL trasy pro aplikaci.
-     - `forms.py` - definuje formuláře používané na stránkách, například pro registraci mentorů.
+### 2. `/frontend-angular` Directory
+- Angular-based frontend application
+- Contains all UI components, services, and assets
+- Key files:
+  - `package.json`: npm dependencies and scripts
+  - `src/app/`: Contains Angular components, services, and modules
+  - `src/assets/`: Contains static assets like images
+  - `src/styles/`: Contains global styles
+  - `Dockerfile`: For containerizing the frontend
 
-### 4. **Složka `/media`**
-   - Obsahuje nahrané soubory, které mohou uživatelé nebo mentoři poskytnout, například profilové fotografie.
+### 3. `/docker` Directory
+- Contains Docker Compose configurations for development and production
+- Key files:
+  - `docker-compose.yml`: Main Docker Compose configuration
+  - `docker-compose.dev.yml`: Development-specific configuration
+  - `/postgres/`: Configuration files for PostgreSQL
+  - `/pgadmin/`: Configuration files for pgAdmin
 
-### 5. **Databáze**
-   - **PostgreSQL** je použita jako hlavní databáze pro ukládání informací o mentorech, uživatelích a rezervacích konzultací.
-   - Pro připojení k databázi jsou přihlašovací údaje uloženy v souboru `settings.py`.
+## Setup and Running
 
-### 6. **Soubor `settings.py`**
-   - Tento soubor obsahuje základní nastavení Django projektu, včetně konfigurace databáze, statických souborů a médií.
-   - Zde jsou také definována různá nastavení pro vývoj a produkční prostředí.
+### Prerequisites
+- Docker and Docker Compose
+- Java 21
+- Node.js and npm
+- Maven
 
-### 7. **JavaScriptové funkce**
-   - JavaScriptové funkce jsou definovány v souboru `/static/js/scripts.js`, které řídí dynamické prvky na stránce, například filtrování mentorů nebo zpracování vyhledávání.
+### Development Environment
 
-## Pravidla
+#### Option 1: Using the Script
+Run the development environment using the provided script:
 
-1. **Komentáře v kódu**:
-   - Pro lepší spolupráci a srozumitelnost projektu by měly být všechny komentáře v kódu psány výhradně **v anglickém jazyce**.
-   - To umožní, aby všichni členové týmu, včetně případných mezinárodních spolupracovníků, mohli snadno rozumět a pracovat s kódem.
+```bash
+# For Linux/macOS
+./start-dev.sh
 
-2. **Větve pro různé části projektu**:
-   - Pro usnadnění vývoje a správu verzí by měl být každému směru vývoje (frontend, backend, databáze atd.) přidělen samostatný branch.
-   - Příklad větví:
-     - `frontend` – pro vývoj a změny na uživatelském rozhraní (HTML, CSS, JavaScript).
-     - `backend` – pro změny týkající se serverové logiky, databázových interakcí, nebo API.
-     - `devops` – pro infrastrukturu, nasazování a konfiguraci CI/CD.
-   - Změny by měly být začleněny do hlavní větve prostřednictvím **pull requestů**, po důkladném peer review.
+# For Windows
+./start-dev.ps1
+```
 
-## Spuštění projektu
+This will:
+1. Start PostgreSQL database and pgAdmin
+2. Run the Spring Boot backend on http://localhost:8080
+3. Run the Angular frontend on http://localhost:4200
 
-### Lokální prostředí
+#### Option 2: Manual Setup
 
-1. **Klonování repozitáře:**
+1. **Start the Database**:
    ```bash
-   git clone https://github.com/uzivatel/mentorconnect.git
-   cd mentorconnect
+   cd docker
+   docker-compose -f docker-compose.dev.yml up -d
+   ```
+
+2. **Start the Backend**:
+   ```bash
+   cd backend
+   SPRING_PROFILES_ACTIVE=dev \
+   SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5434/mentorlik_db \
+   SPRING_DATASOURCE_USERNAME=mentorlik_user \
+   SPRING_DATASOURCE_PASSWORD=mentorlik_password \
+   ./mvnw spring-boot:run
+   ```
+
+3. **Start the Frontend**:
+   ```bash
+   cd frontend-angular
+   npm install
+   ng serve
+   ```
+
+### Production Deployment
+
+To deploy the entire application stack:
+
+```bash
+cd docker
+docker-compose up -d
+```
+
+This will start:
+- PostgreSQL database
+- Spring Boot backend
+- Angular frontend (served via Nginx)
+- pgAdmin for database management
+
+The application will be available at: http://localhost:80
+
+## Development Guidelines
+
+1. **Code Comments**:
+   - All code comments should be written exclusively in **English** for better collaboration and readability of the project.
+   - This allows all team members, including potential international collaborators, to easily understand and work with the code.
+
+2. **Development Branches**:
+   - Each development direction (frontend, backend, database, etc.) should be assigned a separate branch.
+   - Example branches:
+     - `frontend` – for user interface development (Angular, SCSS)
+     - `backend` – for server-side logic, database interactions, or API changes
+     - `devops` – for infrastructure, deployment, and CI/CD configuration
+   - Changes should be incorporated into the main branch through **pull requests**, after thorough peer review.
+
+## Available Services
+
+When running the complete stack:
+- **Frontend**: http://localhost (port 80)
+- **Backend API**: http://localhost:8080
+- **pgAdmin**: http://localhost:5050 (default credentials: admin@mentorlik.com / admin)
+- **PostgreSQL**: localhost:5434 (default credentials: mentorlik_user / mentorlik_password)
+
+## Additional Information
+
+For more information on the specific components:
+- Angular frontend: See `/frontend-angular/README.md`
+- Backend API documentation: Available at http://localhost:8080/swagger-ui.html when the backend is running
