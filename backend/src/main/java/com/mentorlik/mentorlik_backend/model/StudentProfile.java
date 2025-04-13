@@ -58,7 +58,7 @@ public class StudentProfile extends User {
      * Indicates whether the student is actively looking for mentors.
      */
     @Column(nullable = false)
-    private Boolean isAvailableForMentorship;
+    private Boolean isAvailableForMentorship = false;
     
     /**
      * Flag indicating whether the student's email has been verified.

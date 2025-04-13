@@ -12,19 +12,7 @@ export class StudentService {
 
   constructor(private http: HttpClient) { }
 
-  // Register a new student
-  registerStudent(studentData: any): Observable<any> {
-    console.log('Registering new student:', studentData);
-    return this.http.post<any>(`${this.apiUrl}/students/register`, studentData)
-      .pipe(
-        tap({
-          next: (response) => console.log('Student registration successful:', response),
-          error: (error) => console.error('Student registration error:', error)
-        })
-      );
-  }
-
-  // Create student (new method name for registerStudent)
+  // Create student
   createStudent(studentData: any): Observable<any> {
     console.log('Creating new student:', studentData);
     return this.http.post<any>(`${this.apiUrl}/students/create-student`, studentData)
@@ -38,7 +26,7 @@ export class StudentService {
 
   // Verify student email
   verifyEmail(token: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/students/register/verify?token=${token}`)
+    return this.http.get<any>(`${this.apiUrl}/students/create-student/verify?token=${token}`)
       .pipe(
         tap({
           next: (response) => console.log('Email verification successful:', response),

@@ -52,7 +52,7 @@ export class CreateStudentComponent implements OnInit {
 
     this.isLoading = true;
     this.studentService.createStudent(this.registrationForm.value)
-      .subscribe({
+      .subscribe({ 
         next: () => {
           this.isLoading = false;
           this.registrationSuccess = true;

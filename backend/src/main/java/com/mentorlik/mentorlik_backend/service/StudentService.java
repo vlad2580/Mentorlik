@@ -193,7 +193,16 @@ public class StudentService {
         student.setName(studentDto.getName());
         student.setFieldOfStudy(studentDto.getFieldOfStudy());
         student.setEducationLevel(studentDto.getEducationLevel());
-        // Removing non-existent methods
+        student.setLearningGoals(studentDto.getLearningGoals());
+        student.setSkills(studentDto.getSkills());
+        
+        // Гарантируем, что isAvailableForMentorship никогда не будет null
+        student.setIsAvailableForMentorship(studentDto.getIsAvailableForMentorship() != null ? 
+                                         studentDto.getIsAvailableForMentorship() : 
+                                         false);
+        
+        // Установка emailVerified по умолчанию в false для новых студентов
+        student.setEmailVerified(false);
         
         return student;
     }

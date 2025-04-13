@@ -28,16 +28,15 @@ public class CreateStudentController {
     private final VerificationService verificationService;
 
     /**
-     * Endpoint for student registration.
+     * Endpoint for creating a student.
      * Creates an unverified student account and sends a verification email.
-     * Kept for backward compatibility.
      *
-     * @param request Student registration data
+     * @param request Student creation data
      * @return A response containing the created student or an error message
      */
-    @PostMapping("/register")
-    public ResponseEntity<ApiResponse<StudentProfileDto>> registerStudent(@Valid @RequestBody CreateStudentRequest request) {
-        log.info("Student registration request received for email: {}", request.getEmail());
+    @PostMapping("/create-student")
+    public ResponseEntity<ApiResponse<StudentProfileDto>> createStudent(@Valid @RequestBody CreateStudentRequest request) {
+        log.info("Student creation request received for email: {}", request.getEmail());
         
         try {
             // Convert CreateStudentRequest to StudentProfileDto
@@ -67,19 +66,6 @@ public class CreateStudentController {
                     .body(ApiResponse.error("Registration failed: " + e.getMessage()));
         }
     }
-    
-    /**
-     * Endpoint for creating a student (new name for registration).
-     * Creates an unverified student account and sends a verification email.
-     *
-     * @param request Student creation data
-     * @return A response containing the created student or an error message
-     */
-    @PostMapping("/create-student")
-    public ResponseEntity<ApiResponse<StudentProfileDto>> createStudent(@Valid @RequestBody CreateStudentRequest request) {
-        log.info("Student creation request received for email: {}", request.getEmail());
-        return registerStudent(request);
-    }
 
     /**
      * Endpoint for verifying a student's email address.
@@ -87,7 +73,7 @@ public class CreateStudentController {
      * @param token The verification token sent to the student's email
      * @return A response indicating the success or failure of verification
      */
-    @GetMapping("/register/verify")
+    @GetMapping("/create-student/verify")
     public ResponseEntity<ApiResponse<Void>> verifyEmail(@RequestParam String token) {
         log.info("Email verification request received with token: {}", token);
         
@@ -117,7 +103,9 @@ public class CreateStudentController {
         dto.setEducationLevel(request.getEducationLevel());
         dto.setLearningGoals(request.getLearningGoals());
         dto.setSkills(request.getSkills());
-        dto.setIsAvailableForMentorship(request.getIsAvailableForMentorship());
+        dto.setIsAvailableForMentorship(request.getIsAvailableForMentorship() != null ? 
+                                       request.getIsAvailableForMentorship() : 
+                                       false);
         return dto;
     }
 } 

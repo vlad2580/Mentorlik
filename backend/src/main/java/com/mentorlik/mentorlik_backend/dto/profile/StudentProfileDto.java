@@ -1,6 +1,7 @@
 package com.mentorlik.mentorlik_backend.dto.profile;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -60,7 +61,8 @@ public class StudentProfileDto extends UserDto {
      * Indicates whether the student is actively looking for mentors.
      */
     @NotNull(message = "Availability status must not be null")
-    private Boolean isAvailableForMentorship;
+    @Builder.Default
+    private Boolean isAvailableForMentorship = false;
 
     // Constructor with name parameter
     public StudentProfileDto(Long id, String name, String email, String password, String fieldOfStudy, String educationLevel,

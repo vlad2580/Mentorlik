@@ -70,6 +70,7 @@ public class CreateStudentRequest {
 
     /**
      * Indicates whether the student is willing to provide mentorship to others.
+     * Default value is false.
      */
-    private Boolean isAvailableForMentorship;
+    private Boolean isAvailableForMentorship = false;
 } 
