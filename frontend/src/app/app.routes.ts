@@ -9,6 +9,7 @@ import { CreateStudentComponent } from './pages/create-student/create-student.co
 import { CabinetStudentComponent } from './pages/cabinet-student/cabinet-student.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { RegistrationSuccessComponent } from './pages/registration-success/registration-success.component';
+import { VerifyEmailComponent } from './pages/verify-email/verify-email.component';
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
@@ -20,6 +21,7 @@ export const routes: Routes = [
   { path: 'registration-selector', component: RegistrationSelectorComponent },
   { path: 'create-student', component: CreateStudentComponent },
   { path: 'registration-success', component: RegistrationSuccessComponent },
+  { path: 'verify-email', component: VerifyEmailComponent },
   { 
     path: 'cabinet-student', 
     component: CabinetStudentComponent,

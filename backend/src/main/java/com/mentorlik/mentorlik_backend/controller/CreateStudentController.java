@@ -3,6 +3,8 @@ package com.mentorlik.mentorlik_backend.controller;
 import com.mentorlik.mentorlik_backend.dto.ApiResponse;
 import com.mentorlik.mentorlik_backend.dto.profile.StudentProfileDto;
 import com.mentorlik.mentorlik_backend.dto.registration.CreateStudentRequest;
+import com.mentorlik.mentorlik_backend.exception.ResourceNotFoundException;
+import com.mentorlik.mentorlik_backend.exception.auth.TokenExpiredException;
 import com.mentorlik.mentorlik_backend.exception.validation.EmailAlreadyExistsException;
 import com.mentorlik.mentorlik_backend.service.StudentService;
 import com.mentorlik.mentorlik_backend.service.VerificationService;
@@ -79,6 +81,21 @@ public class CreateStudentController {
         try {
             verificationService.verifyToken(token);
             return ResponseEntity.ok(ApiResponse.success(null, "Email verified successfully. You can now log in."));
+        } catch (ResourceNotFoundException e) {
+            log.error("Token not found: {}", e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ApiResponse.error("Verification token not found. Please request a new verification email."));
+        } catch (IllegalStateException e) {
+            log.warn("Token already used: {}", e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error("This verification link has already been used. Please log in."));
+        } catch (TokenExpiredException e) {
+            log.warn("Token expired: {}", e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error("Verification link has expired. Please request a new verification email."));
         } catch (Exception e) {
             log.error("Error during email verification: {}", e.getMessage(), e);
             return ResponseEntity

@@ -78,7 +78,7 @@ jwt:
 
 # Application-specific settings
 app:
-    url: ${APP_URL:http://localhost:4200}
+    url: ${APP_URL:http://localhost:80}
 
 # Эндпоинт здоровья для Docker health checks
 management:
