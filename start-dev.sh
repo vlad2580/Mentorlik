@@ -49,7 +49,7 @@ sleep 10
 
 # Start Angular application in background
 echo "Starting Angular application..."
-cd frontend-angular
+cd frontend
 npm install
 ng serve &
 ANGULAR_PID=$!

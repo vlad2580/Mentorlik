@@ -35,7 +35,7 @@
   - `src/main/resources/`: Contains configuration files
   - `Dockerfile`: For containerizing the backend
 
-### 2. `/frontend-angular` Directory
+### 2. `/frontend` Directory
 - Angular-based frontend application
 - Contains all UI components, services, and assets
 - Key files:
@@ -99,7 +99,7 @@ This will:
 
 3. **Start the Frontend**:
    ```bash
-   cd frontend-angular
+   cd frontend
    npm install
    ng serve
    ```
@@ -146,5 +146,5 @@ When running the complete stack:
 ## Additional Information
 
 For more information on the specific components:
-- Angular frontend: See `/frontend-angular/README.md`
+- Angular frontend: See `/frontend/README.md`
 - Backend API documentation: Available at http://localhost:8080/swagger-ui.html when the backend is running

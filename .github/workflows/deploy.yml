@@ -24,7 +24,7 @@ jobs:
         ssh ubuntu@18.193.12.203 << 'EOF'
           cd ~/Mentorlik
           git pull origin dev
-          cd frontend-angular
+          cd frontend
           npm install
           npm run build
           sudo chmod -R o+rX ./dist

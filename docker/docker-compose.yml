@@ -64,7 +64,7 @@ services:
   # Angular frontend
   frontend:
     build:
-      context: ../frontend-angular
+      context: ../frontend
     container_name: mentorlik_frontend
     ports:
       - "80:80"

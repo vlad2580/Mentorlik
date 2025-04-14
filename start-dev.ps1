@@ -70,7 +70,7 @@ Write-Host "3. Make sure 'dev,local' profiles are activated"
 
 # Start Angular application in a new window
 Write-Host "Starting Angular application..."
-Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd frontend-angular; npm install; ng serve"
+Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd frontend; npm install; ng serve"
 
 Write-Host "Local development environment is running!"
 Write-Host "After starting the backend through IDE it will be available at: http://localhost:8080"
