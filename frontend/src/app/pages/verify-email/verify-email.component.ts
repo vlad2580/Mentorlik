@@ -56,7 +56,7 @@ export class VerifyEmailComponent implements OnInit {
     this.debugInfo += `Time: ${new Date().toISOString()}\n`;
     this.debugInfo += `User type: ${this.userType}\n`;
     this.debugInfo += `Token (partial): ${this.token.substring(0, 10)}...\n`;
-    this.debugInfo += `API URL: ${environment.apiBase}/api/students/create-student/verify\n`;
+    this.debugInfo += `API URL: ${environment.apiUrl}/api/students/create-student/verify\n`;
     
     // Вызываем сервис для верификации
     this.studentService.verifyEmail(this.token).subscribe({
