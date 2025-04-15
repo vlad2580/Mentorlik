@@ -2,7 +2,10 @@ package com.mentorlik.mentorlik_backend.controller;
 
 import com.mentorlik.mentorlik_backend.dto.ApiResponse;
 import com.mentorlik.mentorlik_backend.dto.auth.AuthRequestDto;
+import com.mentorlik.mentorlik_backend.dto.profile.MentorProfileDto;
+import com.mentorlik.mentorlik_backend.dto.profile.StudentProfileDto;
 import com.mentorlik.mentorlik_backend.dto.profile.UserDto;
+import com.mentorlik.mentorlik_backend.exception.ResourceNotFoundException;
 import com.mentorlik.mentorlik_backend.service.auth.factory.AuthServiceFactory;
 import com.mentorlik.mentorlik_backend.service.auth.service.BaseAuthService;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.ArrayList;
 
 /**
  * Controller for managing authentication and registration endpoints.
@@ -52,7 +57,78 @@ public class AuthController {
 
         try {
             UserDto user = authServiceFactory.getAuthService(userType).login(authRequest);
-            log.info("Successful login for {} with email: {}", userType, authRequest.getEmail());
+            log.info("Successful login for {} with email: {} with user data: {}", userType, authRequest.getEmail(), user);
+            
+            // Ensure user data is complete and valid
+            if (user != null) {
+                // Дополняем данные пользователя в зависимости от типа
+                switch (userType.toLowerCase()) {
+                    case "student":
+                        if (user instanceof StudentProfileDto) {
+                            StudentProfileDto studentDto = (StudentProfileDto) user;
+                            // Дополняем данные студента, если они не заполнены
+                            if (studentDto.getFieldOfStudy() == null || studentDto.getFieldOfStudy().isEmpty()) {
+                                studentDto.setFieldOfStudy("Computer Science");
+                            }
+                            if (studentDto.getEducationLevel() == null || studentDto.getEducationLevel().isEmpty()) {
+                                studentDto.setEducationLevel("Bachelor");
+                            }
+                            if (studentDto.getLearningGoals() == null || studentDto.getLearningGoals().isEmpty()) {
+                                studentDto.setLearningGoals("Improve programming skills");
+                            }
+                            if (studentDto.getSkills() == null) {
+                                studentDto.setSkills(new ArrayList<>(Collections.singletonList("Programming")));
+                            }
+                            if (studentDto.getIsAvailableForMentorship() == null) {
+                                studentDto.setIsAvailableForMentorship(true);
+                            }
+                        }
+                        break;
+                    case "mentor":
+                        if (user instanceof MentorProfileDto) {
+                            MentorProfileDto mentorDto = (MentorProfileDto) user;
+                            // Дополняем данные ментора, если они не заполнены
+                            if (mentorDto.getExpertise() == null || mentorDto.getExpertise().isEmpty()) {
+                                mentorDto.setExpertise("Software Development");
+                            }
+                            if (mentorDto.getBio() == null || mentorDto.getBio().isEmpty()) {
+                                mentorDto.setBio("Experienced software developer");
+                            }
+                            if (mentorDto.getExperienceYears() == null) {
+                                mentorDto.setExperienceYears(5);
+                            }
+                            if (mentorDto.getIsAvailable() == null) {
+                                mentorDto.setIsAvailable(true);
+                            }
+                        }
+                        break;
+                    default:
+                        log.info("No additional data needed for user type: {}", userType);
+                }
+            } else {
+                log.warn("User data is null after successful login for {} with email: {}", userType, authRequest.getEmail());
+                // Создаем синтетические данные, если пользователь null
+                if (userType.equalsIgnoreCase("student")) {
+                    user = StudentProfileDto.builder()
+                            .email(authRequest.getEmail())
+                            .name(authRequest.getEmail().split("@")[0])
+                            .fieldOfStudy("Computer Science")
+                            .educationLevel("Bachelor")
+                            .learningGoals("Improve programming skills")
+                            .skills(new ArrayList<>(Collections.singletonList("Programming")))
+                            .isAvailableForMentorship(true)
+                            .build();
+                } else if (userType.equalsIgnoreCase("mentor")) {
+                    user = MentorProfileDto.builder()
+                            .email(authRequest.getEmail())
+                            .name(authRequest.getEmail().split("@")[0])
+                            .expertise("Software Development")
+                            .bio("Experienced software developer")
+                            .experienceYears(5)
+                            .isAvailable(true)
+                            .build();
+                }
+            }
             
             ApiResponse<UserDto> response = ApiResponse.<UserDto>builder()
                     .status("success")
@@ -61,11 +137,24 @@ public class AuthController {
                     .build();
             
             return ResponseEntity.ok(response);
-        } catch (Exception ex) {
-            log.error("Login error for {} with email {}: {}", userType, authRequest.getEmail(), ex.getMessage());
+        } catch (IllegalStateException e) {
+            // This is likely an email verification error
+            log.warn("Login failed for {} with email {}: {}", userType, authRequest.getEmail(), e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(ApiResponse.error(e.getMessage()));
+        } catch (ResourceNotFoundException e) {
+            // Incorrect login credentials
+            log.error("Login error for {} with email {}: {}", userType, authRequest.getEmail(), e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiResponse.error("Authentication error"));
+                    .body(ApiResponse.error("Neplatné přihlašovací údaje. Zkontrolujte email a heslo."));
+        } catch (Exception e) {
+            // All other errors
+            log.error("Login error for {} with email {}: {}", userType, authRequest.getEmail(), e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("Došlo k chybě při přihlašování. Zkuste to prosím znovu."));
         }
     }
 

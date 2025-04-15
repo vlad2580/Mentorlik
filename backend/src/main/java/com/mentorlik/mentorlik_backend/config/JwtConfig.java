@@ -1,5 +1,6 @@
 package com.mentorlik.mentorlik_backend.config;
 
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -28,13 +29,16 @@ public class JwtConfig {
     private long refreshExpirationTime;
 
     /**
-     * Creates a secret key for signing JWT tokens.
+     * Creates a secure secret key for signing JWT tokens.
+     * Uses Keys.secretKeyFor to ensure proper key size for HS512 algorithm.
      *
-     * @return secret key
+     * @return secure secret key
      */
     @Bean
     public SecretKey jwtSecretKey() {
-        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        // Generate a secure key with proper size for HS512 algorithm
+        // This ensures the key size is at least 512 bits as required by JWT spec
+        return Keys.secretKeyFor(SignatureAlgorithm.HS512);
     }
 
     /**

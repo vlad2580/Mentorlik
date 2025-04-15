@@ -32,4 +32,21 @@ public abstract class UserDto {
     @NotBlank(message = "Password must not be blank")
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
+    
+    /**
+     * JWT token for authentication.
+     * This field is populated after successful login/registration.
+     * Not required during validation as it's set by the server.
+     */
+    private String token;
+    
+    /**
+     * Constructor without token field
+     */
+    public UserDto(Long id, String name, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 }

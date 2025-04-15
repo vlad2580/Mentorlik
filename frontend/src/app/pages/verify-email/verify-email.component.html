@@ -1,26 +1,48 @@
-<div class="container">
+<div class="verification-container">
   <div class="verification-card">
-    <div *ngIf="isLoading" class="status-container">
+    <!-- Загрузка -->
+    <div *ngIf="isLoading" class="verification-loading">
       <div class="spinner"></div>
-      <h2>Verifying your email...</h2>
+      <h2>Verifying Email...</h2>
       <p>Please wait while we verify your email address.</p>
     </div>
 
-    <div *ngIf="!isLoading && isSuccess" class="status-container success">
-      <div class="icon-success">✓</div>
+    <!-- Успешная верификация -->
+    <div *ngIf="!isLoading && isSuccess" class="verification-success">
+      <div class="success-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64">
+          <circle cx="12" cy="12" r="11" fill="#4CAF50" />
+          <path fill="#FFFFFF" d="M10 17l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+        </svg>
+      </div>
       <h2>Email Verified!</h2>
-      <p>Your email address has been successfully verified.</p>
-      <p>You will be redirected to the login page in a moment...</p>
+      <p>Your email has been successfully verified.</p>
+      <p>You will be redirected to the login page shortly...</p>
+      <button class="btn-primary" (click)="goToLogin()">Go to Login</button>
     </div>
 
-    <div *ngIf="!isLoading && !isSuccess" class="status-container error">
-      <div class="icon-error">✗</div>
+    <!-- Ошибка верификации -->
+    <div *ngIf="!isLoading && !isSuccess" class="verification-error">
+      <div class="error-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64">
+          <circle cx="12" cy="12" r="11" fill="#F44336" />
+          <path fill="#FFFFFF" d="M13.41 12l4.3-4.29a1 1 0 1 0-1.42-1.42L12 10.59l-4.29-4.3a1 1 0 0 0-1.42 1.42l4.3 4.29-4.3 4.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l4.29-4.3 4.29 4.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42z" />
+        </svg>
+      </div>
       <h2>Verification Failed</h2>
       <p>{{ errorMessage }}</p>
-      <div class="actions">
-        <button (click)="verifyEmail()" class="retry-btn">Try Again</button>
-        <a routerLink="/login" class="login-link">Go to Login</a>
+      <div class="action-buttons">
+        <button *ngIf="retryCount < maxRetries" class="btn-primary" (click)="retryVerification()">
+          Try Again ({{retryCount}}/{{maxRetries}})
+        </button>
+        <button class="btn-secondary" (click)="goToLogin()">Go to Login</button>
       </div>
+    </div>
+
+    <!-- Техническая информация для отладки -->
+    <div class="technical-details" *ngIf="debugInfo">
+      <h3>Technical Details</h3>
+      <pre>{{ debugInfo }}</pre>
     </div>
   </div>
 </div>

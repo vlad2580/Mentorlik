@@ -63,6 +63,12 @@ public class StudentProfileDto extends UserDto {
     @NotNull(message = "Availability status must not be null")
     @Builder.Default
     private Boolean isAvailableForMentorship = false;
+    
+    /**
+     * JWT token for authentication.
+     * This field is populated after successful login/registration.
+     */
+    private String token;
 
     // Constructor with name parameter
     public StudentProfileDto(Long id, String name, String email, String password, String fieldOfStudy, String educationLevel,
@@ -73,5 +79,17 @@ public class StudentProfileDto extends UserDto {
         this.learningGoals = learningGoals;
         this.skills = skills;
         this.isAvailableForMentorship = isAvailableForMentorship;
+    }
+    
+    // Constructor with name parameter and token
+    public StudentProfileDto(Long id, String name, String email, String password, String fieldOfStudy, String educationLevel,
+                           String learningGoals, List<String> skills, Boolean isAvailableForMentorship, String token) {
+        super(id, name, email, password);
+        this.fieldOfStudy = fieldOfStudy;
+        this.educationLevel = educationLevel;
+        this.learningGoals = learningGoals;
+        this.skills = skills;
+        this.isAvailableForMentorship = isAvailableForMentorship;
+        this.token = token;
     }
 } 

@@ -122,4 +122,20 @@ public class MentorProfile extends User {
      */
     @Column(length = 500)
     private String availability;
+
+    private String email;
+    private String password;
+    private Boolean emailVerified;
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getEmailVerified() {
+        return emailVerified;
+    }
+
+    public void setEmailVerified(Boolean emailVerified) {
+        this.emailVerified = emailVerified;
+    }
 }
