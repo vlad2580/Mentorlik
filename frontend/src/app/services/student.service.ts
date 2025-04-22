@@ -84,4 +84,15 @@ export class StudentService {
         })
       );
   }
-} 
+
+  // Resend verification email
+resendVerificationEmail(email: string): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/students/resend-verification-email`, { email })
+    .pipe(
+      tap({
+        next: (response) => console.log('Verification email sent:', response),
+        error: (error) => console.error('Verification email error:', error)
+      })
+    );
+}
+}

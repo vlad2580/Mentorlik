@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     email: '',
     password: ''
   };
-  
+
   errorMessage: string = '';
   isLoading: boolean = false;
   userType: string = 'student'; // Default to student
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   loginSuccess: boolean = false;
   debugResponse: string = '';
   debugInfo: string = '';
-  
+
   constructor(
     private authService: AuthService,
     private studentService: StudentService,
@@ -37,12 +37,12 @@ export class LoginComponent implements OnInit {
     console.log('[LOGIN] Component initialized');
     console.log('[LOGIN] Router:', router);
   }
-  
+
   ngOnInit() {
     // Проверка наличия отладочной информации в localStorage
     this.checkDebugInfo();
   }
-  
+
   // Переключение типа пользователя
   setUserType(type: string): void {
     this.userType = type;
@@ -52,11 +52,11 @@ export class LoginComponent implements OnInit {
   // Основной метод для обработки перенаправления после успешного входа
   private handleSuccessfulLogin(responseData: any): void {
     console.log('[LOGIN] Processing login response');
-    
+
     try {
       // Обновить отладочную информацию
       this.checkDebugInfo();
-      
+
       // Попробуем сначала использовать данные из localStorage для надежности
       const responseJson = localStorage.getItem('debug_auth_response');
       if (responseJson) {
@@ -68,16 +68,16 @@ export class LoginComponent implements OnInit {
           // Если не удалось разобрать JSON, используем исходный responseData
         }
       }
-      
+
       // Непосредственный анализ структуры ответа
       let userData = null;
       let token = null;
-      
+
       // Проверяем структуру ответа - вариант с вложенным объектом data
       if (responseData && responseData.status === 'success' && responseData.data) {
         userData = responseData.data;
         token = userData.token;
-      } 
+      }
       // Проверяем прямую структуру с token
       else if (responseData && responseData.token) {
         userData = responseData;
@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit {
       // Последняя попытка - искать токен в любом свойстве
       else if (responseData) {
         userData = responseData; // используем весь ответ как данные пользователя
-        
+
         // Ищем токен в любом свойстве, который выглядит как JWT (начинается с eyJ)
         for (const key in responseData) {
           if (typeof responseData[key] === 'string' && responseData[key].startsWith('eyJ')) {
@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
           }
         }
       }
-      
+
       // Если мы все еще не нашли данные пользователя, пробуем создать минимальные данные
       if (!userData) {
         userData = {
@@ -103,26 +103,26 @@ export class LoginComponent implements OnInit {
           userType: this.userType
         };
       }
-      
+
       // Всегда убеждаемся, что в объекте пользователя есть тип
       userData.userType = this.userType;
-      
+
       // Если есть токен, добавляем его к данным пользователя
       if (token) {
         userData.token = token;
-        
+
         // Сохраняем токен для авторизации
         localStorage.setItem('auth_token', token);
         localStorage.setItem('token_timestamp', Date.now().toString());
-        
+
         // Сохраняем информацию о пользователе
         localStorage.setItem('currentUser', JSON.stringify(userData));
-        
+
         // Определяем целевой маршрут
-        const targetRoute = this.userType === 'mentor' 
+        const targetRoute = this.userType === 'mentor'
           ? '/cabinet-mentor'
           : '/cabinet-student';
-        
+
         // Перенаправляем пользователя на соответствующую страницу
         setTimeout(() => {
           this.executeRedirect(targetRoute);
@@ -139,7 +139,7 @@ export class LoginComponent implements OnInit {
   // New method to try multiple redirect approaches
   private executeRedirect(targetRoute: string): void {
     console.log(`[LOGIN] Executing redirect to ${targetRoute}`);
-    
+
     // Approach 1: Angular Router with full URL
     try {
       console.log(`[LOGIN] Approach 1: Using Angular Router navigateByUrl with ${targetRoute}`);
@@ -165,7 +165,7 @@ export class LoginComponent implements OnInit {
       const fullUrl = window.location.origin + targetRoute;
       console.log(`[LOGIN] Setting window.location.href to ${fullUrl}`);
       window.location.href = fullUrl;
-      
+
       // Add a fallback check in case the redirect doesn't trigger
       setTimeout(() => {
         console.log(`[LOGIN] Checking if redirect worked, current URL: ${window.location.href}`);
@@ -202,22 +202,22 @@ export class LoginComponent implements OnInit {
     this.debugResponse = '';
 
     console.log('[LOGIN] Attempting login as', this.userType, 'with email:', this.authRequest.email);
-    
+
     // Clear any previous data
     localStorage.removeItem('auth_token');
     localStorage.removeItem('currentUser');
-    
+
     // AuthService.login expects (email, password, userType)
     this.authService.login(this.authRequest.email, this.authRequest.password, this.userType).subscribe({
       next: (response) => {
         console.log('[LOGIN] Successful login response:', response);
-        
+
         // Debug: Save response to display in UI
         this.debugResponse = 'LOGIN SUCCESS: ' + JSON.stringify(response, null, 2);
-        
+
         this.isLoading = false;
         this.loginSuccess = true;
-        
+
         // Process successful login with the API response
         this.handleSuccessfulLogin(response);
       },
@@ -225,10 +225,10 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
         this.loginSuccess = false;
         console.error('[LOGIN] Login error:', error);
-        
+
         // Debug: Save error to display in UI
         this.debugResponse = 'LOGIN ERROR: ' + JSON.stringify(error, null, 2);
-        
+
         // Enhanced error diagnostics
         if (error && typeof error === 'object') {
           console.error('[LOGIN] Error details:', {
@@ -238,13 +238,13 @@ export class LoginComponent implements OnInit {
             stack: error.stack
           });
         }
-        
+
         // Display the error message to the user
         if (typeof error === 'string') {
           this.errorMessage = error;
         } else if (error && error.message) {
           this.errorMessage = error.message;
-          
+
           if (error.status === 403 && error.message.includes('email')) {
             this.showVerificationOption = true;
           }
@@ -254,7 +254,7 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-  
+
   // Method to resend verification email
   resendVerificationEmail(): void {
     // Only proceed if we have an email
@@ -262,14 +262,14 @@ export class LoginComponent implements OnInit {
       this.errorMessage = 'Pro odeslání ověřovacího emailu zadejte svou emailovou adresu.';
       return;
     }
-    
+
     this.isResendingVerification = true;
-    
+
     this.studentService.resendVerificationEmail(this.authRequest.email).subscribe({
       next: () => {
         this.isResendingVerification = false;
         this.verificationSuccess = true;
-   
+
         this.errorMessage = 'Ověřovací email byl odeslán. Prosím, zkontrolujte svou emailovou schránku.';
       },
       error: (error: any) => {
@@ -283,22 +283,22 @@ export class LoginComponent implements OnInit {
   loginWithGoogle(): void {
     this.isLoading = true;
     this.errorMessage = '';
-    
+
     console.log('[LOGIN] Attempting Google login as', this.userType);
-    
+
     this.authService.loginWithGoogle('', this.userType).subscribe({
       next: (response: any) => {
         console.log('[LOGIN] Successful Google login:', response);
         this.isLoading = false;
         this.loginSuccess = true;
-        
+
         // Use the common handler
         this.handleSuccessfulLogin(response);
       },
       error: (error: any) => {
         this.isLoading = false;
         console.error('[LOGIN] Google login error:', error);
-        
+
         if (typeof error === 'string') {
           this.errorMessage = error;
         } else if (error && error.message) {
@@ -313,22 +313,22 @@ export class LoginComponent implements OnInit {
   loginWithLinkedin(): void {
     this.isLoading = true;
     this.errorMessage = '';
-    
+
     console.log('[LOGIN] Attempting LinkedIn login as', this.userType);
-    
+
     this.authService.loginWithLinkedIn('', this.userType).subscribe({
       next: (response: any) => {
         console.log('[LOGIN] Successful LinkedIn login:', response);
         this.isLoading = false;
         this.loginSuccess = true;
-        
+
         // Use the common handler
         this.handleSuccessfulLogin(response);
       },
       error: (error: any) => {
         this.isLoading = false;
         console.error('[LOGIN] LinkedIn login error:', error);
-        
+
         if (typeof error === 'string') {
           this.errorMessage = error;
         } else if (error && error.message) {
@@ -351,7 +351,7 @@ export class LoginComponent implements OnInit {
     if (timestamp) {
       const timeStr = new Date(timestamp).toLocaleTimeString();
       this.debugInfo = `Последний запрос авторизации: ${timeStr}\n`;
-      
+
       // Собираем всю отладочную информацию
       const debugKeys = [
         'debug_auth_usertype',
@@ -361,14 +361,14 @@ export class LoginComponent implements OnInit {
         'debug_auth_keys',
         'debug_auth_error'
       ];
-      
+
       for (const key of debugKeys) {
         const value = localStorage.getItem(key);
         if (value) {
           this.debugInfo += `${key}: ${value}\n`;
         }
       }
-      
+
       // Добавляем содержимое полного ответа, если есть
       const responseJson = localStorage.getItem('debug_auth_response');
       if (responseJson) {

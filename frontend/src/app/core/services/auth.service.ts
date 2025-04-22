@@ -20,24 +20,23 @@ interface AuthResponse {
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-  
+
   constructor(private apiService: ApiService) {
     // Try to restore session when initializing the service
     this.loadUserFromStorage();
   }
-  
-  login(email: string, password: string): Observable<AuthResponse> {
-    return this.apiService.post<AuthResponse>('auth/login', { email, password })
+
+  login(email: string, password: string, userType: string): Observable<AuthResponse> {
+    return this.apiService.post<AuthResponse>('auth/login', { email, password, userType })
       .pipe(
         tap(response => {
-          // Save token and user information
           localStorage.setItem('auth_token', response.token);
           localStorage.setItem('user', JSON.stringify(response.user));
           this.currentUserSubject.next(response.user);
         })
       );
   }
-  
+
   register(userData: any): Observable<AuthResponse> {
     return this.apiService.post<AuthResponse>('auth/register', userData)
       .pipe(
@@ -48,21 +47,21 @@ export class AuthService {
         })
       );
   }
-  
+
   logout(): void {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user');
     this.currentUserSubject.next(null);
   }
-  
+
   isAuthenticated(): boolean {
     return !!localStorage.getItem('auth_token');
   }
-  
+
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
-  
+
   private loadUserFromStorage(): void {
     const userJson = localStorage.getItem('user');
     if (userJson) {
@@ -75,4 +74,4 @@ export class AuthService {
       }
     }
   }
-} 
+}
