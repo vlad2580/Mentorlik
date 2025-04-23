@@ -208,7 +208,7 @@ export class LoginComponent implements OnInit {
     localStorage.removeItem('currentUser');
 
     // AuthService.login expects (email, password, userType)
-    this.authService.login(this.authRequest.email, this.authRequest.password, this.userType).subscribe({
+    this.authService.login(this.authRequest.email, this.authRequest.password).subscribe({
       next: (response) => {
         console.log('[LOGIN] Successful login response:', response);
 

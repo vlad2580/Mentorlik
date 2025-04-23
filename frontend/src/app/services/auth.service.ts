@@ -23,9 +23,9 @@ export class AuthService {
     }
   }
 
-  // Обычная аутентификация с email и паролем
-  login(userType: string, authRequest: AuthRequest): Observable<User | Mentor | Student> {
-    return this.http.post<User | Mentor | Student>(`${this.apiUrl}/login/${userType}`, authRequest)
+  //workaround 
+  login(email: string, password: string): Observable<User | Mentor | Student> {
+    return this.http.post<User | Mentor | Student>(`${this.apiUrl}/login/${email}`, password)
       .pipe(
         tap(user => {
           this.setCurrentUser(user);
