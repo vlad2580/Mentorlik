@@ -70,6 +70,12 @@ public class StudentProfileDto extends UserDto {
      */
     private String token;
 
+    /**
+     * Flag indicating whether the student's email has been verified.
+     */
+    @Builder.Default
+    private Boolean emailVerified = false;
+
     // Constructor with name parameter
     public StudentProfileDto(Long id, String name, String email, String password, String fieldOfStudy, String educationLevel,
                            String learningGoals, List<String> skills, Boolean isAvailableForMentorship) {
@@ -79,6 +85,7 @@ public class StudentProfileDto extends UserDto {
         this.learningGoals = learningGoals;
         this.skills = skills;
         this.isAvailableForMentorship = isAvailableForMentorship;
+        this.emailVerified = false;
     }
     
     // Constructor with name parameter and token
@@ -91,5 +98,6 @@ public class StudentProfileDto extends UserDto {
         this.skills = skills;
         this.isAvailableForMentorship = isAvailableForMentorship;
         this.token = token;
+        this.emailVerified = false;
     }
 } 

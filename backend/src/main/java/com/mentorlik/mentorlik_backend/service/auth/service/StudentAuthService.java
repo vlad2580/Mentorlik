@@ -3,16 +3,19 @@ package com.mentorlik.mentorlik_backend.service.auth.service;
 import com.mentorlik.mentorlik_backend.dto.auth.AuthRequestDto;
 import com.mentorlik.mentorlik_backend.dto.profile.StudentProfileDto;
 import com.mentorlik.mentorlik_backend.dto.profile.UserDto;
+import com.mentorlik.mentorlik_backend.model.StudentProfile;
+import com.mentorlik.mentorlik_backend.model.User;
+import com.mentorlik.mentorlik_backend.repository.StudentProfileRepository;
 import com.mentorlik.mentorlik_backend.exception.ResourceNotFoundException;
 import com.mentorlik.mentorlik_backend.exception.validation.EmailAlreadyExistsException;
-import com.mentorlik.mentorlik_backend.model.StudentProfile;
-import com.mentorlik.mentorlik_backend.repository.StudentProfileRepository;
 import com.mentorlik.mentorlik_backend.service.auth.JwtTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Service for handling student authentication and profile management.
@@ -87,7 +90,7 @@ public class StudentAuthService implements BaseAuthService<StudentProfile, Stude
 
     @Override
     public StudentProfileDto register(UserDto userDto) {
-        if (studentRepository.findByEmail(userDto.getEmail()).isPresent()) {
+        if (studentRepository.existsByEmail(userDto.getEmail())) {
             throw new EmailAlreadyExistsException("Email is already in use");
         }
 
@@ -95,23 +98,10 @@ public class StudentAuthService implements BaseAuthService<StudentProfile, Stude
         StudentProfile student = createUserEntity(studentDto);
         studentRepository.save(student);
 
-        // Create DTO from entity
-        StudentProfileDto createdStudentDto = convertToDto(student);
-        
-        // Generate JWT token for new user
-        String accessToken = jwtTokenService.generateAccessToken(createdStudentDto);
-        createdStudentDto.setToken(accessToken);
-        
-        return createdStudentDto;
+        return convertToDto(student);
     }
 
-    /**
-     * Creates a new {@link StudentProfile} entity from the provided {@link StudentProfileDto}.
-     *
-     * @param userDto The DTO containing student profile data.
-     * @return A new {@link StudentProfile} entity with the data from the DTO.
-     */
-    protected StudentProfile createUserEntity(StudentProfileDto userDto) {
+    private StudentProfile createUserEntity(StudentProfileDto userDto) {
         StudentProfile student = new StudentProfile();
         student.setEmail(userDto.getEmail());
         student.setPassword(passwordEncoder.encode(userDto.getPassword()));
@@ -121,18 +111,11 @@ public class StudentAuthService implements BaseAuthService<StudentProfile, Stude
         student.setLearningGoals(userDto.getLearningGoals());
         student.setSkills(userDto.getSkills());
         student.setIsAvailableForMentorship(userDto.getIsAvailableForMentorship());
-        // Set email as verified for testing purposes
-        student.setEmailVerified(true);
+        student.setEmailVerified(false);
         return student;
     }
 
-    /**
-     * Converts a {@link StudentProfile} entity to a {@link StudentProfileDto}.
-     *
-     * @param student The student entity to convert.
-     * @return A {@link StudentProfileDto} containing the data from the entity.
-     */
-    protected StudentProfileDto convertToDto(StudentProfile student) {
+    private StudentProfileDto convertToDto(StudentProfile student) {
         return StudentProfileDto.builder()
                 .id(student.getId())
                 .email(student.getEmail())
@@ -142,6 +125,7 @@ public class StudentAuthService implements BaseAuthService<StudentProfile, Stude
                 .learningGoals(student.getLearningGoals())
                 .skills(student.getSkills())
                 .isAvailableForMentorship(student.getIsAvailableForMentorship())
+                .emailVerified(student.getEmailVerified())
                 .build();
     }
 }

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
+import { ApiResponse } from '../models/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,10 @@ export class StudentService {
 
   constructor(private http: HttpClient) { }
 
-  // Create student
+  // Create student (public registration)
   createStudent(studentData: any): Observable<any> {
     console.log('Creating new student:', studentData);
-    return this.http.post<any>(`${this.apiUrl}/students/create-student`, studentData)
+    return this.http.post<any>(`${this.apiUrl}/public/students/register`, studentData)
       .pipe(
         tap({
           next: (response) => console.log('Student creation successful:', response),
@@ -30,20 +31,29 @@ export class StudentService {
       );
   }
 
-  // Verify student email
-  verifyEmail(token: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/students/create-student/verify?token=${token}`)
+  /**
+   * Verify student email
+   */
+  verifyEmail(token: string): Observable<ApiResponse<void>> {
+    return this.http
+      .get<ApiResponse<void>>(
+        `${environment.apiUrl}/public/students/verify`,
+        { params: { token } }
+      )
       .pipe(
-        tap({
-          next: (response) => console.log('Email verification successful:', response),
-          error: (error) => console.error('Email verification error:', error)
+        tap(response => {
+          console.log('Email verification response:', response);
+        }),
+        catchError(err => {
+          console.error('Email verification error:', err);
+          return throwError(() => err);
         })
       );
   }
 
-  // Get all students
+  // Get all students (admin only)
   getAllStudents(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/students`)
+    return this.http.get<any[]>(`${this.apiUrl}/admin/students`)
       .pipe(
         tap({
           next: (response) => console.log('Retrieved students:', response),
@@ -52,9 +62,9 @@ export class StudentService {
       );
   }
 
-  // Get student by ID
+  // Get student by ID (admin or owner)
   getStudentById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/students/${id}`)
+    return this.http.get<any>(`${this.apiUrl}/admin/students/${id}`)
       .pipe(
         tap({
           next: (response) => console.log('Retrieved student:', response),
@@ -63,9 +73,9 @@ export class StudentService {
       );
   }
 
-  // Update student
+  // Update student (owner only)
   updateStudent(id: number, studentData: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/students/${id}`, studentData)
+    return this.http.put<any>(`${this.apiUrl}/admin/students/${id}`, studentData)
       .pipe(
         tap({
           next: (response) => console.log('Student update successful:', response),
@@ -74,9 +84,9 @@ export class StudentService {
       );
   }
 
-  // Delete student
+  // Delete student (admin or owner)
   deleteStudent(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/students/${id}`)
+    return this.http.delete<any>(`${this.apiUrl}/admin/students/${id}`)
       .pipe(
         tap({
           next: (response) => console.log('Student deletion successful:', response),
@@ -86,13 +96,13 @@ export class StudentService {
   }
 
   // Resend verification email
-resendVerificationEmail(email: string): Observable<any> {
-  return this.http.post<any>(`${this.apiUrl}/students/resend-verification-email`, { email })
-    .pipe(
-      tap({
-        next: (response) => console.log('Verification email sent:', response),
-        error: (error) => console.error('Verification email error:', error)
-      })
-    );
-}
+  resendVerificationEmail(email: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/public/students/resend-verification`, { email })
+      .pipe(
+        tap({
+          next: (response) => console.log('Verification email resent:', response),
+          error: (error) => console.error('Error resending verification email:', error)
+        })
+      );
+  }
 }

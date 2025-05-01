@@ -42,116 +42,43 @@ public class AuthController {
     }
 
     /**
-     * Endpoint for traditional user login by user type.
+     * Endpoint for traditional user login without specifying user type.
+     * Will try to authenticate as student first, then as mentor if student authentication fails.
      *
-     * @param userType type of user (e.g., "admin", "mentor", "student")
      * @param authRequest DTO of authentication request containing email and password
      * @return {@code ResponseEntity} with login response, either user data on success or error message
      */
-    @PostMapping("/login/{userType}")
-    public ResponseEntity<ApiResponse<UserDto>> login(
-            @PathVariable String userType, 
-            @Valid @RequestBody AuthRequestDto authRequest) {
-        
-        log.info("Login attempt for {} with email: {}", userType, authRequest.getEmail());
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<UserDto>> login(@Valid @RequestBody AuthRequestDto authRequest) {
+        log.info("Login attempt with email: {}", authRequest.getEmail());
 
         try {
-            UserDto user = authServiceFactory.getAuthService(userType).login(authRequest);
-            log.info("Successful login for {} with email: {} with user data: {}", userType, authRequest.getEmail(), user);
-            
-            // Ensure user data is complete and valid
-            if (user != null) {
-                // Дополняем данные пользователя в зависимости от типа
-                switch (userType.toLowerCase()) {
-                    case "student":
-                        if (user instanceof StudentProfileDto) {
-                            StudentProfileDto studentDto = (StudentProfileDto) user;
-                            // Дополняем данные студента, если они не заполнены
-                            if (studentDto.getFieldOfStudy() == null || studentDto.getFieldOfStudy().isEmpty()) {
-                                studentDto.setFieldOfStudy("Computer Science");
-                            }
-                            if (studentDto.getEducationLevel() == null || studentDto.getEducationLevel().isEmpty()) {
-                                studentDto.setEducationLevel("Bachelor");
-                            }
-                            if (studentDto.getLearningGoals() == null || studentDto.getLearningGoals().isEmpty()) {
-                                studentDto.setLearningGoals("Improve programming skills");
-                            }
-                            if (studentDto.getSkills() == null) {
-                                studentDto.setSkills(new ArrayList<>(Collections.singletonList("Programming")));
-                            }
-                            if (studentDto.getIsAvailableForMentorship() == null) {
-                                studentDto.setIsAvailableForMentorship(true);
-                            }
-                        }
-                        break;
-                    case "mentor":
-                        if (user instanceof MentorProfileDto) {
-                            MentorProfileDto mentorDto = (MentorProfileDto) user;
-                            // Дополняем данные ментора, если они не заполнены
-                            if (mentorDto.getExpertise() == null || mentorDto.getExpertise().isEmpty()) {
-                                mentorDto.setExpertise("Software Development");
-                            }
-                            if (mentorDto.getBio() == null || mentorDto.getBio().isEmpty()) {
-                                mentorDto.setBio("Experienced software developer");
-                            }
-                            if (mentorDto.getExperienceYears() == null) {
-                                mentorDto.setExperienceYears(5);
-                            }
-                            if (mentorDto.getIsAvailable() == null) {
-                                mentorDto.setIsAvailable(true);
-                            }
-                        }
-                        break;
-                    default:
-                        log.info("No additional data needed for user type: {}", userType);
-                }
-            } else {
-                log.warn("User data is null after successful login for {} with email: {}", userType, authRequest.getEmail());
-                // Создаем синтетические данные, если пользователь null
-                if (userType.equalsIgnoreCase("student")) {
-                    user = StudentProfileDto.builder()
-                            .email(authRequest.getEmail())
-                            .name(authRequest.getEmail().split("@")[0])
-                            .fieldOfStudy("Computer Science")
-                            .educationLevel("Bachelor")
-                            .learningGoals("Improve programming skills")
-                            .skills(new ArrayList<>(Collections.singletonList("Programming")))
-                            .isAvailableForMentorship(true)
-                            .build();
-                } else if (userType.equalsIgnoreCase("mentor")) {
-                    user = MentorProfileDto.builder()
-                            .email(authRequest.getEmail())
-                            .name(authRequest.getEmail().split("@")[0])
-                            .expertise("Software Development")
-                            .bio("Experienced software developer")
-                            .experienceYears(5)
-                            .isAvailable(true)
-                            .build();
-                }
+            // Try student login first
+            try {
+                UserDto user = authServiceFactory.getAuthService("student").login(authRequest);
+                log.info("Successful login as student with email: {} with user data: {}", authRequest.getEmail(), user);
+                return ResponseEntity.ok(ApiResponse.success(user, "Authentication successful"));
+            } catch (ResourceNotFoundException e) {
+                // If student login fails, try mentor login
+                UserDto user = authServiceFactory.getAuthService("mentor").login(authRequest);
+                log.info("Successful login as mentor with email: {} with user data: {}", authRequest.getEmail(), user);
+                return ResponseEntity.ok(ApiResponse.success(user, "Authentication successful"));
             }
-            
-            ApiResponse<UserDto> response = ApiResponse.<UserDto>builder()
-                    .status("success")
-                    .data(user)
-                    .message("Authentication successful")
-                    .build();
-            
-            return ResponseEntity.ok(response);
         } catch (IllegalStateException e) {
             // This is likely an email verification error
-            log.warn("Login failed for {} with email {}: {}", userType, authRequest.getEmail(), e.getMessage());
+            log.warn("Login failed with email {}: {}", authRequest.getEmail(), e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.FORBIDDEN)
                     .body(ApiResponse.error(e.getMessage()));
         } catch (ResourceNotFoundException e) {
             // Incorrect login credentials
-            log.error("Login error for {} with email {}: {}", userType, authRequest.getEmail(), e.getMessage());
+            log.error("Login error with email {}: {}", authRequest.getEmail(), e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(ApiResponse.error("Neplatné přihlašovací údaje. Zkontrolujte email a heslo."));
         } catch (Exception e) {
             // All other errors
-            log.error("Login error for {} with email {}: {}", userType, authRequest.getEmail(), e.getMessage());
+            log.error("Login error with email {}: {}", authRequest.getEmail(), e.getMessage());
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(ApiResponse.error("Došlo k chybě při přihlašování. Zkuste to prosím znovu."));
@@ -261,6 +188,117 @@ public class AuthController {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(ApiResponse.error("An unexpected error occurred during registration"));
+        }
+    }
+
+    /**
+     * Endpoint for traditional user login by user type.
+     *
+     * @param userType type of user (e.g., "admin", "mentor", "student")
+     * @param authRequest DTO of authentication request containing email and password
+     * @return {@code ResponseEntity} with login response, either user data on success or error message
+     */
+    @PostMapping("/login/{userType}")
+    public ResponseEntity<ApiResponse<UserDto>> loginWithType(
+            @PathVariable String userType, 
+            @Valid @RequestBody AuthRequestDto authRequest) {
+        
+        log.info("Login attempt for {} with email: {}", userType, authRequest.getEmail());
+
+        try {
+            UserDto user = authServiceFactory.getAuthService(userType).login(authRequest);
+            log.info("Successful login for {} with email: {} with user data: {}", userType, authRequest.getEmail(), user);
+            
+            // Ensure user data is complete and valid
+            if (user != null) {
+                // Дополняем данные пользователя в зависимости от типа
+                switch (userType.toLowerCase()) {
+                    case "student":
+                        if (user instanceof StudentProfileDto) {
+                            StudentProfileDto studentDto = (StudentProfileDto) user;
+                            // Дополняем данные студента, если они не заполнены
+                            if (studentDto.getFieldOfStudy() == null || studentDto.getFieldOfStudy().isEmpty()) {
+                                studentDto.setFieldOfStudy("Computer Science");
+                            }
+                            if (studentDto.getEducationLevel() == null || studentDto.getEducationLevel().isEmpty()) {
+                                studentDto.setEducationLevel("Bachelor");
+                            }
+                            if (studentDto.getLearningGoals() == null || studentDto.getLearningGoals().isEmpty()) {
+                                studentDto.setLearningGoals("Improve programming skills");
+                            }
+                            if (studentDto.getSkills() == null) {
+                                studentDto.setSkills(new ArrayList<>(Collections.singletonList("Programming")));
+                            }
+                            if (studentDto.getIsAvailableForMentorship() == null) {
+                                studentDto.setIsAvailableForMentorship(true);
+                            }
+                        }
+                        break;
+                    case "mentor":
+                        if (user instanceof MentorProfileDto) {
+                            MentorProfileDto mentorDto = (MentorProfileDto) user;
+                            // Дополняем данные ментора, если они не заполнены
+                            if (mentorDto.getExpertise() == null || mentorDto.getExpertise().isEmpty()) {
+                                mentorDto.setExpertise("Software Development");
+                            }
+                            if (mentorDto.getBio() == null || mentorDto.getBio().isEmpty()) {
+                                mentorDto.setBio("Experienced software developer");
+                            }
+                            if (mentorDto.getExperienceYears() == null) {
+                                mentorDto.setExperienceYears(5);
+                            }
+                            if (mentorDto.getIsAvailable() == null) {
+                                mentorDto.setIsAvailable(true);
+                            }
+                        }
+                        break;
+                    default:
+                        log.info("No additional data needed for user type: {}", userType);
+                }
+            } else {
+                log.warn("User data is null after successful login for {} with email: {}", userType, authRequest.getEmail());
+                // Создаем синтетические данные, если пользователь null
+                if (userType.equalsIgnoreCase("student")) {
+                    user = StudentProfileDto.builder()
+                            .email(authRequest.getEmail())
+                            .name(authRequest.getEmail().split("@")[0])
+                            .fieldOfStudy("Computer Science")
+                            .educationLevel("Bachelor")
+                            .learningGoals("Improve programming skills")
+                            .skills(new ArrayList<>(Collections.singletonList("Programming")))
+                            .isAvailableForMentorship(true)
+                            .build();
+                } else if (userType.equalsIgnoreCase("mentor")) {
+                    user = MentorProfileDto.builder()
+                            .email(authRequest.getEmail())
+                            .name(authRequest.getEmail().split("@")[0])
+                            .expertise("Software Development")
+                            .bio("Experienced software developer")
+                            .experienceYears(5)
+                            .isAvailable(true)
+                            .build();
+                }
+            }
+            
+            return ResponseEntity.ok(ApiResponse.success(user, "Authentication successful"));
+        } catch (IllegalStateException e) {
+            // This is likely an email verification error
+            log.warn("Login failed for {} with email {}: {}", userType, authRequest.getEmail(), e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.FORBIDDEN)
+                    .body(ApiResponse.error(e.getMessage()));
+        } catch (ResourceNotFoundException e) {
+            // Incorrect login credentials
+            log.error("Login error for {} with email {}: {}", userType, authRequest.getEmail(), e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("Neplatné přihlašovací údaje. Zkontrolujte email a heslo."));
+        } catch (Exception e) {
+            // All other errors
+            log.error("Login error for {} with email {}: {}", userType, authRequest.getEmail(), e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error("Došlo k chybě při přihlašování. Zkuste to prosím znovu."));
         }
     }
 }

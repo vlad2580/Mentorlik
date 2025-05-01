@@ -7,9 +7,10 @@
                           http://www.springframework.org/schema/context
                           http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <!-- Отключаем конфликтующий контроллер для тестирования -->
+    <!-- Отключаем конфликтующие контроллеры для тестирования -->
     <context:component-scan base-package="com.mentorlik.mentorlik_backend.controller">
         <context:exclude-filter type="assignable" expression="com.mentorlik.mentorlik_backend.controller.MentorSearchController"/>
+        <context:exclude-filter type="assignable" expression="com.mentorlik.mentorlik_backend.controller.StudentManagementController"/>
     </context:component-scan>
 
 </beans> 

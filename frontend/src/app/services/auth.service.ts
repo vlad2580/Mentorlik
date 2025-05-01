@@ -12,7 +12,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/api/auth`;
+  private apiUrl = `${environment.apiUrl}/auth`;
   private currentUser: User | null = null;
 
   constructor(private http: HttpClient) {
@@ -25,7 +25,7 @@ export class AuthService {
 
   //workaround 
   login(email: string, password: string): Observable<User | Mentor | Student> {
-    return this.http.post<User | Mentor | Student>(`${this.apiUrl}/login/${email}`, password)
+    return this.http.post<User | Mentor | Student>(`${this.apiUrl}/login`, { email, password })
       .pipe(
         tap(user => {
           this.setCurrentUser(user);

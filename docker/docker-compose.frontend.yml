@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  # Angular frontend
+  frontend:
+    image: mentorlik-frontend:latest
+    container_name: mentorlik_frontend
+    ports:
+      - "80:80"
+    networks:
+      - mentorlik-network
+    restart: unless-stopped
+
+networks:
+  mentorlik-network:
+    driver: bridge 

@@ -1,6 +1,7 @@
 package com.mentorlik.mentorlik_backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,55 +9,65 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Унифицированный формат ответа API для всех эндпоинтов.
- * <p>
- * Этот класс обеспечивает консистентную структуру ответов API,
- * включая статус операции, данные, сообщения об ошибках и метаданные.
- * </p>
+ * Standardized API response wrapper for all endpoints.
  *
- * @param <T> тип данных, возвращаемых в ответе
+ * <p>This class provides a consistent structure for API responses,
+ * including operation status, returned data, user-facing messages,
+ * and optional metadata such as timestamp and path.</p>
+ *
+ * @param <T> the type of the response payload
  */
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
-    
+
     /**
-     * Статус операции: success или error
+     * Operation status: "success" or "error".
      */
     private String status;
-    
+
     /**
-     * Данные ответа. Присутствуют только при успешном выполнении запроса.
+     * Payload of the response; only present on success.
      */
     private T data;
-    
+
     /**
-     * Сообщение, описывающее результат операции
+     * Descriptive message explaining the result of the operation.
      */
     private String message;
-    
+
     /**
-     * Временная метка ответа
+     * Timestamp when the response was generated.
      */
     private LocalDateTime timestamp;
-    
+
     /**
-     * Путь к ресурсу, который обрабатывал запрос
+     * The request path that produced this response.
      */
     private String path;
-    
+
     /**
-     * Список ошибок валидации, если они есть
+     * List of validation errors, if applicable.
      */
     private List<ValidationError> errors;
-    
+
     /**
-     * Создает успешный ответ с данными
+     * Virtual boolean flag mapped in JSON as "ok": true if status is "success".
      *
-     * @param data данные для включения в ответ
-     * @param <T> тип данных
-     * @return объект ApiResponse с статусом success и данными
+     * @return true if this response indicates success
+     */
+    @JsonProperty("ok")
+    public boolean isOk() {
+        return "success".equalsIgnoreCase(this.status);
+    }
+
+    /**
+     * Creates a successful response containing data.
+     *
+     * @param data the payload to include
+     * @param <T>  payload type
+     * @return ApiResponse instance with status="success" and provided data
      */
     public static <T> ApiResponse<T> success(T data) {
         return ApiResponse.<T>builder()
@@ -65,14 +76,14 @@ public class ApiResponse<T> {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
-    
+
     /**
-     * Создает успешный ответ с данными и сообщением
+     * Creates a successful response containing data and a message.
      *
-     * @param data данные для включения в ответ
-     * @param message сообщение о результате операции
-     * @param <T> тип данных
-     * @return объект ApiResponse с статусом success, данными и сообщением
+     * @param data    the payload to include
+     * @param message descriptive message
+     * @param <T>     payload type
+     * @return ApiResponse with status="success", data, and message
      */
     public static <T> ApiResponse<T> success(T data, String message) {
         return ApiResponse.<T>builder()
@@ -82,13 +93,13 @@ public class ApiResponse<T> {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
-    
+
     /**
-     * Создает ответ об ошибке с сообщением
+     * Creates an error response with a message.
      *
-     * @param message сообщение об ошибке
-     * @param <T> тип данных
-     * @return объект ApiResponse с статусом error и сообщением об ошибке
+     * @param message error description
+     * @param <T>     payload type
+     * @return ApiResponse with status="error" and provided message
      */
     public static <T> ApiResponse<T> error(String message) {
         return ApiResponse.<T>builder()
@@ -97,14 +108,14 @@ public class ApiResponse<T> {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
-    
+
     /**
-     * Создает ответ об ошибке с сообщением и статусом HTTP
+     * Creates an error response with a message and request path.
      *
-     * @param message сообщение об ошибке
-     * @param path путь к ресурсу
-     * @param <T> тип данных
-     * @return объект ApiResponse с статусом error, сообщением об ошибке и путем
+     * @param message error description
+     * @param path    request path
+     * @param <T>     payload type
+     * @return ApiResponse with status="error", message, and path
      */
     public static <T> ApiResponse<T> error(String message, String path) {
         return ApiResponse.<T>builder()
@@ -114,14 +125,14 @@ public class ApiResponse<T> {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
-    
+
     /**
-     * Создает ответ об ошибке с сообщением и списком ошибок валидации
+     * Creates an error response with a message and validation errors.
      *
-     * @param message сообщение об ошибке
-     * @param errors список ошибок валидации
-     * @param <T> тип данных
-     * @return объект ApiResponse с статусом error, сообщением и ошибками валидации
+     * @param message error description
+     * @param errors  list of validation errors
+     * @param <T>     payload type
+     * @return ApiResponse with status="error", message, and validation errors
      */
     public static <T> ApiResponse<T> error(String message, List<ValidationError> errors) {
         return ApiResponse.<T>builder()
@@ -131,21 +142,21 @@ public class ApiResponse<T> {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
-    
+
     /**
-     * Класс для представления ошибок валидации
+     * Inner class representing a validation error on a specific field.
      */
     @Data
     @Builder
     public static class ValidationError {
         /**
-         * Поле, в котором произошла ошибка
+         * Name of the field with the validation error.
          */
         private String field;
-        
+
         /**
-         * Сообщение об ошибке
+         * Description of the validation error.
          */
         private String message;
     }
-} 
+}

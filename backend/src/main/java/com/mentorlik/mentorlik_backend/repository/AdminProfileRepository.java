@@ -1,7 +1,10 @@
 package com.mentorlik.mentorlik_backend.repository;
 
 import com.mentorlik.mentorlik_backend.model.AdminProfile;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * Repository interface for {@link AdminProfile} entity.
@@ -11,8 +14,8 @@ import org.springframework.stereotype.Repository;
  * </p>
  */
 @Repository
-public interface AdminProfileRepository extends AbstractUserRepository<AdminProfile> {
-    // Additional admin-specific methods can be added here
+public interface AdminProfileRepository extends JpaRepository<AdminProfile, Long> {
+    Optional<AdminProfile> findByEmail(String email);
     
     /**
      * Проверяет существует ли администратор с указанным email.

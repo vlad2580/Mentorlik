@@ -1,0 +1,31 @@
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+*.iml
+.vscode
+
+# Maven
+target/
+!target/*.jar
+
+# Logs
+*.log
+
+# Test files
+**/test/
+**/tests/
+
+# Documentation
+README.md
+*.md
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+node_modules/
+dist/ 

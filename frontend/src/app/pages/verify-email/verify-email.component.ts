@@ -46,56 +46,65 @@ export class VerifyEmailComponent implements OnInit {
   }
 
   verifyEmail(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
-    this.debugInfo = '';
+    // Start loading and reset state
+    this.isLoading   = true;
+    this.isSuccess   = false;
+    this.errorMessage= '';
     this.retryCount++;
-    
-    // Логируем основную инфо для отладки
-    this.debugInfo = `Verification attempt ${this.retryCount}/${this.maxRetries}\n`;
-    this.debugInfo += `Time: ${new Date().toISOString()}\n`;
-    this.debugInfo += `User type: ${this.userType}\n`;
-    this.debugInfo += `Token (partial): ${this.token.substring(0, 10)}...\n`;
-    this.debugInfo += `API URL: ${environment.apiUrl}/api/students/create-student/verify\n`;
-    
-    // Вызываем сервис для верификации
-    this.studentService.verifyEmail(this.token).subscribe({
-      next: (response) => {
-        console.log('Verification response:', response);
-        this.isLoading = false;
-        
-        if (response.success) {
-          this.isSuccess = true;
-          this.debugInfo += 'Status: Success\n';
-          this.debugInfo += `Response message: ${response.message}\n`;
-          
-          // Перенаправляем на страницу входа после успешной верификации
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 3000);
-        } else {
-          this.isSuccess = false;
-          this.errorMessage = response.message || 'Verification failed. Please try again or contact support.';
-          
-          this.debugInfo += 'Status: Failed\n';
-          this.debugInfo += `Response status: ${response.status}\n`;
-          this.debugInfo += `Error message: ${response.message}\n`;
-          
-          if (response.connectionDetails) {
-            this.debugInfo += `URL: ${response.connectionDetails.url}\n`;
-            this.debugInfo += `Status text: ${response.connectionDetails.statusText}\n`;
-          }
+  
+    // Build debug info header
+    this.debugInfo = [
+      `Verification attempt ${this.retryCount}/${this.maxRetries}`,
+      `Timestamp: ${new Date().toISOString()}`,
+      `User type: ${this.userType}`,
+      `Token (partial): ${this.token.substring(0, 10)}...`,
+      `API endpoint: ${environment.apiUrl}/students/verify`
+    ].join('\n') + '\n';
+  
+    // Call service and handle errors in the pipe
+    this.studentService.verifyEmail(this.token)
+      .pipe(
+        catchError(err => {
+          this.handleError(err);
+          // emit null to terminate stream gracefully
+          return of(null);
+        })
+      )
+      .subscribe(response => {
+        if (!response) {
+          // error case already handled in catchError
+          return;
         }
-      },
-      error: (error) => {
-        console.error('Error during verification:', error);
+  
+        // Stop loading spinner
         this.isLoading = false;
-        this.isSuccess = false;
-        this.errorMessage = 'An unexpected error occurred. Please try again.';
-        this.debugInfo += 'Status: Error\n';
-        this.debugInfo += `Error: ${JSON.stringify(error)}\n`;
-      }
-    });
+  
+        // Determine success from response status
+        this.isSuccess = response.status === 'success';
+  
+        if (this.isSuccess) {
+          // Successful verification
+          this.debugInfo += `Status: Success\nMessage: ${response.message}\n`;
+          // Redirect to login after a short delay
+          setTimeout(() => this.router.navigate(['/login']), 3000);
+        } else {
+          // Verification failed by business logic
+          this.debugInfo += `Status: Failed\nError: ${response.message}\n`;
+          this.errorMessage = response.message
+            || 'Verification failed. Please try again or contact support.';
+        }
+      });
+  }
+
+  /**
+   * Common error handler for verification failures (network, unexpected).
+   */
+  private handleError(error: any): void {
+    console.error('Verification error:', error);
+    this.isLoading    = false;
+    this.isSuccess    = false;
+    this.errorMessage = 'An unexpected error occurred. Please try again.';
+    this.debugInfo   += `Status: Error\nDetails: ${JSON.stringify(error)}\n`;
   }
 
   // Метод для ручного повтора верификации

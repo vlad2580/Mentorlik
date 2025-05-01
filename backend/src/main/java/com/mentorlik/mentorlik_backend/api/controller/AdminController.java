@@ -1,6 +1,6 @@
 package com.mentorlik.mentorlik_backend.api.controller;
 
-import com.mentorlik.mentorlik_backend.api.dto.AdminProfileDto;
+import com.mentorlik.mentorlik_backend.model.AdminProfile;
 import com.mentorlik.mentorlik_backend.application.AdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +34,8 @@ public class AdminController {
      * @return a ResponseEntity containing the admin's data if found
      */
     @GetMapping("/{id}")
-    public ResponseEntity<AdminProfileDto> getAdminById(@PathVariable Long id) {
-        AdminProfileDto adminDto = adminService.getAdminById(id);
-        return ResponseEntity.ok(adminDto);
+    public ResponseEntity<AdminProfile> getAdminById(@PathVariable Long id) {
+        AdminProfile admin = adminService.getAdminById(id);
+        return ResponseEntity.ok(admin);
     }
 } 

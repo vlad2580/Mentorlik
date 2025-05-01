@@ -7,6 +7,7 @@ import { CreateMentorComponent } from './pages/create-mentor/create-mentor.compo
 import { RegistrationSelectorComponent } from './pages/registration-selector/registration-selector.component';
 import { CreateStudentComponent } from './pages/create-student/create-student.component';
 import { CabinetStudentComponent } from './pages/cabinet-student/cabinet-student.component';
+import { CabinetMentorComponent } from './pages/cabinet-mentor/cabinet-mentor.component';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { RegistrationSuccessComponent } from './pages/registration-success/registration-success.component';
 import { VerifyEmailComponent } from './pages/verify-email/verify-email.component';
@@ -25,6 +26,11 @@ export const routes: Routes = [
   { 
     path: 'cabinet-student', 
     component: CabinetStudentComponent,
+    canActivate: [authGuard]
+  },
+  { 
+    path: 'cabinet-mentor', 
+    component: CabinetMentorComponent,
     canActivate: [authGuard]
   },
   { path: '**', component: NotFoundComponent }

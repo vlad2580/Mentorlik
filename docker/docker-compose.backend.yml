@@ -25,33 +25,24 @@ services:
 
   # Spring Boot backend
   backend:
-    build:
-      context: ../backend
-      dockerfile: Dockerfile
-      cache_from:
-        - docker-backend:latest
-    image: docker-backend:latest
+    image: mentorlik-backend:latest
     container_name: mentorlik_backend
     environment:
       SPRING_PROFILES_ACTIVE: dev
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mentorlik_db
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-mentorlik_user}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-mentorlik_password}
-      # Disable Elasticsearch autoconfiguration
       SPRING_AUTOCONFIGURE_EXCLUDE: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration,org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchRestClientAutoConfiguration
-      # Disable OAuth for testing
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID: disabled
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET: disabled
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_LINKEDIN_CLIENT_ID: disabled
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_LINKEDIN_CLIENT_SECRET: disabled
-      # Email configuration
       SPRING_MAIL_HOST: smtp.gmail.com
       SPRING_MAIL_PORT: 587
       SPRING_MAIL_USERNAME: admin@mentorlik.com
       SPRING_MAIL_PASSWORD: mmpu xdid kdit dvjx
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: true
       SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: true
-      # Дополнительные параметры для отладки
       LOGGING_LEVEL_ROOT: INFO
       LOGGING_LEVEL_COM_MENTORLIK: DEBUG
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
@@ -65,23 +56,6 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
-  # Angular frontend
-  frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
-      cache_from:
-        - docker-frontend:latest
-    image: docker-frontend:latest
-    container_name: mentorlik_frontend
-    ports:
-      - "80:80"
-    networks:
-      - mentorlik-network
-    depends_on:
-      - backend
-    restart: unless-stopped
-    
   # pgAdmin - PostgreSQL Admin
   pgadmin:
     image: dpage/pgadmin4
@@ -102,4 +76,4 @@ services:
 
 networks:
   mentorlik-network:
-    driver: bridge
+    driver: bridge 

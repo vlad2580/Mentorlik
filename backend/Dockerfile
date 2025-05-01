@@ -1,12 +1,21 @@
-FROM eclipse-temurin:21-jdk-alpine
-
+# Build stage
+FROM maven:3.9.6-eclipse-temurin-21-alpine AS build
 WORKDIR /app
+COPY pom.xml .
+# Download dependencies first (this will be cached unless pom.xml changes)
+RUN mvn dependency:go-offline
 
-# Копируем JAR-файл приложения
-COPY target/mentorlik-backend-0.0.1-SNAPSHOT.jar /app/mentorlik-backend.jar
+COPY src ./src
+# Build the application
+RUN mvn clean package -DskipTests
 
-# Открываем порт
+# Run stage
+FROM eclipse-temurin:21-jdk-alpine
+WORKDIR /app
+# Copy only the built jar from the build stage
+COPY --from=build /app/target/mentorlik-backend-0.0.1-SNAPSHOT.jar /app/mentorlik-backend.jar
+
 EXPOSE 8080
 
-# Запуск приложения с дополнительными параметрами для отладки
-CMD ["java", "-Dspring.profiles.active=dev", "-Dlogging.level.root=INFO", "-Dlogging.level.com.mentorlik=DEBUG", "-Dlogging.level.org.springframework.security=DEBUG", "-Dlogging.level.org.hibernate.SQL=DEBUG", "-jar", "/app/mentorlik-backend.jar"]
+# Run the application with debug options
+CMD ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-jar", "mentorlik-backend.jar", "--spring.profiles.active=dev"]
