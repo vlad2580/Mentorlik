@@ -103,10 +103,9 @@ public class MentorController {
                     .body(ApiResponse.success(null, "Mentor was successfully created"));
             
         } catch (IllegalArgumentException e) {
-            // Специфическая обработка ошибок валидации, включая проблемы с форматом фото
+            // Handle validation errors, including photo format issues
             log.error("Validation error creating mentor: {}", e.getMessage());
             
-            // Выбираем более дружественное сообщение для пользователя
             String userMessage = e.getMessage();
             if (userMessage.contains("Invalid photo format")) {
                 userMessage = "Invalid photo format. Only JPEG and PNG formats are supported.";
@@ -115,6 +114,17 @@ public class MentorController {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
                     .body(ApiResponse.error(userMessage));
+        } catch (org.springframework.dao.DataIntegrityViolationException e) {
+            // Handle duplicate email case
+            log.error("Data integrity violation creating mentor", e);
+            if (e.getMessage().contains("duplicate key") && e.getMessage().contains("email")) {
+                return ResponseEntity
+                        .status(HttpStatus.CONFLICT)
+                        .body(ApiResponse.error("A mentor request with this email address already exists. Please use a different email address."));
+            }
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ApiResponse.error("Unable to create mentor due to data constraints. Please check your input."));
         } catch (Exception e) {
             log.error("Error creating mentor", e);
             return ResponseEntity
