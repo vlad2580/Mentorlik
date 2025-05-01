@@ -5,6 +5,18 @@ import { environment } from '../../environments/environment';
 import { catchError, tap } from 'rxjs/operators';
 import { ApiResponse } from '../models/api-response';
 
+export interface Student {
+  id: number;
+  name: string;
+  email: string;
+  avatarUrl?: string;
+  fieldOfStudy: string;
+  educationLevel: string;
+  learningGoals: string;
+  skills: string[];
+  isAvailableForMentorship: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,9 +26,9 @@ export class StudentService {
   constructor(private http: HttpClient) { }
 
   // Create student (public registration)
-  createStudent(studentData: any): Observable<any> {
+  createStudent(studentData: Partial<Student>): Observable<Student> {
     console.log('Creating new student:', studentData);
-    return this.http.post<any>(`${this.apiUrl}/public/students/register`, studentData)
+    return this.http.post<Student>(`${this.apiUrl}/public/students/register`, studentData)
       .pipe(
         tap({
           next: (response) => console.log('Student creation successful:', response),
@@ -52,8 +64,8 @@ export class StudentService {
   }
 
   // Get all students (admin only)
-  getAllStudents(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/admin/students`)
+  getAllStudents(): Observable<Student[]> {
+    return this.http.get<Student[]>(`${this.apiUrl}/admin/students`)
       .pipe(
         tap({
           next: (response) => console.log('Retrieved students:', response),
@@ -63,8 +75,8 @@ export class StudentService {
   }
 
   // Get student by ID (admin or owner)
-  getStudentById(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/admin/students/${id}`)
+  getStudentById(id: number): Observable<Student> {
+    return this.http.get<Student>(`${this.apiUrl}/admin/students/${id}`)
       .pipe(
         tap({
           next: (response) => console.log('Retrieved student:', response),
@@ -74,8 +86,8 @@ export class StudentService {
   }
 
   // Update student (owner only)
-  updateStudent(id: number, studentData: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/admin/students/${id}`, studentData)
+  updateStudent(id: number, studentData: Partial<Student>): Observable<Student> {
+    return this.http.put<Student>(`${this.apiUrl}/admin/students/${id}`, studentData)
       .pipe(
         tap({
           next: (response) => console.log('Student update successful:', response),
@@ -85,11 +97,11 @@ export class StudentService {
   }
 
   // Delete student (admin or owner)
-  deleteStudent(id: number): Observable<any> {
-    return this.http.delete<any>(`${this.apiUrl}/admin/students/${id}`)
+  deleteStudent(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/admin/students/${id}`)
       .pipe(
         tap({
-          next: (response) => console.log('Student deletion successful:', response),
+          next: () => console.log('Student deletion successful'),
           error: (error) => console.error('Student deletion error:', error)
         })
       );
@@ -102,6 +114,16 @@ export class StudentService {
         tap({
           next: (response) => console.log('Verification email resent:', response),
           error: (error) => console.error('Error resending verification email:', error)
+        })
+      );
+  }
+
+  getCurrentStudent(): Observable<Student> {
+    return this.http.get<Student>(`${this.apiUrl}/students/current`)
+      .pipe(
+        tap({
+          next: (response) => console.log('Current student data:', response),
+          error: (error) => console.error('Error getting current student:', error)
         })
       );
   }
