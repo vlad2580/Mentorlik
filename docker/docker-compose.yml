@@ -54,6 +54,8 @@ services:
       LOGGING_LEVEL_COM_MENTORLIK: DEBUG
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK_SECURITY: DEBUG
       LOGGING_LEVEL_ORG_HIBERNATE_SQL: DEBUG
+    volumes:
+      - ./logs:/app/logs
     ports:
       - "8080:8080"
     networks:

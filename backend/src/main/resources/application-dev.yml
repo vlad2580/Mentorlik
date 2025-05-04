@@ -47,6 +47,22 @@ context:
 #    host: localhost
 #    port: 9200
 
+# Настройки Actuator
+management:
+    endpoints:
+        web:
+            exposure:
+                include: health,info
+            base-path: /actuator
+            path-mapping:
+                health: health
+                info: info
+    endpoint:
+        health:
+            enabled: true
+            show-details: always
+            show-components: always
+
 logging:
     level:
         root: INFO

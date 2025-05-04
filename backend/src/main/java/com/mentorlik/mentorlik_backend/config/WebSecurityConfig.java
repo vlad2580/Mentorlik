@@ -60,7 +60,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/api/mentors/**").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/actuator/health").permitAll()
+                .requestMatchers("/actuator/**").permitAll()  // Allow all Actuator endpoints
                 // Require authentication for all other requests
                 .anyRequest().authenticated()
             );
