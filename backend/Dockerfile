@@ -7,13 +7,13 @@ COPY pom.xml .
 COPY src/main/resources/application.properties src/main/resources/application.properties
 
 # Download dependencies first (this will be cached unless pom.xml changes)
-RUN mvn dependency:go-offline -B
+# RUN mvn dependency:go-offline -B
 
 # Copy source code
 COPY src ./src
 
 # Build the application
-RUN mvn clean package -DskipTests -Dmaven.test.skip=true
+RUN mvn clean package -DskipTests
 
 # Run stage
 FROM eclipse-temurin:21-jre-alpine
