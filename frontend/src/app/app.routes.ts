@@ -12,6 +12,7 @@ import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { RegistrationSuccessComponent } from './pages/registration-success/registration-success.component';
 import { VerifyEmailComponent } from './pages/verify-email/verify-email.component';
 import { authGuard } from './core/guards/auth.guard';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -33,5 +34,6 @@ export const routes: Routes = [
     component: CabinetMentorComponent,
     canActivate: [authGuard]
   },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: '**', component: NotFoundComponent }
 ];

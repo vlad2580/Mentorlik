@@ -67,6 +67,21 @@ public class StudentService {
     }
 
     /**
+     * Gets a student by email.
+     *
+     * @param email student email
+     * @return student DTO
+     * @throws ResourceNotFoundException if a student with the specified email is not found
+     */
+    @Transactional(readOnly = true)
+    public StudentProfileDto getStudentByEmail(String email) {
+        log.info("Getting student with email: {}", email);
+        StudentProfile student = studentProfileRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Student not found with email: " + email));
+        return convertToDto(student);
+    }
+
+    /**
      * Creates a new student.
      *
      * @param studentDto data for the new student

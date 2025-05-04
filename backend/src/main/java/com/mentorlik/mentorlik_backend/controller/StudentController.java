@@ -185,6 +185,16 @@ public class StudentController {
         return ResponseEntity.ok(ApiResponse.success(null, "Student deleted"));
     }
 
+    // New endpoint for getting current student profile
+    @GetMapping("/current")
+    public ResponseEntity<ApiResponse<StudentProfileDto>> getCurrentStudentProfile(@RequestHeader("Authorization") String authHeader) {
+        // Extract email from token (or use SecurityContext)
+        // Here we assume that JwtAuthenticationFilter has already set up authentication
+        String email = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication().getName();
+        StudentProfileDto student = studentService.getStudentByEmail(email);
+        return ResponseEntity.ok(ApiResponse.success(student));
+    }
+
     private StudentProfileDto toDto(CreateStudentRequest req) {
         StudentProfileDto dto = new StudentProfileDto();
         dto.setName(req.getName());

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 import { ApiResponse } from '../models/api-response';
 
 export interface Student {
@@ -119,10 +119,11 @@ export class StudentService {
   }
 
   getCurrentStudent(): Observable<Student> {
-    return this.http.get<Student>(`${this.apiUrl}/students/current`)
+    return this.http.get<{ data: Student }>(`${this.apiUrl}/public/students/current`)
       .pipe(
+        map(response => response.data),
         tap({
-          next: (response) => console.log('Current student data:', response),
+          next: (student) => console.log('Current student data:', student),
           error: (error) => console.error('Error getting current student:', error)
         })
       );

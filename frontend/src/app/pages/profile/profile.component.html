@@ -1,0 +1,17 @@
+<div class="profile-container">
+  <div class="profile-card" *ngIf="userData">
+    <div class="avatar-section">
+      <img [src]="userData.avatarUrl || 'assets/images/profile-placeholder.jpg'" alt="Avatar" class="avatar" />
+    </div>
+    <div class="info-section">
+      <h2>{{ userData.name || '—' }}</h2>
+      <p class="email">{{ userData.email || '—' }}</p>
+      <div class="field"><strong>Studijní obor:</strong> {{ userData.fieldOfStudy || 'Není specifikováno' }}</div>
+      <div class="field"><strong>Úroveň vzdělání:</strong> {{ userData.educationLevel || 'Není specifikováno' }}</div>
+      <div class="field"><strong>Studijní cíle:</strong> {{ userData.learningGoals || 'Není specifikováno' }}</div>
+      <div class="field"><strong>Dovednosti:</strong> <span *ngIf="userData.skills && userData.skills.length; else noSkills">{{ userData.skills.join(', ') }}</span><ng-template #noSkills>—</ng-template></div>
+      <div class="field"><strong>Dostupný pro mentorství:</strong> <span [ngClass]="{'available': userData.isAvailableForMentorship, 'not-available': !userData.isAvailableForMentorship}">{{ userData.isAvailableForMentorship ? 'Ano' : 'Ne' }}</span></div>
+    </div>
+  </div>
+  <div *ngIf="!userData" class="loading">Načítání profilu...</div>
+</div> 
