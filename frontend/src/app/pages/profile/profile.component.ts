@@ -16,8 +16,15 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.studentService.getCurrentStudent().subscribe({
-      next: (data: Student) => {
-        this.userData = data;
+      next: (data: any) => {
+        this.userData = {
+          ...data,
+          fieldOfStudy: data.fieldOfStudy || data.FieldOfStudy,
+          educationLevel: data.educationLevel || data.EducationLevel,
+          learningGoals: data.learningGoals || data.LearningGoals,
+          skills: data.skills || data.Skills,
+          isAvailableForMentorship: data.isAvailableForMentorship ?? data.IsAvailableForMentorship
+        };
       },
       error: (error: Error) => {
         console.error('Error loading user data:', error);
