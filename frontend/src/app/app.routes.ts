@@ -13,6 +13,7 @@ import { RegistrationSuccessComponent } from './pages/registration-success/regis
 import { VerifyEmailComponent } from './pages/verify-email/verify-email.component';
 import { authGuard } from './core/guards/auth.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { ProfileEditComponent } from './pages/profile-edit/profile-edit.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -35,5 +36,6 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  { path: 'profile/edit', component: ProfileEditComponent, canActivate: [authGuard] },
   { path: '**', component: NotFoundComponent }
 ];

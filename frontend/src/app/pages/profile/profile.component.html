@@ -4,7 +4,10 @@
       <img [src]="userData.avatarUrl || 'assets/images/profile-placeholder.jpg'" alt="Avatar" class="avatar" />
     </div>
     <div class="info-section">
-      <h2>{{ userData.name || '—' }}</h2>
+      <div class="profile-header">
+        <h2>{{ userData.name || '—' }}</h2>
+        <a routerLink="/profile/edit" class="edit-btn">Upravit profil</a>
+      </div>
       <p class="email">{{ userData.email || '—' }}</p>
       <div class="field"><strong>Studijní obor:</strong> {{ userData.fieldOfStudy || 'Není specifikováno' }}</div>
       <div class="field"><strong>Úroveň vzdělání:</strong> {{ userData.educationLevel || 'Není specifikováno' }}</div>

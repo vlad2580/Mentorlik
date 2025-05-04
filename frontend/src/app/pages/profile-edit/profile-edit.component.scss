@@ -1,0 +1,92 @@
+.profile-edit-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 70vh;
+}
+
+.profile-edit-form {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(60, 72, 88, 0.08);
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  min-width: 350px;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+input[type="text"],
+input[type="email"] {
+  padding: 0.5rem 0.8rem;
+  border: 1px solid #dbe3ea;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f7fafd;
+  transition: border 0.2s;
+}
+input:focus {
+  border-color: #4a6cf7;
+  outline: none;
+}
+
+.checkbox-group {
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+button[type="submit"] {
+  background: #4a6cf7;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+button[type="submit"]:disabled {
+  background: #bfcbe3;
+  cursor: not-allowed;
+}
+button[type="button"] {
+  background: #f5f6fa;
+  color: #4a6cf7;
+  border: 1px solid #dbe3ea;
+  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+button[type="button"]:hover {
+  background: #eaf0fb;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.field-error {
+  color: #e74c3c;
+  font-size: 0.9rem;
+} 
