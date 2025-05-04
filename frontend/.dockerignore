@@ -10,8 +10,8 @@
 *.swo
 
 # Build
-target/
-!target/*.jar
+dist/
+node_modules/
 
 # Logs
 logs/
@@ -19,15 +19,7 @@ logs/
 
 # Test
 src/test/
-
-# Maven
-.mvn/
-mvnw
-mvnw.cmd
-
-# Docker
-Dockerfile
-docker-compose*.yml
+coverage/
 
 # Environment files
 .env
@@ -42,5 +34,10 @@ docs/
 *.bak
 *.backup
 
-node_modules/
-dist/ 
+# Docker
+Dockerfile
+docker-compose*.yml
+
+# Angular
+.angular/
+.cache/ 

@@ -4,7 +4,6 @@ import com.mentorlik.mentorlik_backend.dto.auth.AuthRequestDto;
 import com.mentorlik.mentorlik_backend.dto.profile.StudentProfileDto;
 import com.mentorlik.mentorlik_backend.dto.profile.UserDto;
 import com.mentorlik.mentorlik_backend.model.StudentProfile;
-import com.mentorlik.mentorlik_backend.model.User;
 import com.mentorlik.mentorlik_backend.repository.StudentProfileRepository;
 import com.mentorlik.mentorlik_backend.exception.ResourceNotFoundException;
 import com.mentorlik.mentorlik_backend.exception.validation.EmailAlreadyExistsException;
@@ -14,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Service for handling student authentication and profile management.
