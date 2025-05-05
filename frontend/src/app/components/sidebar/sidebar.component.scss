@@ -1,0 +1,34 @@
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-list li {
+  margin-bottom: 1.5rem;
+}
+
+.nav-list a {
+  display: flex;
+  align-items: center;
+  color: #222;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav-list a.active, .nav-list a:hover {
+  background: #f0f4ff;
+  color: #2a5bd7;
+}
+
+.nav-list i {
+  margin-right: 0.75rem;
+  font-size: 1.2rem;
+}
+
+.sign-out a {
+  color: #e74c3c;
+} 

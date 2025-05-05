@@ -1,0 +1,22 @@
+<nav>
+  <ul class="nav-list">
+    <li><a routerLink="/cabinet-student" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <i class="fas fa-home"></i> Domů
+    </a></li>
+    <li><a routerLink="/profile" routerLinkActive="active">
+      <i class="fas fa-user"></i> Profil
+    </a></li>
+    <li><a routerLink="/sessions" routerLinkActive="active">
+      <i class="fas fa-calendar"></i> Sezení
+    </a></li>
+    <li><a routerLink="/progress" routerLinkActive="active">
+      <i class="fas fa-chart-line"></i> Pokrok
+    </a></li>
+    <li><a routerLink="/resources" routerLinkActive="active">
+      <i class="fas fa-book"></i> Zdroje
+    </a></li>
+    <li class="sign-out"><a (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i> Odhlásit se
+    </a></li>
+  </ul>
+</nav> 

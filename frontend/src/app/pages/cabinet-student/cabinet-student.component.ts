@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { StudentService, Student } from '../../services/student.service';
+import { DefaultLayoutComponent } from '../../layouts/default-layout/default-layout.component';
 
 interface Session {
   id: string;
@@ -19,7 +20,7 @@ interface LearningGoal {
 @Component({
   selector: 'app-cabinet-student',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, DefaultLayoutComponent],
   templateUrl: './cabinet-student.component.html',
   styleUrls: ['./cabinet-student.component.scss']
 })

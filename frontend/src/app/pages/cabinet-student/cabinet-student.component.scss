@@ -180,157 +180,146 @@ body {
 
   // Dashboard Grid
   .dashboard-grid {
-    @include grid(repeat(auto-fit, minmax(300px, 1fr)), map-get($spacing, xl));
-    margin-top: map-get($spacing, xl);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2.5rem;
+    margin-top: 2.5rem;
   }
 }
 
 // Dashboard Cards
-.dashboard-card {
-  background-color: map-get($colors, white);
-  border-radius: 12px;
-  padding: map-get($spacing, lg);
-  box-shadow: map-get($shadows, card);
+.dashboard-card, .profile-summary {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(60, 80, 140, 0.09);
+  padding: 2.2rem 2rem;
+  margin-bottom: 2rem;
+  transition: box-shadow 0.2s;
+  position: relative;
 }
 
-// Profile Summary
-.profile-summary {
-  .card-header {
-    @include flex($justify: space-between, $align: center);
-    margin-bottom: map-get($spacing, lg);
-  }
+.dashboard-card:hover, .profile-summary:hover {
+  box-shadow: 0 8px 32px rgba(60, 80, 140, 0.15);
+}
 
-  .profile-info {
-    @include flex;
-    gap: map-get($spacing, lg);
+.profile-summary .avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 3px solid #2a5bd7;
+  box-shadow: 0 2px 8px rgba(60, 80, 140, 0.10);
+  object-fit: cover;
+  margin-bottom: 1.2rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-    .avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      overflow: hidden;
+.profile-summary .info-details {
+  text-align: center;
+  margin-top: 1rem;
+}
 
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
+.profile-summary h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+}
 
-    .info-details {
-      p {
-        margin-bottom: map-get($spacing, sm);
-        color: map-get($colors, text-secondary);
-
-        strong {
-          color: map-get($colors, text-primary);
-        }
-      }
-    }
-  }
+.profile-summary .edit-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: #2a5bd7;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.4rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.profile-summary .edit-btn:hover {
+  background: #1741a6;
 }
 
 // Stats Cards
 .stats {
-  @include grid(repeat(3, 1fr), map-get($spacing, md));
-
-  .stat-item {
-    text-align: center;
-    padding: map-get($spacing, md);
-
-    i {
-      font-size: 2rem;
-      color: map-get($colors, primary);
-      margin-bottom: map-get($spacing, xs);
-    }
-
-    h4 {
-      color: map-get($colors, text-secondary);
-      font-size: 0.9rem;
-      margin-bottom: map-get($spacing, xs);
-    }
-
-    p {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: map-get($colors, text-primary);
-    }
-  }
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+}
+.stat-item {
+  flex: 1;
+}
+.stat-item i {
+  color: #2a5bd7;
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+.stat-item h4 {
+  color: #888;
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+.stat-item p {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222;
 }
 
 // Upcoming Sessions
-.upcoming-sessions {
-  .sessions-list {
-    margin-top: map-get($spacing, md);
-  }
-
-  .session-item {
-    @include flex($justify: space-between, $align: center);
-    padding: map-get($spacing, md);
-    border-bottom: 1px solid map-get($colors, border);
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    .session-info {
-      h4 {
-        color: map-get($colors, text-primary);
-        margin-bottom: map-get($spacing, xs);
-      }
-
-      p {
-        color: map-get($colors, text-secondary);
-        font-size: 0.9rem;
-      }
-    }
-  }
+.upcoming-sessions, .progress-tracking {
+  margin-top: 1.5rem;
+}
+.upcoming-sessions h3, .progress-tracking h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
 }
 
-// Progress Tracking
-.progress-tracking {
-  .progress-items {
-    margin-top: map-get($spacing, md);
-  }
-
-  .progress-item {
-    margin-bottom: map-get($spacing, lg);
-
-    .progress-header {
-      @include flex($justify: space-between);
-      margin-bottom: map-get($spacing, xs);
-      color: map-get($colors, text-secondary);
-    }
-
-    .progress-bar {
-      height: 8px;
-      background-color: map-get($colors, border);
-      border-radius: 4px;
-      overflow: hidden;
-
-      .progress-fill {
-        height: 100%;
-        background-color: map-get($colors, primary);
-        border-radius: 4px;
-        @include transition(width);
-      }
-    }
-  }
+.progress-item {
+  margin-bottom: 1.2rem;
+}
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #888;
+  margin-bottom: 0.3rem;
+}
+.progress-bar {
+  height: 10px;
+  background: #e6eaf3;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.progress-fill {
+  background: linear-gradient(90deg, #2a5bd7 0%, #6ec1e4 100%);
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
 }
 
 // Buttons
 .edit-btn {
-  background: none;
+  background: #2a5bd7;
+  color: #fff;
   border: none;
-  color: map-get($colors, primary);
+  border-radius: 8px;
+  padding: 0.5rem 1.2rem;
+  font-weight: 600;
   cursor: pointer;
-  padding: map-get($spacing, xs);
-  border-radius: 6px;
-  @include transition(background-color);
+  transition: background 0.2s;
+}
 
-  &:hover {
-    background-color: map-get($colors, secondary);
-  }
+.edit-btn:hover {
+  background: #1741a6;
 }
 
 .primary-btn {
@@ -397,18 +386,34 @@ body {
 
 @media (max-width: map-get($breakpoints, mobile)) {
   .stats {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .dashboard-grid {
     grid-template-columns: 1fr;
+    gap: 1.2rem;
   }
 
-  .profile-info {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  .dashboard-card, .profile-summary {
+    padding: 1.2rem 0.7rem;
   }
+}
 
-  .session-item {
-    flex-direction: column;
-    gap: map-get($spacing, md);
-    text-align: center;
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
   }
+  .stats {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+  .dashboard-card, .profile-summary {
+    padding: 1.2rem 0.7rem;
+  }
+}
+
+body, .main-content {
+  background: #f7f9fb;
 } 

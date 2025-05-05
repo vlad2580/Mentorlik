@@ -229,11 +229,16 @@ public class StudentService {
      * @param studentDto DTO with new data
      */
     private void updateStudentFields(StudentProfile existingStudent, StudentProfileDto studentDto) {
-        existingStudent.setEmail(studentDto.getEmail());
+        // Only update email if it's not null in the DTO
+        if (studentDto.getEmail() != null && !studentDto.getEmail().isEmpty()) {
+            existingStudent.setEmail(studentDto.getEmail());
+        }
         existingStudent.setName(studentDto.getName());
         existingStudent.setFieldOfStudy(studentDto.getFieldOfStudy());
         existingStudent.setEducationLevel(studentDto.getEducationLevel());
-        // Removing non-existent methods
+        existingStudent.setLearningGoals(studentDto.getLearningGoals());
+        existingStudent.setSkills(studentDto.getSkills());
+        existingStudent.setIsAvailableForMentorship(studentDto.getIsAvailableForMentorship());
         
         // Update password only if specified in DTO
         if (studentDto.getPassword() != null && !studentDto.getPassword().isEmpty()) {

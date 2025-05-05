@@ -1,121 +1,94 @@
-<div class="cabinet-container">
-  <div class="sidebar">
-    <nav>
-      <ul class="nav-list">
-        <li><a routerLink="/" routerLinkActive="active">
-          <i class="fas fa-home"></i> Domů
-        </a></li>
-        <li><a routerLink="/profile" routerLinkActive="active">
-          <i class="fas fa-user"></i> Profil
-        </a></li>
-        <li><a routerLink="/sessions" routerLinkActive="active">
-          <i class="fas fa-calendar"></i> Sezení
-        </a></li>
-        <li><a routerLink="/progress" routerLinkActive="active">
-          <i class="fas fa-chart-line"></i> Pokrok
-        </a></li>
-        <li><a routerLink="/resources" routerLinkActive="active">
-          <i class="fas fa-book"></i> Zdroje
-        </a></li>
-        <li class="sign-out"><a (click)="logout()">
-          <i class="fas fa-sign-out-alt"></i> Odhlásit se
-        </a></li>
-      </ul>
-    </nav>
-  </div>
+<app-default-layout>
+  <header class="main-header">
+    <div class="header-content">
+      <h1>Studentský Dashboard</h1>
+      <p class="welcome-text">Vítejte, {{userData?.name || 'Studente'}}!</p>
+    </div>
+    <div class="header-actions">
+      <button class="notification-btn">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge" *ngIf="hasNotifications">{{notificationCount}}</span>
+      </button>
+    </div>
+  </header>
   
-  <div class="main-content">
-    <header class="main-header">
-      <div class="header-content">
-        <h1>Studentský Dashboard</h1>
-        <p class="welcome-text">Vítejte, {{userData?.name || 'Studente'}}!</p>
-      </div>
-      <div class="header-actions">
-        <button class="notification-btn">
-          <i class="fas fa-bell"></i>
-          <span class="notification-badge" *ngIf="hasNotifications">{{notificationCount}}</span>
+  <div class="dashboard-grid">
+    <!-- Profile Summary Card -->
+    <div class="dashboard-card profile-summary">
+      <div class="card-header">
+        <h3>Váš Profil</h3>
+        <button class="edit-btn" (click)="editProfile()">
+          <i class="fas fa-edit"></i>
         </button>
       </div>
-    </header>
-    
-    <div class="dashboard-grid">
-      <!-- Profile Summary Card -->
-      <div class="dashboard-card profile-summary">
-        <div class="card-header">
-          <h3>Váš Profil</h3>
-          <button class="edit-btn" (click)="editProfile()">
-            <i class="fas fa-edit"></i>
+      <div class="profile-info">
+        <div class="avatar">
+          <img [src]="userData?.avatarUrl || 'assets/default-avatar.png'" alt="Profilový obrázek">
+        </div>
+        <div class="info-details">
+          <p><strong>Obor studia:</strong> {{userData?.fieldOfStudy || 'Není specifikováno'}}</p>
+          <p><strong>Úroveň:</strong> {{userData?.educationLevel || 'Není specifikováno'}}</p>
+          <p><strong>Studijní cíle:</strong> {{userData?.learningGoals || 'Není specifikováno'}}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="dashboard-card stats">
+      <div class="stat-item">
+        <i class="fas fa-clock"></i>
+        <h4>Hodiny učení</h4>
+        <p>{{totalLearningHours || 0}}</p>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-tasks"></i>
+        <h4>Splněné úkoly</h4>
+        <p>{{completedTasks || 0}}</p>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-star"></i>
+        <h4>Hodnocení</h4>
+        <p>{{rating || '0.0'}}</p>
+      </div>
+    </div>
+
+    <!-- Upcoming Sessions -->
+    <div class="dashboard-card upcoming-sessions">
+      <h3>Nadcházející sezení</h3>
+      <div class="sessions-list" *ngIf="upcomingSessions?.length; else noSessions">
+        <div class="session-item" *ngFor="let session of upcomingSessions">
+          <div class="session-info">
+            <h4>{{session.title}}</h4>
+            <p>{{session.date | date:'dd.MM.yyyy'}} v {{session.time}}</p>
+            <p>Mentor: {{session.mentorName}}</p>
+          </div>
+          <button class="join-btn" (click)="joinSession(session.id)">
+            Připojit se
           </button>
         </div>
-        <div class="profile-info">
-          <div class="avatar">
-            <img [src]="userData?.avatarUrl || 'assets/default-avatar.png'" alt="Profilový obrázek">
-          </div>
-          <div class="info-details">
-            <p><strong>Obor studia:</strong> {{userData?.fieldOfStudy || 'Není specifikováno'}}</p>
-            <p><strong>Úroveň:</strong> {{userData?.educationLevel || 'Není specifikováno'}}</p>
-            <p><strong>Studijní cíle:</strong> {{userData?.learningGoals || 'Není specifikováno'}}</p>
-          </div>
-        </div>
       </div>
+      <ng-template #noSessions>
+        <p class="no-data">Žádná nadcházející sezení</p>
+        <button class="primary-btn" (click)="scheduleMentoring()">
+          Naplánovat sezení
+        </button>
+      </ng-template>
+    </div>
 
-      <!-- Stats Cards -->
-      <div class="dashboard-card stats">
-        <div class="stat-item">
-          <i class="fas fa-clock"></i>
-          <h4>Hodiny učení</h4>
-          <p>{{totalLearningHours || 0}}</p>
-        </div>
-        <div class="stat-item">
-          <i class="fas fa-tasks"></i>
-          <h4>Splněné úkoly</h4>
-          <p>{{completedTasks || 0}}</p>
-        </div>
-        <div class="stat-item">
-          <i class="fas fa-star"></i>
-          <h4>Hodnocení</h4>
-          <p>{{rating || '0.0'}}</p>
-        </div>
-      </div>
-
-      <!-- Upcoming Sessions -->
-      <div class="dashboard-card upcoming-sessions">
-        <h3>Nadcházející sezení</h3>
-        <div class="sessions-list" *ngIf="upcomingSessions?.length; else noSessions">
-          <div class="session-item" *ngFor="let session of upcomingSessions">
-            <div class="session-info">
-              <h4>{{session.title}}</h4>
-              <p>{{session.date | date:'dd.MM.yyyy'}} v {{session.time}}</p>
-              <p>Mentor: {{session.mentorName}}</p>
-            </div>
-            <button class="join-btn" (click)="joinSession(session.id)">
-              Připojit se
-            </button>
+    <!-- Progress Tracking -->
+    <div class="dashboard-card progress-tracking">
+      <h3>Váš pokrok</h3>
+      <div class="progress-items">
+        <div class="progress-item" *ngFor="let goal of learningGoals">
+          <div class="progress-header">
+            <span>{{goal.name}}</span>
+            <span>{{goal.progress}}%</span>
           </div>
-        </div>
-        <ng-template #noSessions>
-          <p class="no-data">Žádná nadcházející sezení</p>
-          <button class="primary-btn" (click)="scheduleMentoring()">
-            Naplánovat sezení
-          </button>
-        </ng-template>
-      </div>
-
-      <!-- Progress Tracking -->
-      <div class="dashboard-card progress-tracking">
-        <h3>Váš pokrok</h3>
-        <div class="progress-items">
-          <div class="progress-item" *ngFor="let goal of learningGoals">
-            <div class="progress-header">
-              <span>{{goal.name}}</span>
-              <span>{{goal.progress}}%</span>
-            </div>
-            <div class="progress-bar">
-              <div class="progress-fill" [style.width]="goal.progress + '%'"></div>
-            </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width]="goal.progress + '%'"></div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</app-default-layout>

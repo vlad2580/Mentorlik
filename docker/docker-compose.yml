@@ -35,8 +35,10 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mentorlik_db
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-mentorlik_user}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-mentorlik_password}
-      # Disable Elasticsearch autoconfiguration
+      # Disable Elasticsearch
+      SPRING_ELASTICSEARCH_ENABLED: false
       SPRING_AUTOCONFIGURE_EXCLUDE: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration,org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchRestClientAutoConfiguration
+      MANAGEMENT_HEALTH_ELASTICSEARCH_ENABLED: false
       # Disable OAuth for testing
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID: disabled
       SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET: disabled

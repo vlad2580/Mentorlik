@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { environment } from '../../environments/environment';
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
   private currentUser: User | null = null;
+  isLoggedIn = signal<boolean>(false);
 
   constructor(private http: HttpClient) {
     // Проверяем, есть ли сохраненный пользователь в localStorage
@@ -21,6 +22,7 @@ export class AuthService {
     if (savedUser) {
       this.currentUser = JSON.parse(savedUser);
     }
+    this.isLoggedIn.set(!!localStorage.getItem('auth_token'));
   }
 
   //workaround 
@@ -69,6 +71,8 @@ export class AuthService {
   logout(): void {
     this.currentUser = null;
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('auth_token');
+    this.isLoggedIn.set(false);
   }
 
   // Получить текущего пользователя
@@ -98,5 +102,10 @@ export class AuthService {
   private setCurrentUser(user: User | Mentor | Student): void {
     this.currentUser = user;
     localStorage.setItem('currentUser', JSON.stringify(user));
+  }
+
+  setToken(token: string) {
+    localStorage.setItem('auth_token', token);
+    this.isLoggedIn.set(true);
   }
 } 

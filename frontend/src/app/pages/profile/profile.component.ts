@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { StudentService, Student } from '../../services/student.service';
+import { DefaultLayoutComponent } from '../../layouts/default-layout/default-layout.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, DefaultLayoutComponent],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })

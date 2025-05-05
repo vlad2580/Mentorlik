@@ -11,6 +11,8 @@ spring:
             hibernate:
                 format_sql: true
                 dialect: org.hibernate.dialect.PostgreSQLDialect
+    elasticsearch:
+        enabled: false
     security:
         oauth2:
             client:
@@ -36,6 +38,9 @@ spring:
 
 # Отключаем автоконфигурацию Elasticsearch для тестирования базовых эндпоинтов
 spring.autoconfigure.exclude: org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchClientAutoConfiguration,org.springframework.boot.autoconfigure.elasticsearch.ElasticsearchRestClientAutoConfiguration
+
+# Отключаем проверку здоровья Elasticsearch
+management.health.elasticsearch.enabled: false
 
 # Загружаем дополнительную конфигурацию Spring для разрешения конфликта контроллеров
 context:

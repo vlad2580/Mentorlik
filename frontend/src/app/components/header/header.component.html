@@ -11,8 +11,15 @@
         <ul>
             <li><a routerLink="/blog">Náš blog</a></li>
             <li><a routerLink="/create-mentor">Staňte se mentorem</a></li>
-            <li><a routerLink="/login">Osobní účet</a></li>
             <li><a routerLink="/donate">Podpořte nás</a></li>
+            <li *ngIf="!isLoggedIn">
+                <a routerLink="/login">Osobní účet</a>
+            </li>
+            <li *ngIf="isLoggedIn">
+                <a routerLink="/cabinet-student" routerLinkActive="active" class="cabinet-btn">
+                    <i class="fas fa-user-circle"></i> Osobní kabinet
+                </a>
+            </li>
         </ul>
     </nav>
 </header>
