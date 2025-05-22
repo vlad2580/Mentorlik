@@ -61,6 +61,34 @@
 - Node.js and npm
 - Maven
 
+### Running with Docker Compose
+
+To run all containers at once:
+
+```bash
+cd docker
+docker-compose up --build -d
+```
+
+This command will:
+1. Build all necessary Docker images
+2. Start all containers in detached mode (-d flag)
+3. Set up the complete application stack including:
+   - PostgreSQL database
+   - Spring Boot backend
+   - Angular frontend (served via Nginx)
+   - pgAdmin
+
+To stop all containers:
+```bash
+docker-compose down
+```
+
+To view container logs:
+```bash
+docker-compose logs -f
+```
+
 ### Development Environment
 
 #### Option 1: Using the Script
