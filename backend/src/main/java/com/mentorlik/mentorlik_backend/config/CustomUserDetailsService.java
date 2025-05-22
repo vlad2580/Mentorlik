@@ -1,8 +1,4 @@
 package com.mentorlik.mentorlik_backend.config;
-
-import com.mentorlik.mentorlik_backend.model.AdminProfile;
-import com.mentorlik.mentorlik_backend.model.MentorProfile;
-import com.mentorlik.mentorlik_backend.model.StudentProfile;
 import com.mentorlik.mentorlik_backend.repository.AdminProfileRepository;
 import com.mentorlik.mentorlik_backend.repository.MentorProfileRepository;
 import com.mentorlik.mentorlik_backend.repository.StudentProfileRepository;
